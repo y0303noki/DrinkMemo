@@ -1,4 +1,6 @@
+import 'package:coffee_project2/pages/albumPage/album_list.dart';
 import 'package:coffee_project2/pages/coffeePage/coffee_list.dart';
+import 'package:coffee_project2/providers/album/album_list_provider.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +9,25 @@ import 'package:provider/provider.dart';
 class AlbumListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final coffeesData = Provider.of<CoffeeListProvider>(context);
+    final albumsData = Provider.of<AlbumListProvider>(context);
     final bottomNavigationData = Provider.of<BottomNavigationProvider>(context);
     return Center(
       child: Column(
         children: [
-          Text('album'),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              child: Consumer<AlbumListProvider>(
+                builder: (ctx, albumsData, _) => Center(
+                  child:
+                      Text('totalFavoriteCount: ${albumsData.favoriteCount}'),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: AlbumList(albumsData.testAlbums),
+          ),
         ],
       ),
     );
