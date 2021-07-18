@@ -15,6 +15,7 @@ class CoffeeItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0x96EBC254),
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.black),
       ),
       child: Material(
         color: Colors.transparent,
