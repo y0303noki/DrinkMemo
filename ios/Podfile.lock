@@ -1,65 +1,106 @@
 PODS:
-  - AppAuth (1.4.0):
-    - AppAuth/Core (= 1.4.0)
-    - AppAuth/ExternalUserAgent (= 1.4.0)
-  - AppAuth/Core (1.4.0)
-  - AppAuth/ExternalUserAgent (1.4.0)
+  - cloud_firestore (1.0.7):
+    - Firebase/Firestore (= 8.3.0)
+    - firebase_core
+    - Flutter
+  - Firebase/CoreOnly (8.3.0):
+    - FirebaseCore (= 8.3.0)
+  - Firebase/Firestore (8.3.0):
+    - Firebase/CoreOnly
+    - FirebaseFirestore (~> 8.3.0)
+  - firebase_core (1.4.0):
+    - Firebase/CoreOnly (= 8.3.0)
+    - Flutter
+  - FirebaseCore (8.3.0):
+    - FirebaseCoreDiagnostics (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+  - FirebaseCoreDiagnostics (8.3.0):
+    - GoogleDataTransport (~> 9.0)
+    - GoogleUtilities/Environment (~> 7.4)
+    - GoogleUtilities/Logger (~> 7.4)
+    - nanopb (~> 2.30908.0)
+  - FirebaseFirestore (8.3.0):
+    - FirebaseFirestore/AutodetectLeveldb (= 8.3.0)
+  - FirebaseFirestore/AutodetectLeveldb (8.3.0):
+    - FirebaseFirestore/Base
+    - FirebaseFirestore/WithLeveldb
+  - FirebaseFirestore/Base (8.3.0)
+  - FirebaseFirestore/WithLeveldb (8.3.0):
+    - FirebaseFirestore/Base
   - Flutter (1.0.0)
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
-  - google_sign_in (0.0.1):
-    - Flutter
-    - GoogleSignIn (~> 5.0)
-  - GoogleSignIn (5.0.2):
-    - AppAuth (~> 1.2)
-    - GTMAppAuth (~> 1.0)
-    - GTMSessionFetcher/Core (~> 1.1)
-  - GTMAppAuth (1.2.1):
-    - AppAuth/Core (~> 1.4)
-    - GTMSessionFetcher/Core (~> 1.5)
-  - GTMSessionFetcher/Core (1.5.0)
+  - GoogleDataTransport (9.1.0):
+    - GoogleUtilities/Environment (~> 7.2)
+    - nanopb (~> 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Environment (7.5.0):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.5.0):
+    - GoogleUtilities/Environment
   - image_picker (0.0.1):
     - Flutter
-  - share (0.0.1):
-    - Flutter
+  - nanopb (2.30908.0):
+    - nanopb/decode (= 2.30908.0)
+    - nanopb/encode (= 2.30908.0)
+  - nanopb/decode (2.30908.0)
+  - nanopb/encode (2.30908.0)
+  - PromisesObjC (2.0.0)
 
 DEPENDENCIES:
+  - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
+  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `8.3.0`)
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
-  - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
-  - share (from `.symlinks/plugins/share/ios`)
 
 SPEC REPOS:
   trunk:
-    - AppAuth
-    - GoogleSignIn
-    - GTMAppAuth
-    - GTMSessionFetcher
+    - Firebase
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - GoogleDataTransport
+    - GoogleUtilities
+    - nanopb
+    - PromisesObjC
 
 EXTERNAL SOURCES:
+  cloud_firestore:
+    :path: ".symlinks/plugins/cloud_firestore/ios"
+  firebase_core:
+    :path: ".symlinks/plugins/firebase_core/ios"
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.3.0
   Flutter:
     :path: Flutter
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
-  google_sign_in:
-    :path: ".symlinks/plugins/google_sign_in/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
-  share:
-    :path: ".symlinks/plugins/share/ios"
+
+CHECKOUT OPTIONS:
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.3.0
 
 SPEC CHECKSUMS:
-  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  cloud_firestore: cb9ed804f998d09ace1f9328da29c3edb954bdf3
+  Firebase: 817b9171d0d51dccc458b94a5e8edff6b1dd323d
+  firebase_core: 72374607c8c6f5a0adc0559e5c5bf57deda975e3
+  FirebaseCore: a6dba751680d7033b9d3831e1cfc95ead0605118
+  FirebaseCoreDiagnostics: 7e873baabcfaa9512f538554ae4fa0817aaafbdb
+  FirebaseFirestore: 5e42d8857fb511c4e3f2dbd79f349c5236a6bc7c
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
-  google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
-  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GTMAppAuth: 5b53231ef6920f149ab84b2969cb0ab572da3077
-  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
+  GoogleUtilities: eea970f4a389963963bffe8d8fabe43540678b9c
   image_picker: 50e7c7ff960e5f58faa4d1f4af84a771c671bc4a
-  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: 1df9f07ef6d5e9a4fa4e3a404aee8ea25c3d61eb
 
 COCOAPODS: 1.10.1
