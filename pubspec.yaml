@@ -12,15 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # firebase_core: ^1.0.3
-  # cloud_firestore: ^1.0.5
+  firebase_core: ^1.0.3
+  cloud_firestore: ^1.0.5
   provider: ^5.0.0
   # firebase_auth: ^1.1.1
-  sign_button: ^2.0.0
   flutter_easyloading: ^3.0.0
-  google_sign_in: ^5.0.2
-  flutter_rating_bar: ^4.0.0
-  share: ^2.0.1
+  # google_sign_in: ^5.0.2
+  # flutter_rating_bar: ^4.0.0
+  # share: ^2.0.1
   image_picker: ^0.7.4
   # firebase_storage: ^8.0.5
   # null safety できてない
