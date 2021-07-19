@@ -20,6 +20,12 @@ class HomePage extends StatelessWidget {
     CoffeeListPage(),
     AlbumListPage(),
   ];
+  final List<FloatingActionButton> floatingButtons = [
+    FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.add),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     final bottomNavigationData = Provider.of<BottomNavigationProvider>(context);
@@ -28,6 +34,9 @@ class HomePage extends StatelessWidget {
         title: Text(titles[bottomNavigationData.currentIndex]),
       ),
       body: bodys[bottomNavigationData.currentIndex],
+      floatingActionButton: bottomNavigationData.currentIndex == 0
+          ? floatingButtons[bottomNavigationData.currentIndex]
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).canvasColor,
         items: const <BottomNavigationBarItem>[
