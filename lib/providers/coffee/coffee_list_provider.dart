@@ -1,3 +1,4 @@
+import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -6,8 +7,9 @@ import 'package:flutter/material.dart';
 class CoffeeListProvider extends ChangeNotifier {
   List<CoffeeModel> _coffeeModels = [];
   List<CoffeeModel> get coffeeModels => _coffeeModels;
-  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  var _coffeeDb = CoffeeFirebase();
+
   // test用データ
   List<CoffeeModel> testCoffees = [
     CoffeeModel(
@@ -34,7 +36,7 @@ class CoffeeListProvider extends ChangeNotifier {
   ];
 
   CoffeeModel findById(String id) {
-    return testCoffees.firstWhere((coffee) => coffee.id == id);
+    return _coffeeDb.testCoffees.firstWhere((coffee) => coffee.id == id);
   }
 
   void toggleFavorite(String id) {
@@ -48,35 +50,10 @@ class CoffeeListProvider extends ChangeNotifier {
   }
 
   int get favoriteCount {
-    return testCoffees.where((coffee) => coffee.favorite).length;
+    return _coffeeDb.testCoffees.where((coffee) => coffee.favorite).length;
   }
 
-  // Future fetchCoffeeDatas() async {
-  //   final String? userId = _firebaseAuth.currentUser?.uid;
-
-  //   final QuerySnapshot snapshots = await _firestore
-  //       .collection('coffee_cards')
-  //       .where('userId', isEqualTo: userId)
-  //       .orderBy('updatedAt', descending: true)
-  //       .limit(20)
-  //       .get();
-
-  //   // final coffeeDatas =
-  //   final coffeeAllDatas = snapshots.docs
-  //       .map(
-  //         (doc) => CoffeeModel(
-  //           id: doc.data()['id'] ?? '',
-  //           name: doc.data()['name'] ?? '',
-  //           favorite: doc.data()['favorite'] ?? 0,
-  //           brandName: doc.data()['brandName'] ?? '',
-  //           imageId: doc.data()['imageId'] ?? '',
-  //           coffeeAt: doc.data()['coffeeAt'].toDate(),
-  //           createdAt: doc.data()['createdAt'].toDate(),
-  //           updatedAt: doc.data()['updatedAt'].toDate(),
-  //         ),
-  //       )
-  //       .toList();
-  //   _coffeeModels = coffeeAllDatas;
-  //   notifyListeners();
-  // }
+  Future testFirebase() async {
+    _coffeeModels = await _coffeeDb.fetchCoffeeDatas();
+  }
 }
