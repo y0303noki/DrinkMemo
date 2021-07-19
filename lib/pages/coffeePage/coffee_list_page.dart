@@ -16,6 +16,12 @@ class CoffeeListPage extends StatelessWidget {
     return Center(
       child: Column(
         children: [
+          IconButton(
+            icon: Icon(Icons.replay),
+            onPressed: () => {
+              coffeesData.testFirebase(),
+            },
+          ),
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Container(
