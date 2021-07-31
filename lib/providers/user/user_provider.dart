@@ -41,7 +41,7 @@ class UserProvider extends ChangeNotifier {
       // DocumentSnapshot userDb = await userModel.findUser();
 
       // firestoreから取得
-      UserModel findUserData = await _userDb.fetchUserData(userId);
+      UserModel? findUserData = await _userDb.fetchUserData(userId);
 
       // ない場合はユーザーを新規登録
       if (findUserData == null || findUserData.isDeleted) {
@@ -54,6 +54,8 @@ class UserProvider extends ChangeNotifier {
           createdAt: now,
           updatedAt: now,
         );
+
+        _userDb.insertUserData(_userModel!);
       } else {
         _userModel = findUserData;
       }
@@ -67,7 +69,6 @@ class UserProvider extends ChangeNotifier {
   // 匿名ログイン
   Future<UserCredential> signInAnon() async {
     UserCredential user = await _auth.signInAnonymously();
-    print(user);
     return user;
   }
 }

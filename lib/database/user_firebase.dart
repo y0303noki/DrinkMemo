@@ -9,7 +9,7 @@ class UserFirebase {
   // コレクション
   final String userDatas = 'user_datas';
 
-  Future<UserModel> fetchUserData(String userId) async {
+  Future<UserModel?> fetchUserData(String userId) async {
     final QuerySnapshot snapshots = await _firestore
         .collection(userDatas)
         .where('id', isEqualTo: userId)
@@ -30,6 +30,28 @@ class UserFirebase {
       return _userModel;
     }
 
-    return UserModel();
+    return null;
+  }
+
+  Future insertUserData(UserModel userModel) async {
+    // ドキュメント作成
+    Map<String, dynamic> addObject = new Map<String, dynamic>();
+
+    addObject['id'] = userModel.id;
+    addObject['status'] = userModel.status;
+    addObject['googleId'] = userModel.googleId;
+    addObject['isDeleted'] = false;
+    addObject['createdAt'] = userModel.createdAt;
+    addObject['updatedAt'] = userModel.updatedAt;
+
+    try {
+      final result = await _firestore
+          .collection(userDatas)
+          .doc(userModel.id)
+          .set(addObject);
+      return;
+    } catch (e) {
+      return;
+    }
   }
 }
