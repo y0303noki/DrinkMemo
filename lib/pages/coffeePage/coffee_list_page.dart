@@ -10,8 +10,9 @@ import 'package:provider/provider.dart';
 class CoffeeListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final coffeesData = Provider.of<CoffeeListProvider>(context);
-    final bottomNavigationData = Provider.of<BottomNavigationProvider>(context);
+    final coffeesData = Provider.of<CoffeeListProvider>(context, listen: false);
+    final bottomNavigationData =
+        Provider.of<BottomNavigationProvider>(context, listen: false);
 
     return Center(
       child: Column(
@@ -19,7 +20,7 @@ class CoffeeListPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.replay),
             onPressed: () => {
-              coffeesData.testFirebase(),
+              coffeesData.findCoffeeDatas(),
             },
           ),
           Padding(
@@ -34,8 +35,7 @@ class CoffeeListPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            // child: CoffeeList(coffeesData.coffeeModels),
-            child: CoffeeList(coffeesData.testCoffees),
+            child: CoffeeList(coffeesData.coffeeModels),
           ),
         ],
       ),

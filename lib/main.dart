@@ -3,6 +3,7 @@ import 'package:coffee_project2/pages/home_page.dart';
 import 'package:coffee_project2/providers/album/album_list_provider.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
+import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -27,14 +28,17 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => CoffeeListProvider()..testFirebase(),
+          create: (ctx) => CoffeeListProvider()..findCoffeeDatas(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => BottomNavigationProvider(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => AlbumListProvider(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => CoffeeProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

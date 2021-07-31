@@ -1,4 +1,5 @@
 import 'package:coffee_project2/model/album_model.dart';
+import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/pages/albumPage/album_item.dart';
 import 'package:coffee_project2/pages/coffeePage/coffee_item.dart';
@@ -6,7 +7,7 @@ import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:flutter/material.dart';
 
 class AlbumList extends StatelessWidget {
-  final List<AlbumModel> albums;
+  final List<CoffeeImageModel> albums;
   const AlbumList(this.albums);
 
   @override
