@@ -1,11 +1,14 @@
 import 'package:coffee_project2/pages/coffeePage/coffee_list_page.dart';
 import 'package:coffee_project2/pages/home_page.dart';
+import 'package:coffee_project2/pages/login_check_page.dart';
 import 'package:coffee_project2/providers/album/album_list_provider.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
+import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 // void main() {
@@ -39,13 +42,19 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (ctx) => CoffeeProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => UserProvider(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: LoginCheck(),
+        builder: (BuildContext context, Widget? child) {
+          return FlutterEasyLoading(child: child);
+        },
       ),
     );
   }

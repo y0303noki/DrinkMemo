@@ -34,6 +34,13 @@ class CoffeeListPage extends StatelessWidget {
               ),
             ),
           ),
+          Container(
+            child: Consumer<CoffeeListProvider>(
+              builder: (ctx, coffeesData, _) => Center(
+                child: Text('totalCount: ${coffeesData.coffeeModels.length}'),
+              ),
+            ),
+          ),
           Expanded(
             child: CoffeeList(coffeesData.coffeeModels),
           ),
