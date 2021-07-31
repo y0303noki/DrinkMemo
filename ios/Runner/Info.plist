@@ -41,5 +41,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>写真ライブラリを利用します。</string>
+	<key>NSCameraUsageDescription</key>
+	<string>カメラを利用します。</string>
 </dict>
 </plist>

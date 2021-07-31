@@ -9,8 +9,11 @@ import 'package:provider/provider.dart';
 class AlbumListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final albumsData = Provider.of<AlbumListProvider>(context);
-    final bottomNavigationData = Provider.of<BottomNavigationProvider>(context);
+    final albumsData = Provider.of<AlbumListProvider>(context, listen: false);
+    final bottomNavigationData =
+        Provider.of<BottomNavigationProvider>(context, listen: false);
+
+    albumsData.findAlbumDatas();
     return Center(
       child: Column(
         children: [
@@ -19,14 +22,13 @@ class AlbumListPage extends StatelessWidget {
             child: Container(
               child: Consumer<AlbumListProvider>(
                 builder: (ctx, albumsData, _) => Center(
-                  child:
-                      Text('totalFavoriteCount: ${albumsData.favoriteCount}'),
+                  child: Text('totalFavoriteCount: '),
                 ),
               ),
             ),
           ),
           Expanded(
-            child: AlbumList(albumsData.testAlbums),
+            child: AlbumList(albumsData.coffeeImageModels),
           ),
         ],
       ),

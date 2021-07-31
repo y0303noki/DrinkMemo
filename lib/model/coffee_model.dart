@@ -4,6 +4,7 @@ class CoffeeModel {
   bool favorite;
   String brandName = '';
   String? imageId;
+  String imageUrl;
   DateTime? coffeeAt;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -13,6 +14,7 @@ class CoffeeModel {
       this.favorite = false,
       this.brandName = '',
       this.imageId,
+      this.imageUrl = '',
       this.coffeeAt,
       this.createdAt,
       this.updatedAt});

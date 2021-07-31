@@ -1,10 +1,9 @@
-import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/pages/albumPage/album_list_page.dart';
-import 'package:coffee_project2/pages/coffeePage/coffee_add_page.dart';
-import 'package:coffee_project2/pages/coffeePage/coffee_list.dart';
 import 'package:coffee_project2/pages/coffeePage/coffee_list_page.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
+import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
+import 'package:coffee_project2/widgets/modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,8 +33,17 @@ class HomePage extends StatelessWidget {
     //   child: const Icon(Icons.add),
     // ),
   ];
+  TextEditingController _nameTextEditingCntroller =
+      TextEditingController(text: '');
+  TextEditingController _brandTextEditingCntroller =
+      TextEditingController(text: '');
+
   @override
   Widget build(BuildContext context) {
+    final CoffeeListProvider coffeeDatas =
+        Provider.of<CoffeeListProvider>(context, listen: false);
+    final CoffeeProvider coffeeData =
+        Provider.of<CoffeeProvider>(context, listen: false);
     final bottomNavigationData = Provider.of<BottomNavigationProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -45,21 +53,9 @@ class HomePage extends StatelessWidget {
       floatingActionButton: bottomNavigationData.currentIndex == 0
           ? FloatingActionButton(
               onPressed: () {
-                final Size size = MediaQuery.of(context).size;
-                // 下から競り上がるモーダル
-                showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.white, //これを追加した
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(15)),
-                    ),
-                    builder: (BuildContext context) {
-                      return Container(
-                        height: size.height * 0.8,
-                      );
-                    });
+                coffeeData.imageFile = null;
+                Modal.showCoffeeBottomSheet(
+                    context, coffeeDatas, coffeeData, false);
               },
               child: const Icon(Icons.add),
             )
