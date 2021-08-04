@@ -122,6 +122,14 @@ class Modal {
                           if (text != null && text.length > 20) {
                             print('20文字超えたらもう無理!');
                           }
+
+                          if (text != null &&
+                              text.length > 0 &&
+                              text.length < 20) {
+                            coffeeData.changeIsSabeavle(true);
+                          } else {
+                            coffeeData.changeIsSabeavle(false);
+                          }
                         },
                       ),
                       suggestionsCallback: (pattern) async {
@@ -203,7 +211,7 @@ class Modal {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text('いつ？'),
+                        const Text('飲んだ日'),
                         TextButton(
                           onPressed: () {
                             showCoffeeDatePicker(context, coffeeData);
@@ -213,134 +221,141 @@ class Modal {
                       ],
                     ),
                   ),
-                  Container(
-                    child: ElevatedButton.icon(
-                      icon: const Icon(
-                        Icons.image_outlined,
-                        color: Colors.white,
-                      ),
-                      label: const Text('画像を選択'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        onPrimary: Colors.white,
-                      ),
-                      onPressed: () async {
-                        showModalBottomSheet<void>(
-                          context: context,
-                          builder: (context) {
-                            return SizedBox(
-                              height: 300,
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 70,
-                                    child: Center(
-                                      child: Text(
-                                        '画像を追加する方法を選んでください',
-                                        textAlign: TextAlign.center,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(6.0, 0, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (context) {
+                                return SizedBox(
+                                  height: 300,
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(
+                                        height: 70,
+                                        child: Center(
+                                          child: Text(
+                                            '画像を追加する方法を選んでください',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  const Divider(thickness: 1),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        TextButton(
-                                          child: const Text('カメラ起動'),
-                                          onPressed: () {
-                                            coffeeData.showImagePicker();
-                                            // _model.showImageCamera();
-                                            // _model.imageFile;
-                                            // _model.refresh();
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text('ギャラリー'),
-                                          onPressed: () {
-                                            coffeeData.showImagePicker();
-                                            // _model.imageFile;
-                                            // _model.refresh();
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                        TextButton(
-                                          child: const Text('アルバム'),
-                                          onPressed: () {
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) => AlbumPage(true),
-                                            //     fullscreenDialog: true,
-                                            //   ),
-                                            // ).then((value) {
-                                            //   // userImageIdが返ってくる
-                                            //   // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
-                                            //   if (value != null) {
-                                            //     _model.userImageId = value;
-                                            //   }
+                                      const Divider(thickness: 1),
+                                      Expanded(
+                                        child: Column(
+                                          children: [
+                                            TextButton(
+                                              child: const Text('カメラ起動'),
+                                              onPressed: () {
+                                                coffeeData.showImageCamera();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('ギャラリー'),
+                                              onPressed: () {
+                                                coffeeData.showImageGallery();
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('アルバム'),
+                                              onPressed: () {
+                                                // Navigator.push(
+                                                //   context,
+                                                //   MaterialPageRoute(
+                                                //     builder: (context) => AlbumPage(true),
+                                                //     fullscreenDialog: true,
+                                                //   ),
+                                                // ).then((value) {
+                                                //   // userImageIdが返ってくる
+                                                //   // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
+                                                //   if (value != null) {
+                                                //     _model.userImageId = value;
+                                                //   }
 
-                                            //   _model.refresh();
-                                            //   Navigator.pop(context);
-                                            // });
-                                          },
+                                                //   _model.refresh();
+                                                //   Navigator.pop(context);
+                                                // });
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: const Text('キャンセル'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
                                         ),
-                                        TextButton(
-                                          child: const Text('キャンセル'),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                );
+                              },
                             );
                           },
-                        );
-                      },
+                          child: const Text('画像を選択する'),
+                        ),
+                        Container(),
+                      ],
                     ),
                   ),
+
                   const SizedBox(height: 10),
 
                   ElevatedButton.icon(
                     icon: const Icon(
-                      Icons.tag_faces,
+                      Icons.post_add_outlined,
                       color: Colors.white,
                     ),
-                    label: const Text('保存'),
+                    label: const Text('保存する'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.green,
                       onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
                     ),
-                    onPressed: () async {
-                      // coffeeをDBに追加
-                      CoffeeModel coffeeModel = CoffeeModel();
-                      DateTime now = DateTime.now();
+                    onPressed: !coffeeData.isSaveable
+                        ? null
+                        : () async {
+                            // プログレスアイコン表示中
+                            showProgressDialog(context, coffeeDatas);
+                            coffeeDatas.changeIsProgressive(true);
+                            // coffeeをDBに追加
+                            CoffeeModel coffeeModel = CoffeeModel();
+                            DateTime now = DateTime.now();
 
-                      coffeeModel.name = _nameTextEditingCntroller.text;
-                      coffeeModel.brandName = _brandTextEditingCntroller.text;
-                      coffeeModel.favorite = false;
-                      coffeeModel.coffeeAt = coffeeData.coffeeAt;
-                      coffeeModel.createdAt = now;
-                      coffeeModel.updatedAt = now;
-                      var _coffeeDb = CoffeeFirebase();
-                      await _coffeeDb.insertCoffeeData(
-                          coffeeModel, coffeeData.imageFile);
+                            coffeeModel.name = _nameTextEditingCntroller.text;
+                            coffeeModel.brandName =
+                                _brandTextEditingCntroller.text;
+                            coffeeModel.favorite = false;
+                            coffeeModel.coffeeAt = coffeeData.coffeeAt;
+                            coffeeModel.createdAt = now;
+                            coffeeModel.updatedAt = now;
+                            var _coffeeDb = CoffeeFirebase();
+                            await _coffeeDb.insertCoffeeData(
+                                coffeeModel, coffeeData.imageFile);
+                            // プログレスアイコンを消す
+                            Navigator.of(context).pop();
+                            coffeeDatas.changeIsProgressive(false);
 
-                      // 追加が終わったらtextEditerをクリアして戻る
-                      _nameTextEditingCntroller.clear();
-                      _brandTextEditingCntroller.clear();
-                      coffeeDatas.findCoffeeDatas();
-                      const SnackBar snackBar = SnackBar(
-                        content: Text('保存完了'),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                      );
-                      Navigator.of(context).pop(snackBar);
-                    },
+                            // 追加が終わったらtextEditerをクリアして戻る
+                            _nameTextEditingCntroller.clear();
+                            _brandTextEditingCntroller.clear();
+                            coffeeDatas.findCoffeeDatas();
+                            const SnackBar snackBar = SnackBar(
+                              content: Text('保存完了'),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                            );
+                            Navigator.of(context).pop(snackBar);
+                          },
                   ),
                 ],
               ),
@@ -370,5 +385,24 @@ class Modal {
       print(selectDateTime);
       coffeeData.setLabelCoffeeAt(selectDateTime);
     }
+  }
+
+  /// プログレスアイコン
+  /// 消すときは「Navigator.of(context).pop();」
+  static void showProgressDialog(
+    BuildContext context,
+    CoffeeListProvider coffeeDatas,
+  ) {
+    showGeneralDialog(
+        context: context,
+        barrierDismissible: false,
+        transitionDuration: const Duration(milliseconds: 300),
+        barrierColor: Colors.black.withOpacity(0.5),
+        pageBuilder: (BuildContext context, Animation animation,
+            Animation secondaryAnimation) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 }

@@ -23,9 +23,18 @@ class CoffeeProvider extends ChangeNotifier {
   DateTime _coffeeAt = DateTime.now();
   DateTime get coffeeAt => _coffeeAt;
 
+  // 保存ボタン
+  bool _isSaveable = false;
+  bool get isSaveable => _isSaveable;
+
   // お気に入り変更
   void toggleFavorite() {
     _coffeeModel!.favorite = !_coffeeModel!.favorite;
+    notifyListeners();
+  }
+
+  void changeIsSabeavle(bool afterState) {
+    _isSaveable = afterState;
     notifyListeners();
   }
 
@@ -37,21 +46,24 @@ class CoffeeProvider extends ChangeNotifier {
 
   Future showImageCamera() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-    if (pickedFile == null) {
-      print('pickedfile is null');
+    try {
+      final pickedFile = await picker.getImage(source: ImageSource.camera);
+      if (pickedFile == null) {
+        return;
+      }
+      imageFile = File(pickedFile.path);
+    } catch (e) {
       return;
+    } finally {
+      notifyListeners();
     }
-    imageFile = File(pickedFile.path);
-    notifyListeners();
   }
 
-  Future showImagePicker() async {
+  Future showImageGallery() async {
     final picker = ImagePicker();
     try {
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
       if (pickedFile == null) {
-        print('pickedfile is null');
         return;
       }
       imageFile = File(pickedFile.path);

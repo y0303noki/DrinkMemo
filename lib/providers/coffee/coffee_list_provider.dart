@@ -13,6 +13,10 @@ class CoffeeListProvider extends ChangeNotifier {
   List<BrandModel> _brandModels = [];
   List<BrandModel> get brandModels => _brandModels;
 
+  // プログレス中
+  bool _isProgressive = false;
+  bool get isProgressive => _isProgressive;
+
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
   BrandFirebase _brandDb = BrandFirebase();
 
@@ -40,6 +44,11 @@ class CoffeeListProvider extends ChangeNotifier {
   //     updatedAt: DateTime.now(),
   //   ),
   // ];
+
+  void changeIsProgressive(bool afterState) {
+    _isProgressive = afterState;
+    notifyListeners();
+  }
 
   CoffeeModel findById(String id) {
     return _coffeeModels.firstWhere(

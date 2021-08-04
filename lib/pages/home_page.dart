@@ -20,23 +20,7 @@ class HomePage extends StatelessWidget {
     CoffeeListPage(),
     AlbumListPage(),
   ];
-  final List<FloatingActionButton> floatingButtons = [
-    // FloatingActionButton(
-    //   onPressed: () {
-    //     Navigator.push(
-    //          context, MaterialPageRoute(
-    //            builder: (context) => SecondPage(),
-    //            fullscreenDialog: true,
-    //          )
-    //        );
-    //   },
-    //   child: const Icon(Icons.add),
-    // ),
-  ];
-  TextEditingController _nameTextEditingCntroller =
-      TextEditingController(text: '');
-  TextEditingController _brandTextEditingCntroller =
-      TextEditingController(text: '');
+  final List<FloatingActionButton> floatingButtons = [];
 
   @override
   Widget build(BuildContext context) {
