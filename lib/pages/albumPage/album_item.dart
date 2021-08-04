@@ -21,7 +21,7 @@ class AlbumItem extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
-                album.imageUrl ?? 'https://picsum.photos/200',
+                album.imageUrl,
                 width: 200,
                 height: 200,
                 fit: BoxFit.cover,
@@ -72,4 +72,46 @@ class AlbumItem extends StatelessWidget {
       ),
     );
   }
+
+  // 遅延で画像を読み込む
+  // Widget _setAlbumImage(AlbumListProvider albumsData, String imageId) {
+  //   return FutureBuilder(
+  //     // future属性で非同期処理を書く
+  //     future: albumsData.findAlbumDatas()findCoffeeImage(imageId),
+  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
+  //       // 取得完了するまで別のWidgetを表示する
+  //       if (!snapshot.hasData) {
+  //         return Container(
+  //           color: Colors.grey,
+  //           width: 100,
+  //           height: 100,
+  //         );
+  //       }
+
+  //       if (snapshot.connectionState == ConnectionState.done) {
+  //         String url = snapshot.data;
+  //         if (url.isEmpty) {
+  //           return Container(
+  //             color: Colors.grey,
+  //             width: 100,
+  //             height: 100,
+  //           );
+  //         } else {
+  //           return Image.network(
+  //             url,
+  //             width: 100.0,
+  //             height: 100.0,
+  //             fit: BoxFit.fill,
+  //           );
+  //         }
+  //       }
+  //       return Container(
+  //         color: Colors.grey,
+  //         width: 100,
+  //         height: 100,
+  //       );
+  //     },
+  //   );
+  // }
+
 }
