@@ -3,6 +3,7 @@ import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
+import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -19,6 +20,9 @@ class Modal {
     TextEditingController _brandTextEditingCntroller =
         TextEditingController(text: '');
     String bottomTitle = '';
+
+    ModalTabProvider modalTabData =
+        Provider.of<ModalTabProvider>(context, listen: false);
 
     final Size size = MediaQuery.of(context).size;
 
@@ -70,7 +74,7 @@ class Modal {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(8.0, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
                           child: Text(
                             bottomTitle,
                             style: const TextStyle(
@@ -90,6 +94,54 @@ class Modal {
                         ),
                       ],
                     ),
+                  ),
+
+                  Consumer<ModalTabProvider>(
+                    builder: (ctx, model, _) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Material(
+                              color: model.currentIndex == 0
+                                  ? Colors.red
+                                  : Colors.blue,
+                              child: InkWell(
+                                highlightColor: Colors.red,
+                                onTap: () {
+                                  print('tap');
+                                  modalTabData.setCurrentIndex(0);
+                                },
+                                child: Container(
+                                  // color: Colors.blue,
+                                  height: 30,
+                                  child: Text('カフェ'),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Material(
+                              color: model.currentIndex == 1
+                                  ? Colors.red
+                                  : Colors.blue,
+                              child: InkWell(
+                                highlightColor: Colors.red,
+                                onTap: () {
+                                  print('tap');
+                                  modalTabData.setCurrentIndex(1);
+                                },
+                                child: Container(
+                                  // color: Colors.blue,
+                                  height: 30,
+                                  child: Text('おうち'),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                   const SizedBox(height: 20),
                   // 画像
