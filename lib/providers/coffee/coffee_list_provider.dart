@@ -10,6 +10,12 @@ class CoffeeListProvider extends ChangeNotifier {
   List<CoffeeModel> _coffeeModels = [];
   List<CoffeeModel> get coffeeModels => _coffeeModels;
 
+  List<CoffeeModel> _viewCoffeeModels = [];
+  List<CoffeeModel> get viewCoffeeModels => _viewCoffeeModels;
+  set viewCoffeeModels(List<CoffeeModel> models) {
+    _viewCoffeeModels = models;
+  }
+
   List<BrandModel> _brandModels = [];
   List<BrandModel> get brandModels => _brandModels;
 
@@ -17,36 +23,33 @@ class CoffeeListProvider extends ChangeNotifier {
   bool _isProgressive = false;
   bool get isProgressive => _isProgressive;
 
+  String _searchKeyWord = '';
+  String get searchKeyWord => _searchKeyWord;
+
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
   BrandFirebase _brandDb = BrandFirebase();
 
-  // test用データ
-  // List<CoffeeModel> testCoffees = [
-  //   CoffeeModel(
-  //     id: 'id1',
-  //     name: 'testName1',
-  //     favorite: false,
-  //     brandName: 'sutaba',
-  //     imageId:
-  //         'https://cdn.pixabay.com/photo/2015/10/12/14/54/coffee-983955_1280.jpg',
-  //     coffeeAt: DateTime.now(),
-  //     createdAt: DateTime.now(),
-  //     updatedAt: DateTime.now(),
-  //   ),
-  //   CoffeeModel(
-  //     id: 'id2',
-  //     name: 'testName2',
-  //     favorite: true,
-  //     brandName: 'kurie',
-  //     imageId: 'https://picsum.photos/200',
-  //     coffeeAt: DateTime.now(),
-  //     createdAt: DateTime.now(),
-  //     updatedAt: DateTime.now(),
-  //   ),
-  // ];
-
   void changeIsProgressive(bool afterState) {
     _isProgressive = afterState;
+    notifyListeners();
+  }
+
+  // キーワード検索
+  void changeSearchKeyword(String keyword) {
+    if (keyword.isEmpty) {
+      _viewCoffeeModels = _coffeeModels;
+    } else {
+      _searchKeyWord = keyword;
+      _viewCoffeeModels = _coffeeModels
+          .where(
+              (coffeeModel) => coffeeModel.name.toLowerCase().contains(keyword))
+          .toList();
+    }
+    notifyListeners();
+  }
+
+  void refreshviewCoffeeModels() {
+    _viewCoffeeModels = _coffeeModels;
     notifyListeners();
   }
 
@@ -83,6 +86,7 @@ class CoffeeListProvider extends ChangeNotifier {
 
   Future findCoffeeDatas() async {
     _coffeeModels = await _coffeeDb.fetchCoffeeDatas();
+    _viewCoffeeModels = _coffeeModels;
     notifyListeners();
   }
 
