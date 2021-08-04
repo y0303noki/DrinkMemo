@@ -17,6 +17,17 @@ class CoffeeListPage extends StatelessWidget {
     return Center(
       child: Column(
         children: [
+          Row(
+            children: [
+              // お気に入りだけ表示
+              IconButton(
+                icon: const Icon(Icons.favorite),
+                onPressed: () => {
+                  coffeesData.filterCoffeeModels('FAVORITE'),
+                },
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: TextField(

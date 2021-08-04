@@ -48,6 +48,14 @@ class CoffeeListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void filterCoffeeModels(String filterType) {
+    if (filterType == 'FAVORITE') {
+      _viewCoffeeModels =
+          _coffeeModels.where((coffeeModel) => coffeeModel.favorite).toList();
+    }
+    notifyListeners();
+  }
+
   void refreshviewCoffeeModels() {
     _viewCoffeeModels = _coffeeModels;
     notifyListeners();

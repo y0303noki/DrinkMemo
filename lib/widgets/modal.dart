@@ -224,7 +224,7 @@ class Modal {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(6.0, 0, 0, 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         TextButton(
                           onPressed: () async {
