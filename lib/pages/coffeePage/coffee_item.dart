@@ -72,7 +72,7 @@ class CoffeeItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    coffee.brandName,
+                    coffee.shopName,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 18,

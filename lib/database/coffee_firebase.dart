@@ -24,7 +24,7 @@ class CoffeeFirebase {
       id: 'id1',
       name: 'testName1',
       favorite: false,
-      brandName: 'sutaba',
+      shopName: 'sutaba',
       imageId:
           'https://cdn.pixabay.com/photo/2015/10/12/14/54/coffee-983955_1280.jpg',
       coffeeAt: DateTime.now(),
@@ -35,7 +35,7 @@ class CoffeeFirebase {
       id: 'id2',
       name: 'testName2',
       favorite: true,
-      brandName: 'kurie',
+      shopName: 'kurie',
       imageId: 'https://picsum.photos/200',
       coffeeAt: DateTime.now(),
       createdAt: DateTime.now(),
@@ -94,7 +94,9 @@ class CoffeeFirebase {
     addObject['userId'] = userId;
     addObject['name'] = coffeeModel.name;
     addObject['favorite'] = coffeeModel.favorite;
-    addObject['brandName'] = coffeeModel.brandName;
+    addObject['coffeeType'] = coffeeModel.coffeeType;
+    addObject['brandName'] = coffeeModel.shopName;
+    addObject['beanTypes'] = coffeeModel.beanTypes;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -161,7 +163,9 @@ class CoffeeFirebase {
             id: doc.data()['id'] ?? '',
             name: doc.data()['name'] ?? '',
             favorite: doc.data()['favorite'] ?? false,
-            brandName: doc.data()['brandName'] ?? '',
+            coffeeType: doc.data()['coffeeType'] ?? '',
+            shopName: doc.data()['brandName'] ?? '',
+            beanTypes: doc.data()['beanTypes'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),

@@ -1,6 +1,6 @@
-import 'package:coffee_project2/database/brand_firebase.dart';
+import 'package:coffee_project2/database/shop_or_bean_firebase.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
-import 'package:coffee_project2/model/brand_model.dart';
+import 'package:coffee_project2/model/shop_or_bean_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -16,8 +16,8 @@ class CoffeeListProvider extends ChangeNotifier {
     _viewCoffeeModels = models;
   }
 
-  List<BrandModel> _brandModels = [];
-  List<BrandModel> get brandModels => _brandModels;
+  List<ShopOrBeanModel> _brandModels = [];
+  List<ShopOrBeanModel> get brandModels => _brandModels;
 
   // プログレス中
   bool _isProgressive = false;
@@ -27,7 +27,7 @@ class CoffeeListProvider extends ChangeNotifier {
   String get searchKeyWord => _searchKeyWord;
 
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
-  BrandFirebase _brandDb = BrandFirebase();
+  ShopOrBeanFirebase _brandDb = ShopOrBeanFirebase();
 
   void changeIsProgressive(bool afterState) {
     _isProgressive = afterState;
@@ -68,7 +68,7 @@ class CoffeeListProvider extends ChangeNotifier {
         id: 'id2',
         name: 'none',
         favorite: true,
-        brandName: 'none',
+        shopName: 'none',
         imageId: 'https://picsum.photos/200',
         coffeeAt: DateTime.now(),
         createdAt: DateTime.now(),
@@ -99,7 +99,7 @@ class CoffeeListProvider extends ChangeNotifier {
   }
 
   Future findBrandDatas() async {
-    _brandModels = await _brandDb.fetchBrandDatas();
+    _brandModels = await _brandDb.fetchShopOrBeanDatas();
   }
 
   // Future findCoffeeImage() async {

@@ -19,6 +19,8 @@ class Modal {
         TextEditingController(text: '');
     TextEditingController _brandTextEditingCntroller =
         TextEditingController(text: '');
+    TextEditingController _storeTextEditingCntroller =
+        TextEditingController(text: '');
     String bottomTitle = '';
 
     ModalTabProvider modalTabData =
@@ -103,11 +105,9 @@ class Modal {
                         children: [
                           Expanded(
                             child: Material(
-                              color: model.currentIndex == 0
-                                  ? Colors.red
-                                  : Colors.blue,
+                              color: Colors.blue,
                               child: InkWell(
-                                highlightColor: Colors.red,
+                                // highlightColor: Colors.red,
                                 onTap: () {
                                   print('tap');
                                   modalTabData.setCurrentIndex(0);
@@ -116,17 +116,24 @@ class Modal {
                                   // color: Colors.blue,
                                   height: 30,
                                   child: Text('カフェ'),
+                                  decoration: model.currentIndex == 0
+                                      ? const BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: Colors.black,
+                                              width: 3,
+                                            ),
+                                          ),
+                                        )
+                                      : null,
                                 ),
                               ),
                             ),
                           ),
                           Expanded(
                             child: Material(
-                              color: model.currentIndex == 1
-                                  ? Colors.red
-                                  : Colors.blue,
+                              color: Colors.blue,
                               child: InkWell(
-                                highlightColor: Colors.red,
                                 onTap: () {
                                   print('tap');
                                   modalTabData.setCurrentIndex(1);
@@ -135,6 +142,16 @@ class Modal {
                                   // color: Colors.blue,
                                   height: 30,
                                   child: Text('おうち'),
+                                  decoration: model.currentIndex == 1
+                                      ? const BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: Colors.black,
+                                              width: 3,
+                                            ),
+                                          ),
+                                        )
+                                      : null,
                                 ),
                               ),
                             ),
@@ -212,50 +229,103 @@ class Modal {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                    child: TypeAheadField(
-                      textFieldConfiguration: TextFieldConfiguration(
-                        // autofocus: true,
-                        controller: _brandTextEditingCntroller,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'ブランドの名前',
-                          prefixIcon: Icon(Icons.store_outlined),
-                          suffixIcon: Icon(Icons.store_outlined),
-                        ),
-                        onChanged: (text) {
-                          if (text != null && text.length > 20) {
-                            print('20文字超えたらもう無理!');
-                          }
-                        },
-                      ),
-                      suggestionsCallback: (pattern) async {
-                        if (pattern.isEmpty) {
-                          return [];
-                        }
-                        // pattern:入力された文字
-                        // return: サジェスト候補となる文字列を返す
-                        List<String> _filter = _suggestBrandNameList
-                            .where((element) => (element.toLowerCase())
-                                .contains(pattern.toLowerCase()))
-                            .take(5)
-                            .toList();
-                        return _filter;
-                      },
-                      itemBuilder: (context, suggestion) {
-                        return ListTile(
-                          title: Text(suggestion as String),
+                  Consumer<ModalTabProvider>(
+                    builder: (ctx, model, _) {
+                      if (modalTabData.currentIndex == 0) {
+                        // カフェ
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                          child: TypeAheadField(
+                            textFieldConfiguration: TextFieldConfiguration(
+                              controller: _storeTextEditingCntroller,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'おみせの名前',
+                                prefixIcon: Icon(Icons.store_outlined),
+                                suffixIcon: Icon(Icons.store_outlined),
+                              ),
+                              onChanged: (text) {
+                                if (text != null && text.length > 20) {
+                                  print('20文字超えたらもう無理!');
+                                }
+                              },
+                            ),
+                            suggestionsCallback: (pattern) async {
+                              if (pattern.isEmpty) {
+                                return [];
+                              }
+                              // pattern:入力された文字
+                              // return: サジェスト候補となる文字列を返す
+                              List<String> _filter = _suggestBrandNameList
+                                  .where((element) => (element.toLowerCase())
+                                      .contains(pattern.toLowerCase()))
+                                  .take(5)
+                                  .toList();
+                              return _filter;
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return ListTile(
+                                title: Text(suggestion as String),
+                              );
+                            },
+                            // サジェストの結果が0件の時のメッセージ
+                            noItemsFoundBuilder: (context) {
+                              return Container();
+                            },
+                            onSuggestionSelected: (suggestion) {
+                              _storeTextEditingCntroller.text =
+                                  suggestion as String;
+                            },
+                          ),
                         );
-                      },
-                      // サジェストの結果が0件の時のメッセージ
-                      noItemsFoundBuilder: (context) {
-                        return Container();
-                      },
-                      onSuggestionSelected: (suggestion) {
-                        _brandTextEditingCntroller.text = suggestion as String;
-                      },
-                    ),
+                      } else {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                          child: TypeAheadField(
+                            textFieldConfiguration: TextFieldConfiguration(
+                              controller: _brandTextEditingCntroller,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'ブランドの名前',
+                                prefixIcon: Icon(Icons.store_outlined),
+                                suffixIcon: Icon(Icons.store_outlined),
+                              ),
+                              onChanged: (text) {
+                                if (text != null && text.length > 20) {
+                                  print('20文字超えたらもう無理!');
+                                }
+                              },
+                            ),
+                            suggestionsCallback: (pattern) async {
+                              if (pattern.isEmpty) {
+                                return [];
+                              }
+                              // pattern:入力された文字
+                              // return: サジェスト候補となる文字列を返す
+                              List<String> _filter = _suggestBrandNameList
+                                  .where((element) => (element.toLowerCase())
+                                      .contains(pattern.toLowerCase()))
+                                  .take(5)
+                                  .toList();
+                              return _filter;
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return ListTile(
+                                title: Text(suggestion as String),
+                              );
+                            },
+                            // サジェストの結果が0件の時のメッセージ
+                            noItemsFoundBuilder: (context) {
+                              return Container();
+                            },
+                            onSuggestionSelected: (suggestion) {
+                              _brandTextEditingCntroller.text =
+                                  suggestion as String;
+                            },
+                          ),
+                        );
+                      }
+                    },
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -381,10 +451,18 @@ class Modal {
                             // coffeeをDBに追加
                             CoffeeModel coffeeModel = CoffeeModel();
                             DateTime now = DateTime.now();
+                            if (modalTabData.currentIndex == 0) {
+                              coffeeModel.coffeeType = 'SHOP';
+                              coffeeModel.beanTypes =
+                                  _storeTextEditingCntroller.text;
+                            } else {
+                              coffeeModel.coffeeType = 'BEAN';
+                              coffeeModel.shopName =
+                                  _brandTextEditingCntroller.text;
+                            }
 
                             coffeeModel.name = _nameTextEditingCntroller.text;
-                            coffeeModel.brandName =
-                                _brandTextEditingCntroller.text;
+
                             coffeeModel.favorite = false;
                             coffeeModel.coffeeAt = coffeeData.coffeeAt;
                             coffeeModel.createdAt = now;
@@ -399,6 +477,7 @@ class Modal {
                             // 追加が終わったらtextEditerをクリアして戻る
                             _nameTextEditingCntroller.clear();
                             _brandTextEditingCntroller.clear();
+                            _storeTextEditingCntroller.clear();
                             coffeeDatas.findCoffeeDatas();
                             const SnackBar snackBar = SnackBar(
                               content: Text('保存完了'),
