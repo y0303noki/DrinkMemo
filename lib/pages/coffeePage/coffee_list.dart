@@ -8,6 +8,7 @@ class CoffeeList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('coffeelist');
     return ListView.builder(
       itemCount: coffees.length,
       itemBuilder: (ctx, index) => CoffeeItem(
