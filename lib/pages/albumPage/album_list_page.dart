@@ -13,7 +13,11 @@ class AlbumListPage extends StatelessWidget {
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
-    albumsData.findAlbumDatas();
+    if (albumsData.albumModels.isEmpty) {
+      print('album');
+      albumsData.findAlbumDatas();
+    }
+
     return Center(
       child: Column(
         children: [

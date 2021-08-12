@@ -39,9 +39,12 @@ class CoffeeListPage extends StatelessWidget {
             ),
           ),
           Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              const SizedBox(
+                width: 20,
+              ),
               // お気に入りだけ表示
-
               Consumer<CoffeeListProvider>(
                 builder: (ctx, coffeesData, _) {
                   return coffeesData.isFavoriteFilter
@@ -93,23 +96,12 @@ class CoffeeListPage extends StatelessWidget {
               ),
             ],
           ),
-          IconButton(
-            icon: Icon(Icons.replay),
-            onPressed: () => {
-              coffeesData.findCoffeeDatas(),
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              child: Consumer<CoffeeListProvider>(
-                builder: (ctx, coffeesData, _) => Center(
-                  child:
-                      Text('totalFavoriteCount: ${coffeesData.favoriteCount}'),
-                ),
-              ),
-            ),
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.replay),
+          //   onPressed: () => {
+          //     coffeesData.findCoffeeDatas(),
+          //   },
+          // ),
 
           // Container(
           //   child: Consumer<CoffeeListProvider>(

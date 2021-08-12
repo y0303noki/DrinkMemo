@@ -112,12 +112,6 @@ class CoffeeImageFirebase {
           ),
         )
         .toList();
-    if (coffeeImageAllDatas.isNotEmpty) {
-      print(coffeeImageAllDatas.length);
-      coffeeImageAllDatas.forEach((element) {
-        print(element.id);
-      });
-    }
     return coffeeImageAllDatas;
   }
 }

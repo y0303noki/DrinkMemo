@@ -107,7 +107,6 @@ class CoffeeFirebase {
       final DocumentReference result =
           await _firestore.collection(coffeeCards).add(addObject);
       final data = await result.get();
-      print(data);
       final String docId = data.id;
       _updateCardDocId(docId);
       return;
@@ -173,12 +172,6 @@ class CoffeeFirebase {
           ),
         )
         .toList();
-    if (coffeeAllDatas.isNotEmpty) {
-      print(coffeeAllDatas.length);
-      coffeeAllDatas.forEach((element) {
-        print(element.id);
-      });
-    }
     return coffeeAllDatas;
   }
 }

@@ -45,9 +45,9 @@ class AlbumItem extends StatelessWidget {
                   bottomRight: Radius.circular(50),
                 ),
               ),
-              child: const Text(
-                '',
-                style: TextStyle(
+              child: Text(
+                DateUtility(album.createdAt).toDateFormatted(),
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.black,
                 ),
