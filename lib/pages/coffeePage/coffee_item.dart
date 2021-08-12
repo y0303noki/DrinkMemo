@@ -84,7 +84,7 @@ class CoffeeItem extends StatelessWidget {
                   ),
                 ],
               ),
-              Consumer<CoffeeListProvider>(
+              Consumer<CoffeeProvider>(
                 builder: (ctx, model, _) {
                   return Container(
                     padding: const EdgeInsets.only(
@@ -92,8 +92,9 @@ class CoffeeItem extends StatelessWidget {
                     child: IconButton(
                       icon: Icon(
                           coffee.favorite ? Icons.star : Icons.star_border),
-                      onPressed: () => {
-                        coffeeDatas.toggleFavorite(coffee.id),
+                      onPressed: () {
+                        // coffeeDatas.toggleFavorite(coffee.id),
+                        model.toggleFavorite(coffee);
                       },
                     ),
                   );
