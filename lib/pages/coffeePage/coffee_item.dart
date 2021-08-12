@@ -90,8 +90,9 @@ class CoffeeItem extends StatelessWidget {
                     padding: const EdgeInsets.only(
                         top: 10, right: 10, bottom: 10, left: 10),
                     child: IconButton(
-                      icon: Icon(
-                          coffee.favorite ? Icons.star : Icons.star_border),
+                      icon: Icon(coffee.favorite
+                          ? Icons.favorite
+                          : Icons.favorite_border),
                       onPressed: () {
                         // coffeeDatas.toggleFavorite(coffee.id),
                         model.toggleFavorite(coffee);

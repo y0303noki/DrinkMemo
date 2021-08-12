@@ -17,17 +17,6 @@ class CoffeeListPage extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          Row(
-            children: [
-              // お気に入りだけ表示
-              IconButton(
-                icon: const Icon(Icons.favorite),
-                onPressed: () => {
-                  coffeesData.filterCoffeeModels('FAVORITE'),
-                },
-              ),
-            ],
-          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: TextField(
@@ -48,6 +37,61 @@ class CoffeeListPage extends StatelessWidget {
                 }
               },
             ),
+          ),
+          Row(
+            children: [
+              // お気に入りだけ表示
+
+              Consumer<CoffeeListProvider>(
+                builder: (ctx, coffeesData, _) {
+                  return coffeesData.isFavoriteFilter
+                      ? ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.favorite,
+                            color: Colors.white,
+                          ),
+                          label: const Text(
+                            'お気に入り',
+                            style: TextStyle(
+                              fontSize: 12,
+                              // color: Colors.black,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white,
+                          ),
+                          onPressed: () {
+                            coffeesData.isFavoriteFilter =
+                                !coffeesData.isFavoriteFilter;
+                            coffeesData.filterCoffeeModels('FAVORITE');
+                          },
+                        )
+                      : ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.favorite_border,
+                            color: Colors.white,
+                          ),
+                          label: const Text(
+                            'お気に入り',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue[100],
+                            onPrimary: Colors.white,
+                          ),
+                          onPressed: () {
+                            coffeesData.isFavoriteFilter =
+                                !coffeesData.isFavoriteFilter;
+                            coffeesData.refreshviewCoffeeModels();
+                          },
+                        );
+                },
+              ),
+            ],
           ),
           IconButton(
             icon: Icon(Icons.replay),

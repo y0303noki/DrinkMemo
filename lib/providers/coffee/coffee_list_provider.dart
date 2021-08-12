@@ -26,6 +26,13 @@ class CoffeeListProvider extends ChangeNotifier {
   String _searchKeyWord = '';
   String get searchKeyWord => _searchKeyWord;
 
+  // お気に入りフィルター
+  bool _isFavoriteFilter = false;
+  bool get isFavoriteFilter => _isFavoriteFilter;
+  set isFavoriteFilter(bool e) {
+    _isFavoriteFilter = e;
+  }
+
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
   ShopOrBeanFirebase _brandDb = ShopOrBeanFirebase();
 

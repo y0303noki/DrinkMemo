@@ -115,7 +115,7 @@ class Modal {
                                 child: Container(
                                   // color: Colors.blue,
                                   height: 30,
-                                  child: Text('カフェ'),
+                                  child: const Center(child: Text('出先で')),
                                   decoration: model.currentIndex == 0
                                       ? const BoxDecoration(
                                           border: Border(
@@ -141,7 +141,7 @@ class Modal {
                                 child: Container(
                                   // color: Colors.blue,
                                   height: 30,
-                                  child: Text('おうち'),
+                                  child: const Center(child: Text('おうちで')),
                                   decoration: model.currentIndex == 1
                                       ? const BoxDecoration(
                                           border: Border(
