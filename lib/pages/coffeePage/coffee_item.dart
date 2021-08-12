@@ -72,7 +72,9 @@ class CoffeeItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    coffee.brandName,
+                    coffee.coffeeType == 'BEAN'
+                        ? coffee.shopName
+                        : coffee.beanTypes,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 18,
@@ -82,19 +84,28 @@ class CoffeeItem extends StatelessWidget {
                   ),
                 ],
               ),
-              Consumer<CoffeeListProvider>(builder: (ctx, model, _) {
-                return Container(
-                  padding: const EdgeInsets.only(
-                      top: 10, right: 20, bottom: 10, left: 10),
-                  child: IconButton(
-                    icon:
-                        Icon(coffee.favorite ? Icons.star : Icons.star_border),
-                    onPressed: () => {
-                      coffeeDatas.toggleFavorite(coffee.id),
-                    },
-                  ),
-                );
-              }),
+              Consumer<CoffeeProvider>(
+                builder: (ctx, model, _) {
+                  return Container(
+                    padding: const EdgeInsets.only(
+                        top: 10, right: 10, bottom: 10, left: 10),
+                    child: IconButton(
+                      icon: Icon(coffee.favorite
+                          ? Icons.favorite
+                          : Icons.favorite_border),
+                      onPressed: () {
+                        // coffeeDatas.toggleFavorite(coffee.id),
+                        model.toggleFavorite(coffee);
+                      },
+                    ),
+                  );
+                },
+              ),
+              Container(
+                width: 5,
+                height: 100,
+                color: coffee.coffeeType == 'BEAN' ? Colors.red : Colors.blue,
+              ),
             ],
           ),
         ),

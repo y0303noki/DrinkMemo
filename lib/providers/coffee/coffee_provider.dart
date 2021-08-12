@@ -10,8 +10,12 @@ import 'package:image_picker/image_picker.dart';
 class CoffeeProvider extends ChangeNotifier {
   CoffeeImageFirebase _coffeeImageFirebase = CoffeeImageFirebase();
 
-  CoffeeModel? _coffeeModel;
-  CoffeeModel? get coffeeModel => _coffeeModel;
+  late CoffeeModel _coffeeModel;
+  CoffeeModel get coffeeModel => _coffeeModel;
+  set coffeeModel(CoffeeModel coffeeModel) {
+    _coffeeModel = coffeeModel;
+  }
+
   // 画像、カメラ関連
   File? imageFile;
   String imageId = '';
@@ -27,9 +31,12 @@ class CoffeeProvider extends ChangeNotifier {
   bool _isSaveable = false;
   bool get isSaveable => _isSaveable;
 
+  bool _isFavorite = false;
+  bool get isFavorite => _isFavorite;
+
   // お気に入り変更
-  void toggleFavorite() {
-    _coffeeModel!.favorite = !_coffeeModel!.favorite;
+  void toggleFavorite(CoffeeModel coffeeModel) {
+    coffeeModel.favorite = !coffeeModel.favorite;
     notifyListeners();
   }
 

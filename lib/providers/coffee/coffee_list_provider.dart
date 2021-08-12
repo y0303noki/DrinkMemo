@@ -1,6 +1,6 @@
-import 'package:coffee_project2/database/brand_firebase.dart';
+import 'package:coffee_project2/database/shop_or_bean_firebase.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
-import 'package:coffee_project2/model/brand_model.dart';
+import 'package:coffee_project2/model/shop_or_bean_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -10,43 +10,61 @@ class CoffeeListProvider extends ChangeNotifier {
   List<CoffeeModel> _coffeeModels = [];
   List<CoffeeModel> get coffeeModels => _coffeeModels;
 
-  List<BrandModel> _brandModels = [];
-  List<BrandModel> get brandModels => _brandModels;
+  List<CoffeeModel> _viewCoffeeModels = [];
+  List<CoffeeModel> get viewCoffeeModels => _viewCoffeeModels;
+  set viewCoffeeModels(List<CoffeeModel> models) {
+    _viewCoffeeModels = models;
+  }
+
+  List<ShopOrBeanModel> _brandModels = [];
+  List<ShopOrBeanModel> get brandModels => _brandModels;
 
   // プログレス中
   bool _isProgressive = false;
   bool get isProgressive => _isProgressive;
 
-  CoffeeFirebase _coffeeDb = CoffeeFirebase();
-  BrandFirebase _brandDb = BrandFirebase();
+  String _searchKeyWord = '';
+  String get searchKeyWord => _searchKeyWord;
 
-  // test用データ
-  // List<CoffeeModel> testCoffees = [
-  //   CoffeeModel(
-  //     id: 'id1',
-  //     name: 'testName1',
-  //     favorite: false,
-  //     brandName: 'sutaba',
-  //     imageId:
-  //         'https://cdn.pixabay.com/photo/2015/10/12/14/54/coffee-983955_1280.jpg',
-  //     coffeeAt: DateTime.now(),
-  //     createdAt: DateTime.now(),
-  //     updatedAt: DateTime.now(),
-  //   ),
-  //   CoffeeModel(
-  //     id: 'id2',
-  //     name: 'testName2',
-  //     favorite: true,
-  //     brandName: 'kurie',
-  //     imageId: 'https://picsum.photos/200',
-  //     coffeeAt: DateTime.now(),
-  //     createdAt: DateTime.now(),
-  //     updatedAt: DateTime.now(),
-  //   ),
-  // ];
+  // お気に入りフィルター
+  bool _isFavoriteFilter = false;
+  bool get isFavoriteFilter => _isFavoriteFilter;
+  set isFavoriteFilter(bool e) {
+    _isFavoriteFilter = e;
+  }
+
+  CoffeeFirebase _coffeeDb = CoffeeFirebase();
+  ShopOrBeanFirebase _brandDb = ShopOrBeanFirebase();
 
   void changeIsProgressive(bool afterState) {
     _isProgressive = afterState;
+    notifyListeners();
+  }
+
+  // キーワード検索
+  void changeSearchKeyword(String keyword) {
+    if (keyword.isEmpty) {
+      _viewCoffeeModels = _coffeeModels;
+    } else {
+      _searchKeyWord = keyword;
+      _viewCoffeeModels = _coffeeModels
+          .where(
+              (coffeeModel) => coffeeModel.name.toLowerCase().contains(keyword))
+          .toList();
+    }
+    notifyListeners();
+  }
+
+  void filterCoffeeModels(String filterType) {
+    if (filterType == 'FAVORITE') {
+      _viewCoffeeModels =
+          _coffeeModels.where((coffeeModel) => coffeeModel.favorite).toList();
+    }
+    notifyListeners();
+  }
+
+  void refreshviewCoffeeModels() {
+    _viewCoffeeModels = _coffeeModels;
     notifyListeners();
   }
 
@@ -57,7 +75,7 @@ class CoffeeListProvider extends ChangeNotifier {
         id: 'id2',
         name: 'none',
         favorite: true,
-        brandName: 'none',
+        shopName: 'none',
         imageId: 'https://picsum.photos/200',
         coffeeAt: DateTime.now(),
         createdAt: DateTime.now(),
@@ -83,11 +101,12 @@ class CoffeeListProvider extends ChangeNotifier {
 
   Future findCoffeeDatas() async {
     _coffeeModels = await _coffeeDb.fetchCoffeeDatas();
+    _viewCoffeeModels = _coffeeModels;
     notifyListeners();
   }
 
   Future findBrandDatas() async {
-    _brandModels = await _brandDb.fetchBrandDatas();
+    _brandModels = await _brandDb.fetchShopOrBeanDatas();
   }
 
   // Future findCoffeeImage() async {

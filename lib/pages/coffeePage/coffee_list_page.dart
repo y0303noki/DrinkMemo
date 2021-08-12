@@ -17,6 +17,82 @@ class CoffeeListPage extends StatelessWidget {
     return Center(
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+            child: TextField(
+              textInputAction: TextInputAction.search,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search, color: Colors.black),
+                hintText: "キーワード検索",
+              ),
+              onSubmitted: (term) {
+                // キーボードの検索ボタンを押した時の処理
+                String _termTrimed = term.trim();
+
+                if (_termTrimed.isNotEmpty &&
+                    coffeesData.coffeeModels.isNotEmpty) {
+                  coffeesData.changeSearchKeyword(_termTrimed);
+                } else {
+                  coffeesData.refreshviewCoffeeModels();
+                }
+              },
+            ),
+          ),
+          Row(
+            children: [
+              // お気に入りだけ表示
+
+              Consumer<CoffeeListProvider>(
+                builder: (ctx, coffeesData, _) {
+                  return coffeesData.isFavoriteFilter
+                      ? ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.favorite,
+                            color: Colors.white,
+                          ),
+                          label: const Text(
+                            'お気に入り',
+                            style: TextStyle(
+                              fontSize: 12,
+                              // color: Colors.black,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white,
+                          ),
+                          onPressed: () {
+                            coffeesData.isFavoriteFilter =
+                                !coffeesData.isFavoriteFilter;
+                            coffeesData.filterCoffeeModels('FAVORITE');
+                          },
+                        )
+                      : ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.favorite_border,
+                            color: Colors.white,
+                          ),
+                          label: const Text(
+                            'お気に入り',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue[100],
+                            onPrimary: Colors.white,
+                          ),
+                          onPressed: () {
+                            coffeesData.isFavoriteFilter =
+                                !coffeesData.isFavoriteFilter;
+                            coffeesData.refreshviewCoffeeModels();
+                          },
+                        );
+                },
+              ),
+            ],
+          ),
           IconButton(
             icon: Icon(Icons.replay),
             onPressed: () => {
@@ -34,6 +110,7 @@ class CoffeeListPage extends StatelessWidget {
               ),
             ),
           ),
+
           // Container(
           //   child: Consumer<CoffeeListProvider>(
           //     builder: (ctx, coffeesData, _) => Center(
@@ -44,7 +121,7 @@ class CoffeeListPage extends StatelessWidget {
           Expanded(
             child: Consumer<CoffeeListProvider>(
               builder: (ctx, coffeesData, _) => Center(
-                child: CoffeeList(coffeesData.coffeeModels),
+                child: CoffeeList(coffeesData.viewCoffeeModels),
               ),
             ),
           ),

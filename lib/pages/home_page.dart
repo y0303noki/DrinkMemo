@@ -28,7 +28,9 @@ class HomePage extends StatelessWidget {
         Provider.of<CoffeeListProvider>(context, listen: false);
     final CoffeeProvider coffeeData =
         Provider.of<CoffeeProvider>(context, listen: false);
-    final bottomNavigationData = Provider.of<BottomNavigationProvider>(context);
+    final bottomNavigationData = Provider.of<BottomNavigationProvider>(
+      context,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(titles[bottomNavigationData.currentIndex]),

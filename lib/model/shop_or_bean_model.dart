@@ -1,11 +1,11 @@
-class BrandModel {
+class ShopOrBeanModel {
   String id;
   String name;
   bool isCommon;
   bool isDeleted;
   DateTime? createdAt;
   DateTime? updatedAt;
-  BrandModel({
+  ShopOrBeanModel({
     this.id = '',
     this.name = '',
     this.isCommon = false,

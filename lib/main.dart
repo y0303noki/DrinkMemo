@@ -5,6 +5,7 @@ import 'package:coffee_project2/providers/album/album_list_provider.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
+import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
 import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => ModalTabProvider(),
         ),
       ],
       child: MaterialApp(
