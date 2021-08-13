@@ -23,7 +23,7 @@ class ShopOrBeanFirebase {
             id: doc.data()['id'] ?? '',
             name: doc.data()['name'] ?? '',
             isCommon: doc.data()['isCommon'] ?? false,
-            type: doc.data()['type'] ?? 0,
+            type: doc.data()['type'] ?? 'SHOP',
             isDeleted: doc.data()['isDeleted'] ?? false,
             createdAt: doc.data()['createdAt'].toDate(),
             updatedAt: doc.data()['updatedAt'].toDate(),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
@@ -94,7 +95,8 @@ class CoffeeItem extends StatelessWidget {
                           ? Icons.favorite
                           : Icons.favorite_border),
                       onPressed: () {
-                        // coffeeDatas.toggleFavorite(coffee.id),
+                        var _db = CoffeeFirebase();
+                        _db.updateFavorite(coffee.id, !coffee.favorite);
                         model.toggleFavorite(coffee);
                       },
                     ),

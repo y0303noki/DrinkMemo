@@ -3,7 +3,8 @@ class ShopOrBeanModel {
   String name;
   bool isCommon;
   // ショップブランドタイプ 0:ショップ（カフェとか） 1:ブランド（豆とか）
-  int type;
+  // int type;
+  String type;
   bool isDeleted;
   DateTime? createdAt;
   DateTime? updatedAt;
@@ -11,7 +12,7 @@ class ShopOrBeanModel {
     this.id = '',
     this.name = '',
     this.isCommon = false,
-    this.type = 0,
+    this.type = '',
     this.isDeleted = false,
     this.createdAt,
     this.updatedAt,

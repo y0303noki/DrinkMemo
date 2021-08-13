@@ -174,4 +174,22 @@ class CoffeeFirebase {
         .toList();
     return coffeeAllDatas;
   }
+
+  // お気に入りを変更
+  Future<void> updateFavorite(String docId, bool isFavorite) async {
+    // ドキュメント更新
+    Map<String, dynamic> updateData = {};
+    DateTime now = DateTime.now();
+    updateData['favorite'] = isFavorite;
+    updateData['updatedAt'] = now;
+
+    try {
+      final result = await _firestore
+          .collection(coffeeCards)
+          .doc(docId)
+          .update(updateData);
+    } catch (e) {
+      print(e);
+    }
+  }
 }

@@ -42,11 +42,10 @@ class DeveloperPage extends StatelessWidget {
                   ),
                   enabled: true,
                   // 入力数
-                  maxLength: 10,
+                  maxLength: 20,
                   style: TextStyle(color: Colors.red),
                   obscureText: false,
                   maxLines: 1,
-                  //パスワード
                   onChanged: (String s) {},
                 ),
                 Row(
@@ -94,7 +93,7 @@ class DeveloperPage extends StatelessWidget {
                     ShopOrBeanModel shopOrBeanModel = ShopOrBeanModel(
                       name: _nameTextEditingCntroller.text,
                       isCommon: developerData.isCommon,
-                      type: developerData.type ? 1 : 0,
+                      type: developerData.type ? 'BEAN' : 'SHOP',
                     );
                     await db.insertShopOrBeanData(shopOrBeanModel);
                     print('データ追加完了');

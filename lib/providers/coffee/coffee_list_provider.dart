@@ -118,14 +118,14 @@ class CoffeeListProvider extends ChangeNotifier {
     // ショップリスト
     _shopModels = _allbrandModels
         .where(
-          (element) => element.type == 0,
+          (element) => element.type == 'SHOP',
         )
         .toList();
 
-    // ブランドリスト
+    // 豆リスト
     _brandModels = _allbrandModels
         .where(
-          (element) => element.type == 1,
+          (element) => element.type == 'BEAN',
         )
         .toList();
   }
