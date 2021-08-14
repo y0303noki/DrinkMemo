@@ -96,7 +96,7 @@ class CoffeeFirebase {
     addObject['favorite'] = coffeeModel.favorite;
     addObject['coffeeType'] = coffeeModel.coffeeType;
     addObject['brandName'] = coffeeModel.shopName;
-    addObject['beanTypes'] = coffeeModel.beanTypes;
+    addObject['beanName'] = coffeeModel.beanName;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -115,6 +115,34 @@ class CoffeeFirebase {
     }
   }
 
+  Future<String> setCoffeeImage(
+      CoffeeModel coffeeModel, File? imageFile) async {
+    String _imageId;
+    if (coffeeModel.imageId != null) {
+      // 既存画像
+      _imageId = coffeeModel.imageId!;
+    } else if (imageFile != null) {
+      // 新規画像
+      _imageId = const Uuid().v4();
+      // アップロード処理
+      try {
+        String _imageUrl = await uploadImageUrl(imageFile, _imageId);
+        CoffeeImageModel _coffeeImageModel = CoffeeImageModel(
+          id: _imageId,
+          imageUrl: _imageUrl,
+        );
+        await _coffeeImageFirebase.insertCoffeeImage(_coffeeImageModel);
+      } catch (e) {
+        print('upload error');
+        print(e);
+      }
+    } else {
+      // 画像選択なし
+      _imageId = '';
+    }
+    return _imageId;
+  }
+
   // docIdをセットする
   Future<void> _updateCardDocId(String docId) async {
     // ドキュメント更新
@@ -125,6 +153,33 @@ class CoffeeFirebase {
       final result = await _firestore
           .collection(coffeeCards)
           .doc(docId)
+          .update(updateData);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  // 更新
+  Future<void> updateCoffeeData(
+      CoffeeModel coffeeModel, File? imageFile) async {
+    // 画像をアップロードしてimageIdを返す
+    String _imageId = await setCoffeeImage(coffeeModel, imageFile);
+    // ドキュメント更新
+    Map<String, dynamic> updateData = {};
+    updateData['name'] = coffeeModel.name;
+    // updateData['favorite'] = coffeeModel.favorite;
+    updateData['coffeeType'] = coffeeModel.coffeeType;
+    updateData['brandName'] = coffeeModel.shopName;
+    updateData['beanName'] = coffeeModel.beanName;
+    updateData['imageId'] = _imageId;
+    updateData['isDeleted'] = false;
+    updateData['coffeeAt'] = coffeeModel.coffeeAt;
+    updateData['updatedAt'] = coffeeModel.updatedAt;
+
+    try {
+      final result = await _firestore
+          .collection(coffeeCards)
+          .doc(coffeeModel.id)
           .update(updateData);
     } catch (e) {
       print(e);
@@ -164,7 +219,7 @@ class CoffeeFirebase {
             favorite: doc.data()['favorite'] ?? false,
             coffeeType: doc.data()['coffeeType'] ?? '',
             shopName: doc.data()['brandName'] ?? '',
-            beanTypes: doc.data()['beanTypes'] ?? '',
+            beanName: doc.data()['beanName'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),

@@ -35,7 +35,8 @@ class CoffeeItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           splashColor: const Color(0x96EBC254),
           onTap: () => {
-            Modal.showCoffeeBottomSheet(context, coffeeDatas, coffeeData, true)
+            Modal.showCoffeeBottomSheet(
+                context, coffee, coffeeDatas, coffeeData, true)
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,8 +75,8 @@ class CoffeeItem extends StatelessWidget {
                   ),
                   Text(
                     coffee.coffeeType == 'BEAN'
-                        ? coffee.shopName
-                        : coffee.beanTypes,
+                        ? coffee.beanName
+                        : coffee.shopName,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 18,
