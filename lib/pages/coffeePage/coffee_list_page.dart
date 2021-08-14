@@ -48,49 +48,55 @@ class CoffeeListPage extends StatelessWidget {
               Consumer<CoffeeListProvider>(
                 builder: (ctx, coffeesData, _) {
                   return coffeesData.isFavoriteFilter
-                      ? ElevatedButton.icon(
-                          icon: const Icon(
-                            Icons.favorite,
-                            color: Colors.white,
-                          ),
-                          label: const Text(
-                            'お気に入り',
-                            style: TextStyle(
-                              fontSize: 12,
-                              // color: Colors.black,
+                      ? SizedBox(
+                          width: 160,
+                          child: ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.favorite,
+                              color: Colors.white,
                             ),
+                            label: const Text(
+                              'お気に入り',
+                              style: TextStyle(
+                                fontSize: 12,
+                                // color: Colors.black,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue,
+                              onPrimary: Colors.white,
+                            ),
+                            onPressed: () {
+                              coffeesData.isFavoriteFilter =
+                                  !coffeesData.isFavoriteFilter;
+                              coffeesData.filterCoffeeModels('FAVORITE');
+                            },
                           ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.white,
-                          ),
-                          onPressed: () {
-                            coffeesData.isFavoriteFilter =
-                                !coffeesData.isFavoriteFilter;
-                            coffeesData.filterCoffeeModels('FAVORITE');
-                          },
                         )
-                      : ElevatedButton.icon(
-                          icon: const Icon(
-                            Icons.favorite_border,
-                            color: Colors.white,
-                          ),
-                          label: const Text(
-                            'お気に入り',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black,
+                      : SizedBox(
+                          width: 160,
+                          child: ElevatedButton.icon(
+                            icon: const Icon(
+                              Icons.favorite_border,
+                              color: Colors.white,
                             ),
+                            label: const Text(
+                              'お気に入り表示中',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue[100],
+                              onPrimary: Colors.white,
+                            ),
+                            onPressed: () {
+                              coffeesData.isFavoriteFilter =
+                                  !coffeesData.isFavoriteFilter;
+                              coffeesData.refreshviewCoffeeModels();
+                            },
                           ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue[100],
-                            onPrimary: Colors.white,
-                          ),
-                          onPressed: () {
-                            coffeesData.isFavoriteFilter =
-                                !coffeesData.isFavoriteFilter;
-                            coffeesData.refreshviewCoffeeModels();
-                          },
                         );
                 },
               ),
