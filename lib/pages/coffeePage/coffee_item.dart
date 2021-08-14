@@ -16,7 +16,7 @@ class CoffeeItem extends StatelessWidget {
     print('coffeeitem');
     final CoffeeListProvider coffeeDatas =
         Provider.of<CoffeeListProvider>(context, listen: false);
-    final CoffeeProvider coffeeData =
+    CoffeeProvider coffeeData =
         Provider.of<CoffeeProvider>(context, listen: false);
 
     final coffee = coffeeDatas.findById(coffeeId);
@@ -34,9 +34,12 @@ class CoffeeItem extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
           splashColor: const Color(0x96EBC254),
-          onTap: () => {
-            Modal.showCoffeeBottomSheet(
-                context, coffee, coffeeDatas, coffeeData, true)
+          onTap: () async {
+            coffeeData.imageFile = null;
+            coffeeData.imageUrl =
+                await coffeeData.findCoffeeImage(coffee.imageId);
+            Modal().showCoffeeBottomSheet(
+                context, coffee, coffeeDatas, coffeeData, true);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

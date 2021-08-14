@@ -186,6 +186,16 @@ class CoffeeFirebase {
     }
   }
 
+  // 物理削除
+  Future<void> deleteCoffeeData(CoffeeModel coffeeModel) async {
+    try {
+      final result =
+          await _firestore.collection(coffeeCards).doc(coffeeModel.id).delete();
+    } catch (e) {
+      print(e);
+    }
+  }
+
   // storageへアップロード
   Future<String> uploadImageUrl(File imageFile, String uuId) async {
     String userId = 'uzAshx1weQccDpqhLT4hqvDDTxH3';

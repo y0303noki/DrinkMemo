@@ -10,7 +10,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
 class Modal {
-  static void showCoffeeBottomSheet(
+  void showCoffeeBottomSheet(
       BuildContext context,
       CoffeeModel? coffeeModel,
       CoffeeListProvider coffeeDatas,
@@ -40,6 +40,8 @@ class Modal {
       _nameTextEditingCntroller.text = coffeeModel.name;
       _brandTextEditingCntroller.text = coffeeModel.beanName;
       _storeTextEditingCntroller.text = coffeeModel.shopName;
+      // coffeeData.imageUrl = coffeeModel.imageUrl;
+
       int _index = coffeeModel.coffeeType == 'BEAN' ? 1 : 0;
       modalTabData.setCurrentIndex(_index);
     } else {
@@ -97,14 +99,23 @@ class Modal {
                             ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                          ),
-                        ),
+                        modalCoffeeModel != null
+                            ? IconButton(
+                                onPressed: () async {
+                                  // データ削除
+                                  var _coffeeDb = CoffeeFirebase();
+                                  await _coffeeDb
+                                      .deleteCoffeeData(modalCoffeeModel);
+                                  await coffeeDatas.findCoffeeDatas();
+
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -177,17 +188,19 @@ class Modal {
                   ),
                   const SizedBox(height: 20),
                   // 画像
-                  coffeeData.imageFile == null
-                      ? Container(
-                          height: 200,
-                          width: 200,
-                          color: Colors.grey,
-                        )
-                      : Container(
-                          height: 200,
-                          width: 200,
-                          child: Image.file(coffeeData.imageFile!),
-                        ),
+                  setModalImage(modalCoffeeModel, coffeeData),
+
+                  // coffeeData.imageFile == null
+                  //     ? Container(
+                  //         height: 200,
+                  //         width: 200,
+                  //         color: Colors.grey,
+                  //       )
+                  //     : Container(
+                  //         height: 200,
+                  //         width: 200,
+                  //         child: Image.file(coffeeData.imageFile!),
+                  //       ),
                   const SizedBox(height: 20),
                   // コーヒー名
                   Padding(
@@ -558,6 +571,58 @@ class Modal {
       // 保存が完了したら画面下部に完了メッセージを出す
       ScaffoldMessenger.of(context).showSnackBar(value);
     }
+  }
+
+  Widget setModalImage(CoffeeModel? coffeeModel, CoffeeProvider coffeeData) {
+    if (coffeeModel != null) {
+      // 更新
+      // 画像未設定
+      if (coffeeData.imageUrl == '' && coffeeData.imageFile == null) {
+        return Container(
+          height: 200,
+          width: 200,
+          color: Colors.grey,
+        );
+      }
+      if (coffeeData.imageFile != null) {
+        // 画像変更
+        return Container(
+          height: 200,
+          width: 200,
+          child: Image.file(coffeeData.imageFile!),
+        );
+      }
+
+      if (coffeeData.imageUrl != '') {
+        return Image.network(
+          coffeeData.imageUrl,
+          width: 200.0,
+          height: 200.0,
+          // fit: BoxFit.fill,
+        );
+      }
+    } else {
+      // 新規
+      if (coffeeData.imageFile == null) {
+        return Container(
+          height: 200,
+          width: 200,
+          color: Colors.grey,
+        );
+      } else {
+        return Container(
+          height: 200,
+          width: 200,
+          child: Image.file(coffeeData.imageFile!),
+        );
+      }
+    }
+
+    return Container(
+      height: 200,
+      width: 200,
+      color: Colors.grey,
+    );
   }
 
   static void showCoffeeDatePicker(

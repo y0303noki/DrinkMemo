@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
           ? FloatingActionButton(
               onPressed: () {
                 coffeeData.imageFile = null;
-                Modal.showCoffeeBottomSheet(
+                Modal().showCoffeeBottomSheet(
                     context, null, coffeeDatas, coffeeData, false);
               },
               child: const Icon(Icons.add),
