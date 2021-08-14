@@ -39,7 +39,7 @@ class Modal {
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
     }
 
-    if (coffeeDatas.brandModels.isEmpty) {
+    if (coffeeDatas.allbrandModels.isEmpty) {
       await coffeeDatas.findBrandDatas();
     }
 
@@ -47,7 +47,10 @@ class Modal {
     List<String> _suggestCoffeeNameList =
         coffeeDatas.coffeeModels.map((e) => e.name).toSet().toList();
 
-    List<String> _suggestBrandNameList =
+    List<String> _suggestShopNameList =
+        coffeeDatas.shopModels.map((e) => e.name).toSet().toList();
+
+    List<String> _suggestBeanNameList =
         coffeeDatas.brandModels.map((e) => e.name).toSet().toList();
 
     var value = await showModalBottomSheet(
@@ -100,61 +103,65 @@ class Modal {
 
                   Consumer<ModalTabProvider>(
                     builder: (ctx, model, _) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      return Stack(
                         children: [
-                          Expanded(
-                            child: Material(
-                              color: Colors.blue,
-                              child: InkWell(
-                                // highlightColor: Colors.red,
-                                onTap: () {
-                                  print('tap');
-                                  modalTabData.setCurrentIndex(0);
-                                },
-                                child: Container(
-                                  // color: Colors.blue,
-                                  height: 30,
-                                  child: const Center(child: Text('出先で')),
-                                  decoration: model.currentIndex == 0
-                                      ? const BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              color: Colors.black,
-                                              width: 3,
-                                            ),
-                                          ),
-                                        )
-                                      : null,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Material(
+                                  color: Colors.blue,
+                                  child: InkWell(
+                                    // highlightColor: Colors.red,
+                                    onTap: () {
+                                      print('tap');
+                                      modalTabData.setCurrentIndex(0);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      child: Container(
+                                        decoration: model.currentIndex == 0
+                                            ? BoxDecoration(
+                                                color: Colors.grey[300],
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              )
+                                            : null,
+                                        child: const Center(
+                                          child: Text('おみせで'),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Material(
-                              color: Colors.blue,
-                              child: InkWell(
-                                onTap: () {
-                                  print('tap');
-                                  modalTabData.setCurrentIndex(1);
-                                },
-                                child: Container(
-                                  // color: Colors.blue,
-                                  height: 30,
-                                  child: const Center(child: Text('おうちで')),
-                                  decoration: model.currentIndex == 1
-                                      ? const BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              color: Colors.black,
-                                              width: 3,
-                                            ),
-                                          ),
-                                        )
-                                      : null,
+                              Expanded(
+                                child: Material(
+                                  color: Colors.blue,
+                                  child: InkWell(
+                                    onTap: () {
+                                      print('tap');
+                                      modalTabData.setCurrentIndex(1);
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      child: Container(
+                                        decoration: model.currentIndex == 1
+                                            ? BoxDecoration(
+                                                color: Colors.grey[300],
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              )
+                                            : null,
+                                        child: const Center(
+                                          child: Text('おうちで'),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       );
@@ -256,7 +263,7 @@ class Modal {
                               }
                               // pattern:入力された文字
                               // return: サジェスト候補となる文字列を返す
-                              List<String> _filter = _suggestBrandNameList
+                              List<String> _filter = _suggestShopNameList
                                   .where((element) => (element.toLowerCase())
                                       .contains(pattern.toLowerCase()))
                                   .take(5)
@@ -286,7 +293,7 @@ class Modal {
                               controller: _brandTextEditingCntroller,
                               decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: 'ブランドの名前',
+                                labelText: '豆の種類/ブランドの名前',
                                 prefixIcon: Icon(Icons.store_outlined),
                                 suffixIcon: Icon(Icons.store_outlined),
                               ),
@@ -302,7 +309,7 @@ class Modal {
                               }
                               // pattern:入力された文字
                               // return: サジェスト候補となる文字列を返す
-                              List<String> _filter = _suggestBrandNameList
+                              List<String> _filter = _suggestBeanNameList
                                   .where((element) => (element.toLowerCase())
                                       .contains(pattern.toLowerCase()))
                                   .take(5)

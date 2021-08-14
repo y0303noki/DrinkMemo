@@ -6,6 +6,7 @@ import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_pr
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
+import 'package:coffee_project2/providers/setting/developper_provider.dart';
 import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
           create: (ctx) => BottomNavigationProvider(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => AlbumListProvider(),
+          create: (ctx) => AlbumListProvider()..findAlbumDatas(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => CoffeeProvider(),
@@ -48,6 +49,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => ModalTabProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => DeveloperProvider(),
         ),
       ],
       child: MaterialApp(

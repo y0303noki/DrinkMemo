@@ -16,6 +16,14 @@ class CoffeeListProvider extends ChangeNotifier {
     _viewCoffeeModels = models;
   }
 
+  List<ShopOrBeanModel> _allbrandModels = [];
+  List<ShopOrBeanModel> get allbrandModels => _allbrandModels;
+
+  // ショップリスト
+  List<ShopOrBeanModel> _shopModels = [];
+  List<ShopOrBeanModel> get shopModels => _shopModels;
+
+  // ブランドリスト
   List<ShopOrBeanModel> _brandModels = [];
   List<ShopOrBeanModel> get brandModels => _brandModels;
 
@@ -106,7 +114,20 @@ class CoffeeListProvider extends ChangeNotifier {
   }
 
   Future findBrandDatas() async {
-    _brandModels = await _brandDb.fetchShopOrBeanDatas();
+    _allbrandModels = await _brandDb.fetchShopOrBeanDatas();
+    // ショップリスト
+    _shopModels = _allbrandModels
+        .where(
+          (element) => element.type == 'SHOP',
+        )
+        .toList();
+
+    // 豆リスト
+    _brandModels = _allbrandModels
+        .where(
+          (element) => element.type == 'BEAN',
+        )
+        .toList();
   }
 
   // Future findCoffeeImage() async {

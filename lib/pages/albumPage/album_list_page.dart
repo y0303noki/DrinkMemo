@@ -13,25 +13,34 @@ class AlbumListPage extends StatelessWidget {
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
-    albumsData.findAlbumDatas();
-    return Center(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Container(
-              child: Consumer<AlbumListProvider>(
-                builder: (ctx, albumsData, _) => Center(
-                  child: Text('totalFavoriteCount: '),
+    if (albumsData.albumModels.isEmpty) {
+      print('album');
+      albumsData.findAlbumDatas();
+    }
+
+    return FutureBuilder(
+        // future属性で非同期処理を書く
+        future: albumsData.findAlbumDatas(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return Center(
+            child: Column(
+              children: [
+                // Padding(
+                //   padding: const EdgeInsets.all(20.0),
+                //   child: Container(
+                //     child: Consumer<AlbumListProvider>(
+                //       builder: (ctx, albumsData, _) => Center(
+                //         child: Text('totalFavoriteCount: '),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                Expanded(
+                  child: AlbumList(albumsData.coffeeImageModels),
                 ),
-              ),
+              ],
             ),
-          ),
-          Expanded(
-            child: AlbumList(albumsData.coffeeImageModels),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }

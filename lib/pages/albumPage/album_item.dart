@@ -1,3 +1,4 @@
+import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/providers/album/album_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
@@ -45,9 +46,9 @@ class AlbumItem extends StatelessWidget {
                   bottomRight: Radius.circular(50),
                 ),
               ),
-              child: const Text(
-                '',
-                style: TextStyle(
+              child: Text(
+                DateUtility(album.createdAt).toDateFormatted(),
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.black,
                 ),
@@ -72,46 +73,4 @@ class AlbumItem extends StatelessWidget {
       ),
     );
   }
-
-  // 遅延で画像を読み込む
-  // Widget _setAlbumImage(AlbumListProvider albumsData, String imageId) {
-  //   return FutureBuilder(
-  //     // future属性で非同期処理を書く
-  //     future: albumsData.findAlbumDatas()findCoffeeImage(imageId),
-  //     builder: (BuildContext context, AsyncSnapshot snapshot) {
-  //       // 取得完了するまで別のWidgetを表示する
-  //       if (!snapshot.hasData) {
-  //         return Container(
-  //           color: Colors.grey,
-  //           width: 100,
-  //           height: 100,
-  //         );
-  //       }
-
-  //       if (snapshot.connectionState == ConnectionState.done) {
-  //         String url = snapshot.data;
-  //         if (url.isEmpty) {
-  //           return Container(
-  //             color: Colors.grey,
-  //             width: 100,
-  //             height: 100,
-  //           );
-  //         } else {
-  //           return Image.network(
-  //             url,
-  //             width: 100.0,
-  //             height: 100.0,
-  //             fit: BoxFit.fill,
-  //           );
-  //         }
-  //       }
-  //       return Container(
-  //         color: Colors.grey,
-  //         width: 100,
-  //         height: 100,
-  //       );
-  //     },
-  //   );
-  // }
-
 }
