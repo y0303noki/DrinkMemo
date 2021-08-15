@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
   ];
   final List<StatelessWidget> bodys = [
     CoffeeListPage(),
-    AlbumListPage(),
+    AlbumListPage(true),
     SettingListPage(),
   ];
   final List<FloatingActionButton> floatingButtons = [];

@@ -1,6 +1,8 @@
 // 下からモーダルを出す
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/pages/albumPage/album_list_page.dart';
+import 'package:coffee_project2/pages/albumPage/album_list_scaffold_page.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
@@ -449,22 +451,23 @@ class Modal {
                                             TextButton(
                                               child: const Text('アルバム'),
                                               onPressed: () {
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) => AlbumPage(true),
-                                                //     fullscreenDialog: true,
-                                                //   ),
-                                                // ).then((value) {
-                                                //   // userImageIdが返ってくる
-                                                //   // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
-                                                //   if (value != null) {
-                                                //     _model.userImageId = value;
-                                                //   }
-
-                                                //   _model.refresh();
-                                                //   Navigator.pop(context);
-                                                // });
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AlbumListScaffoldPage(),
+                                                    fullscreenDialog: true,
+                                                  ),
+                                                ).then(
+                                                  (value) {
+                                                    // userImageIdが返ってくる
+                                                    // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
+                                                    if (value != null) {
+                                                      print(value);
+                                                      // _model.userImageId = value;
+                                                    }
+                                                  },
+                                                );
                                               },
                                             ),
                                             TextButton(

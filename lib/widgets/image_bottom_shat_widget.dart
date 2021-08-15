@@ -1,3 +1,4 @@
+import 'package:coffee_project2/pages/albumPage/album_list_page.dart';
 import 'package:flutter/material.dart';
 
 Widget bottomSheat(BuildContext context) {
@@ -28,7 +29,7 @@ Widget bottomSheat(BuildContext context) {
                 },
               ),
               TextButton(
-                child: Text('ギャラリー'),
+                child: const Text('ギャラリー'),
                 onPressed: () {
                   // _model.showImagePicker();
                   // _model.imageFile;
@@ -37,24 +38,23 @@ Widget bottomSheat(BuildContext context) {
                 },
               ),
               TextButton(
-                child: Text('アルバム'),
+                child: const Text('アルバム'),
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => AlbumPage(true),
-                  //     fullscreenDialog: true,
-                  //   ),
-                  // ).then((value) {
-                  //   // userImageIdが返ってくる
-                  //   // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
-                  //   if (value != null) {
-                  //     _model.userImageId = value;
-                  //   }
-
-                  //   _model.refresh();
-                  //   Navigator.pop(context);
-                  // });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AlbumListPage(false),
+                      fullscreenDialog: true,
+                    ),
+                  ).then(
+                    (value) {
+                      // userImageIdが返ってくる
+                      // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
+                      if (value != null) {
+                        // _model.userImageId = value;
+                      }
+                    },
+                  );
                 },
               ),
               TextButton(

@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AlbumItem extends StatelessWidget {
-  AlbumItem(this.albumId);
+  bool isHomeAlbum = false;
   final String albumId;
+  AlbumItem(this.albumId, this.isHomeAlbum);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,14 @@ class AlbumItem extends StatelessWidget {
       child: Stack(
         children: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              if (isHomeAlbum) {
+                // フッターのアルバムボタン
+              } else {
+                // 画像選択
+                Navigator.pop(context, album.id);
+              }
+            },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
@@ -40,7 +48,7 @@ class AlbumItem extends StatelessWidget {
               width: 90,
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.8),
-                border: Border(),
+                border: const Border(),
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(50),
                   bottomRight: Radius.circular(50),

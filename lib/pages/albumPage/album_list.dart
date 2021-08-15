@@ -6,7 +6,8 @@ import 'package:provider/provider.dart';
 
 class AlbumList extends StatelessWidget {
   final List<CoffeeImageModel> albums;
-  const AlbumList(this.albums);
+  bool isHomeAlbum = false;
+  AlbumList(this.albums, this.isHomeAlbum);
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class AlbumList extends StatelessWidget {
         itemCount: albums.length,
         itemBuilder: (ctx, index) => AlbumItem(
           albums[index].id,
+          isHomeAlbum,
         ),
       ),
     );
