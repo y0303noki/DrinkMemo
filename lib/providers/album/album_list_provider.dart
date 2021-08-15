@@ -19,20 +19,6 @@ class AlbumListProvider extends ChangeNotifier {
     return _coffeeImageModels.firstWhere((album) => album.id == id);
   }
 
-  // void toggleFavorite(String id) {
-  //   final AlbumModel album = findById(id);
-  //   if (album == null) {
-  //     return;
-  //   }
-
-  //   album.toggleFavorite();
-  //   notifyListeners();
-  // }
-
-  // int get favoriteCount {
-  //   return testAlbums.where((album) => album.favorite).length;
-  // }
-
   Future findAlbumDatas() async {
     _coffeeImageModels = await _coffeeImageDb.fetchCoffeeImageDatas();
     notifyListeners();
