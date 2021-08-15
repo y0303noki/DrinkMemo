@@ -460,12 +460,11 @@ class Modal {
                                                   ),
                                                 ).then(
                                                   (value) {
-                                                    // userImageIdが返ってくる
-                                                    // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
                                                     if (value != null) {
-                                                      print(value);
-                                                      // _model.userImageId = value;
+                                                      coffeeData.changeImageUrl(
+                                                          value.imageUrl);
                                                     }
+                                                    Navigator.pop(context);
                                                   },
                                                 );
                                               },
@@ -606,17 +605,26 @@ class Modal {
       }
     } else {
       // 新規
-      if (coffeeData.imageFile == null) {
-        return Container(
-          height: 200,
-          width: 200,
-          color: Colors.grey,
+      if (coffeeData.imageUrl != '') {
+        // アルバムから選択
+        return Image.network(
+          coffeeData.imageUrl,
+          width: 200.0,
+          height: 200.0,
         );
-      } else {
+      } else if (coffeeData.imageFile != null) {
+        // 端末のギャラリーから選択
         return Container(
           height: 200,
           width: 200,
           child: Image.file(coffeeData.imageFile!),
+        );
+      } else {
+        // 未選択
+        return Container(
+          height: 200,
+          width: 200,
+          color: Colors.grey,
         );
       }
     }

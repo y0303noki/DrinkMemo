@@ -23,8 +23,8 @@ class AlbumItem extends StatelessWidget {
               if (isHomeAlbum) {
                 // フッターのアルバムボタン
               } else {
-                // 画像選択
-                Navigator.pop(context, album.id);
+                // 洗濯したアルバムデータを返す
+                Navigator.pop(context, album);
               }
             },
             child: ClipRRect(

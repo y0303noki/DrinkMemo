@@ -40,6 +40,12 @@ class CoffeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // imageUrlをセット
+  void changeImageUrl(String newUrl) {
+    imageUrl = newUrl;
+    notifyListeners();
+  }
+
   void changeIsSabeavle(bool afterState) {
     _isSaveable = afterState;
     notifyListeners();
