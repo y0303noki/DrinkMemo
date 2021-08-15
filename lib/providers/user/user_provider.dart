@@ -18,6 +18,13 @@ class UserProvider extends ChangeNotifier {
   User? _user;
   User? get user => _user;
 
+  UserProvider() {
+    final User? _currentUser = _auth.currentUser;
+    if (_currentUser != null) {
+      _user = _currentUser;
+    }
+  }
+
   Future findUserData() async {
     _userModel = await _userDb.fetchUserData(_userId);
     notifyListeners();
