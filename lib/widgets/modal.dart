@@ -10,8 +10,9 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
 
 class Modal {
-  static void showCoffeeBottomSheet(
+  void showCoffeeBottomSheet(
       BuildContext context,
+      CoffeeModel? coffeeModel,
       CoffeeListProvider coffeeDatas,
       CoffeeProvider coffeeData,
       bool isUpdate) async {
@@ -22,18 +23,27 @@ class Modal {
     TextEditingController _storeTextEditingCntroller =
         TextEditingController(text: '');
     String bottomTitle = '';
+    CoffeeModel? modalCoffeeModel = coffeeModel;
+    // String coffeeId = '';
 
     ModalTabProvider modalTabData =
         Provider.of<ModalTabProvider>(context, listen: false);
 
     final Size size = MediaQuery.of(context).size;
-
+    coffeeData.changeIsSabeavle(false);
     // 更新するとき
     if (isUpdate) {
       bottomTitle = '更新';
-      coffeeData.labelCoffeeAt = '';
-      _nameTextEditingCntroller.text = 'updatename';
-      _brandTextEditingCntroller.text = 'updatebrand';
+      // coffeeId = coffeeModel!.id;
+      coffeeData.labelCoffeeAt =
+          DateUtility(coffeeModel!.coffeeAt).toDateFormatted();
+      _nameTextEditingCntroller.text = coffeeModel.name;
+      _brandTextEditingCntroller.text = coffeeModel.beanName;
+      _storeTextEditingCntroller.text = coffeeModel.shopName;
+      // coffeeData.imageUrl = coffeeModel.imageUrl;
+
+      int _index = coffeeModel.coffeeType == 'BEAN' ? 1 : 0;
+      modalTabData.setCurrentIndex(_index);
     } else {
       bottomTitle = '登録';
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
@@ -89,14 +99,23 @@ class Modal {
                             ),
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                          ),
-                        ),
+                        modalCoffeeModel != null
+                            ? IconButton(
+                                onPressed: () async {
+                                  // データ削除
+                                  var _coffeeDb = CoffeeFirebase();
+                                  await _coffeeDb
+                                      .deleteCoffeeData(modalCoffeeModel);
+                                  await coffeeDatas.findCoffeeDatas();
+
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -169,17 +188,19 @@ class Modal {
                   ),
                   const SizedBox(height: 20),
                   // 画像
-                  coffeeData.imageFile == null
-                      ? Container(
-                          height: 200,
-                          width: 200,
-                          color: Colors.grey,
-                        )
-                      : Container(
-                          height: 200,
-                          width: 200,
-                          child: Image.file(coffeeData.imageFile!),
-                        ),
+                  setModalImage(modalCoffeeModel, coffeeData),
+
+                  // coffeeData.imageFile == null
+                  //     ? Container(
+                  //         height: 200,
+                  //         width: 200,
+                  //         color: Colors.grey,
+                  //       )
+                  //     : Container(
+                  //         height: 200,
+                  //         width: 200,
+                  //         child: Image.file(coffeeData.imageFile!),
+                  //       ),
                   const SizedBox(height: 20),
                   // コーヒー名
                   Padding(
@@ -252,8 +273,25 @@ class Modal {
                                 suffixIcon: Icon(Icons.store_outlined),
                               ),
                               onChanged: (text) {
-                                if (text != null && text.length > 20) {
-                                  print('20文字超えたらもう無理!');
+                                if (modalCoffeeModel != null) {
+                                  // 更新の時の非活性処理
+                                  if (_nameTextEditingCntroller
+                                          .text.isNotEmpty &&
+                                      modalCoffeeModel.shopName != text) {
+                                    coffeeData.changeIsSabeavle(true);
+                                  } else {
+                                    coffeeData.changeIsSabeavle(false);
+                                  }
+                                } else {
+                                  // 登録の時の非活性処理
+                                  if (_nameTextEditingCntroller
+                                          .text.isNotEmpty &&
+                                      text.isNotEmpty &&
+                                      text.length < 20) {
+                                    coffeeData.changeIsSabeavle(true);
+                                  } else {
+                                    coffeeData.changeIsSabeavle(false);
+                                  }
                                 }
                               },
                             ),
@@ -298,8 +336,25 @@ class Modal {
                                 suffixIcon: Icon(Icons.store_outlined),
                               ),
                               onChanged: (text) {
-                                if (text != null && text.length > 20) {
-                                  print('20文字超えたらもう無理!');
+                                if (modalCoffeeModel != null) {
+                                  // 更新の時の非活性処理
+                                  if (_nameTextEditingCntroller
+                                          .text.isNotEmpty &&
+                                      modalCoffeeModel.shopName != text) {
+                                    coffeeData.changeIsSabeavle(true);
+                                  } else {
+                                    coffeeData.changeIsSabeavle(false);
+                                  }
+                                } else {
+                                  // 登録の時の非活性処理
+                                  if (_nameTextEditingCntroller
+                                          .text.isNotEmpty &&
+                                      text.isNotEmpty &&
+                                      text.length < 20) {
+                                    coffeeData.changeIsSabeavle(true);
+                                  } else {
+                                    coffeeData.changeIsSabeavle(false);
+                                  }
                                 }
                               },
                             ),
@@ -456,27 +511,37 @@ class Modal {
                             showProgressDialog(context, coffeeDatas);
                             coffeeDatas.changeIsProgressive(true);
                             // coffeeをDBに追加
-                            CoffeeModel coffeeModel = CoffeeModel();
+                            CoffeeModel _coffeeModel = CoffeeModel();
                             DateTime now = DateTime.now();
                             if (modalTabData.currentIndex == 0) {
-                              coffeeModel.coffeeType = 'SHOP';
-                              coffeeModel.beanTypes =
+                              _coffeeModel.coffeeType = 'SHOP';
+                              _coffeeModel.shopName =
                                   _storeTextEditingCntroller.text;
                             } else {
-                              coffeeModel.coffeeType = 'BEAN';
-                              coffeeModel.shopName =
+                              _coffeeModel.coffeeType = 'BEAN';
+                              _coffeeModel.beanName =
                                   _brandTextEditingCntroller.text;
                             }
 
-                            coffeeModel.name = _nameTextEditingCntroller.text;
-
-                            coffeeModel.favorite = false;
-                            coffeeModel.coffeeAt = coffeeData.coffeeAt;
-                            coffeeModel.createdAt = now;
-                            coffeeModel.updatedAt = now;
+                            _coffeeModel.name = _nameTextEditingCntroller.text;
+                            _coffeeModel.favorite = false;
+                            _coffeeModel.updatedAt = now;
+                            _coffeeModel.coffeeAt = coffeeData.coffeeAt;
                             var _coffeeDb = CoffeeFirebase();
-                            await _coffeeDb.insertCoffeeData(
-                                coffeeModel, coffeeData.imageFile);
+                            if (isUpdate) {
+                              // 更新
+                              _coffeeModel.id = modalCoffeeModel!.id;
+                              await _coffeeDb.updateCoffeeData(
+                                  _coffeeModel, coffeeData.imageFile);
+                            } else {
+                              // 追加
+                              _coffeeModel.createdAt = now;
+                              await _coffeeDb.insertCoffeeData(
+                                  _coffeeModel, coffeeData.imageFile);
+                            }
+
+                            _coffeeModel.coffeeAt = coffeeData.coffeeAt;
+
                             // プログレスアイコンを消す
                             Navigator.of(context).pop();
                             coffeeDatas.changeIsProgressive(false);
@@ -506,6 +571,58 @@ class Modal {
       // 保存が完了したら画面下部に完了メッセージを出す
       ScaffoldMessenger.of(context).showSnackBar(value);
     }
+  }
+
+  Widget setModalImage(CoffeeModel? coffeeModel, CoffeeProvider coffeeData) {
+    if (coffeeModel != null) {
+      // 更新
+      // 画像未設定
+      if (coffeeData.imageUrl == '' && coffeeData.imageFile == null) {
+        return Container(
+          height: 200,
+          width: 200,
+          color: Colors.grey,
+        );
+      }
+      if (coffeeData.imageFile != null) {
+        // 画像変更
+        return Container(
+          height: 200,
+          width: 200,
+          child: Image.file(coffeeData.imageFile!),
+        );
+      }
+
+      if (coffeeData.imageUrl != '') {
+        return Image.network(
+          coffeeData.imageUrl,
+          width: 200.0,
+          height: 200.0,
+          // fit: BoxFit.fill,
+        );
+      }
+    } else {
+      // 新規
+      if (coffeeData.imageFile == null) {
+        return Container(
+          height: 200,
+          width: 200,
+          color: Colors.grey,
+        );
+      } else {
+        return Container(
+          height: 200,
+          width: 200,
+          child: Image.file(coffeeData.imageFile!),
+        );
+      }
+    }
+
+    return Container(
+      height: 200,
+      width: 200,
+      color: Colors.grey,
+    );
   }
 
   static void showCoffeeDatePicker(

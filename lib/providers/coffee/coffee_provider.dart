@@ -81,10 +81,10 @@ class CoffeeProvider extends ChangeNotifier {
     }
   }
 
-  Future<String?> findCoffeeImage(String? imageId) async {
+  Future<String> findCoffeeImage(String? imageId) async {
     if (imageId == null) {
       imageUrl = 'https://picsum.photos/200';
-      return null;
+      return '';
     }
     var result = await _coffeeImageFirebase.imageIdToUrl(imageId);
 

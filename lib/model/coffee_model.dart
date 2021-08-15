@@ -4,7 +4,7 @@ class CoffeeModel {
   bool favorite;
   String coffeeType = '';
   String shopName = '';
-  String beanTypes = '';
+  String beanName = '';
   String? imageId;
   String imageUrl;
   DateTime? coffeeAt;
@@ -16,7 +16,7 @@ class CoffeeModel {
       this.favorite = false,
       this.coffeeType = '',
       this.shopName = '',
-      this.beanTypes = '',
+      this.beanName = '',
       this.imageId,
       this.imageUrl = '',
       this.coffeeAt,
