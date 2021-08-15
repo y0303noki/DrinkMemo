@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee_project2/model/album_model.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
+import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class CoffeeImageFirebase {
@@ -33,8 +34,15 @@ class CoffeeImageFirebase {
   Future insertCoffeeImage(CoffeeImageModel coffeeImageModel) async {
     // ドキュメント作成
     Map<String, dynamic> addObject = new Map<String, dynamic>();
-    final String userId = 'uzAshx1weQccDpqhLT4hqvDDTxH3';
-
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
     addObject['id'] = coffeeImageModel.id;
     addObject['userId'] = userId;
     addObject['imageUrl'] = coffeeImageModel.imageUrl;
@@ -70,8 +78,15 @@ class CoffeeImageFirebase {
   }
 
   Future<String> imageIdToUrl(String imageId) async {
-    final String userId = 'uzAshx1weQccDpqhLT4hqvDDTxH3';
-
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
     final QuerySnapshot snapshots = await _firestore
         .collection(coffeeImages)
         .where('id', isEqualTo: imageId)
@@ -90,8 +105,15 @@ class CoffeeImageFirebase {
 
   Future<List<CoffeeImageModel>> fetchCoffeeImageDatas() async {
     print('fetch coffee image');
-    // final String? userId = _firebaseAuth.currentUser?.uid;
-    final String userId = 'uzAshx1weQccDpqhLT4hqvDDTxH3';
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
 
     final QuerySnapshot snapshots = await _firestore
         .collection(coffeeImages)

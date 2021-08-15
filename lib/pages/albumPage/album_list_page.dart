@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AlbumListPage extends StatelessWidget {
+  bool isHomeAlbum = false;
+  AlbumListPage(this.isHomeAlbum);
   @override
   Widget build(BuildContext context) {
     final albumsData = Provider.of<AlbumListProvider>(context, listen: false);
@@ -25,18 +27,8 @@ class AlbumListPage extends StatelessWidget {
           return Center(
             child: Column(
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.all(20.0),
-                //   child: Container(
-                //     child: Consumer<AlbumListProvider>(
-                //       builder: (ctx, albumsData, _) => Center(
-                //         child: Text('totalFavoriteCount: '),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Expanded(
-                  child: AlbumList(albumsData.coffeeImageModels),
+                  child: AlbumList(albumsData.coffeeImageModels, isHomeAlbum),
                 ),
               ],
             ),

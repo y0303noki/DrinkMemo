@@ -1,6 +1,8 @@
 // 下からモーダルを出す
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/pages/albumPage/album_list_page.dart';
+import 'package:coffee_project2/pages/albumPage/album_list_scaffold_page.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
@@ -449,22 +451,22 @@ class Modal {
                                             TextButton(
                                               child: const Text('アルバム'),
                                               onPressed: () {
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) => AlbumPage(true),
-                                                //     fullscreenDialog: true,
-                                                //   ),
-                                                // ).then((value) {
-                                                //   // userImageIdが返ってくる
-                                                //   // 閉じるボタンで閉じた時はuserImageIdがnullなので更新しない
-                                                //   if (value != null) {
-                                                //     _model.userImageId = value;
-                                                //   }
-
-                                                //   _model.refresh();
-                                                //   Navigator.pop(context);
-                                                // });
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AlbumListScaffoldPage(),
+                                                    fullscreenDialog: true,
+                                                  ),
+                                                ).then(
+                                                  (value) {
+                                                    if (value != null) {
+                                                      coffeeData.changeImageUrl(
+                                                          value.imageUrl);
+                                                    }
+                                                    Navigator.pop(context);
+                                                  },
+                                                );
                                               },
                                             ),
                                             TextButton(
@@ -603,17 +605,26 @@ class Modal {
       }
     } else {
       // 新規
-      if (coffeeData.imageFile == null) {
-        return Container(
-          height: 200,
-          width: 200,
-          color: Colors.grey,
+      if (coffeeData.imageUrl != '') {
+        // アルバムから選択
+        return Image.network(
+          coffeeData.imageUrl,
+          width: 200.0,
+          height: 200.0,
         );
-      } else {
+      } else if (coffeeData.imageFile != null) {
+        // 端末のギャラリーから選択
         return Container(
           height: 200,
           width: 200,
           child: Image.file(coffeeData.imageFile!),
+        );
+      } else {
+        // 未選択
+        return Container(
+          height: 200,
+          width: 200,
+          color: Colors.grey,
         );
       }
     }

@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CoffeeFirebase {
@@ -17,6 +19,8 @@ class CoffeeFirebase {
   final CoffeeImageFirebase _coffeeImageFirebase = CoffeeImageFirebase();
 
   final String coffeeCards = 'coffee_datas';
+
+  // UserProvider _userProvider = UserProvider();
 
   // test用データ
   List<CoffeeModel> testCoffees = [
@@ -64,7 +68,16 @@ class CoffeeFirebase {
     // }
     // ドキュメント作成
     Map<String, dynamic> addObject = new Map<String, dynamic>();
-    final String userId = 'uzAshx1weQccDpqhLT4hqvDDTxH3';
+
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
 
     // アルバムから画像を選択された場合はaddCoffeeCardにuserImageIdが設定されている
     String _imageId;
@@ -198,7 +211,15 @@ class CoffeeFirebase {
 
   // storageへアップロード
   Future<String> uploadImageUrl(File imageFile, String uuId) async {
-    String userId = 'uzAshx1weQccDpqhLT4hqvDDTxH3';
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
 
     TaskSnapshot snapshot = await _fireStorage
         .ref()
@@ -211,8 +232,15 @@ class CoffeeFirebase {
 
   Future<List<CoffeeModel>> fetchCoffeeDatas() async {
     print('fetch coffee');
-    // final String? userId = _firebaseAuth.currentUser?.uid;
-    final String userId = 'uzAshx1weQccDpqhLT4hqvDDTxH3';
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
 
     final QuerySnapshot snapshots = await _firestore
         .collection(coffeeCards)
