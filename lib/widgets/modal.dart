@@ -133,7 +133,6 @@ class Modal {
                                 child: Material(
                                   color: Colors.blue,
                                   child: InkWell(
-                                    // highlightColor: Colors.red,
                                     onTap: () {
                                       print('tap');
                                       modalTabData.setCurrentIndex(0);
@@ -141,15 +140,28 @@ class Modal {
                                     child: Container(
                                       height: 30,
                                       child: Container(
+                                        width: 20,
                                         decoration: model.currentIndex == 0
-                                            ? BoxDecoration(
-                                                color: Colors.grey[300],
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                            ? const BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 2,
+                                                  ),
+                                                ),
                                               )
                                             : null,
-                                        child: const Center(
-                                          child: Text('おみせで'),
+                                        child: Center(
+                                          child: Text(
+                                            'おみせで',
+                                            style: model.currentIndex == 1
+                                                ? const TextStyle(
+                                                    color: Colors.grey,
+                                                  )
+                                                : const TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -168,14 +180,26 @@ class Modal {
                                       height: 30,
                                       child: Container(
                                         decoration: model.currentIndex == 1
-                                            ? BoxDecoration(
-                                                color: Colors.grey[300],
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                            ? const BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 2,
+                                                  ),
+                                                ),
                                               )
                                             : null,
-                                        child: const Center(
-                                          child: Text('おうちで'),
+                                        child: Center(
+                                          child: Text(
+                                            'おうちで',
+                                            style: model.currentIndex == 0
+                                                ? const TextStyle(
+                                                    color: Colors.grey,
+                                                  )
+                                                : const TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                          ),
                                         ),
                                       ),
                                     ),
