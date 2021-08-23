@@ -54,7 +54,7 @@ class CoffeeListPage extends StatelessWidget {
                           child: ElevatedButton.icon(
                             icon: const Icon(
                               Icons.favorite_border,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                             label: const Text(
                               'お気に入り表示中',
@@ -64,7 +64,7 @@ class CoffeeListPage extends StatelessWidget {
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue[100],
+                              primary: Theme.of(context).canvasColor,
                               onPrimary: Colors.white,
                             ),
                             onPressed: () {
@@ -79,18 +79,18 @@ class CoffeeListPage extends StatelessWidget {
                           child: ElevatedButton.icon(
                             icon: const Icon(
                               Icons.favorite,
-                              color: Colors.white,
+                              color: Colors.red,
                             ),
                             label: const Text(
                               'お気に入り',
                               style: TextStyle(
                                 fontSize: 12,
-                                // color: Colors.black,
+                                color: Colors.black,
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
-                              onPrimary: Colors.white,
+                              primary: Colors.brown[100],
+                              onPrimary: Colors.green,
                             ),
                             onPressed: () {
                               coffeesData.isFavoriteFilter =

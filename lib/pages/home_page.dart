@@ -36,7 +36,15 @@ class HomePage extends StatelessWidget {
     );
     return Scaffold(
       appBar: AppBar(
-        title: Text(titles[bottomNavigationData.currentIndex]),
+        centerTitle: false,
+        backgroundColor: Colors.white,
+        title: Text(
+          titles[bottomNavigationData.currentIndex],
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
       ),
       body: bodys[bottomNavigationData.currentIndex],
       floatingActionButton: bottomNavigationData.currentIndex == 0

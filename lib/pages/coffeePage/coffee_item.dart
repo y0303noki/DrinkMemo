@@ -41,78 +41,81 @@ class CoffeeItem extends StatelessWidget {
             Modal().showCoffeeBottomSheet(
                 context, coffee, coffeeDatas, coffeeData, true);
           },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10),
-                  bottomLeft: Radius.circular(10),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                  child: _setCofeeImage(coffeeData, coffee.imageId!),
                 ),
-                child: _setCofeeImage(coffeeData, coffee.imageId!),
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    DateUtility(coffee.coffeeAt).toDateFormatted(),
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Color(0xff333333),
+                const SizedBox(
+                  width: 5,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      DateUtility(coffee.coffeeAt).toDateFormatted(),
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Color(0xff333333),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    coffee.name,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff333333),
+                    const SizedBox(height: 10),
+                    Text(
+                      coffee.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff333333),
+                      ),
                     ),
-                  ),
-                  Text(
-                    coffee.coffeeType == 'BEAN'
-                        ? coffee.beanName
-                        : coffee.shopName,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal,
-                      color: Color(0xff333333),
+                    Text(
+                      coffee.coffeeType == 'BEAN'
+                          ? coffee.beanName
+                          : coffee.shopName,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        color: Color(0xff333333),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Consumer<CoffeeProvider>(
-                builder: (ctx, model, _) {
-                  return Container(
-                    padding: const EdgeInsets.only(
-                        top: 10, right: 10, bottom: 10, left: 10),
-                    child: IconButton(
-                      icon: Icon(coffee.favorite
-                          ? Icons.favorite
-                          : Icons.favorite_border),
-                      onPressed: () {
-                        var _db = CoffeeFirebase();
-                        _db.updateFavorite(coffee.id, !coffee.favorite);
-                        model.toggleFavorite(coffee);
-                      },
-                    ),
-                  );
-                },
-              ),
-              Container(
-                width: 5,
-                height: 100,
-                color: coffee.coffeeType == 'BEAN' ? Colors.red : Colors.blue,
-              ),
-            ],
+                  ],
+                ),
+                Consumer<CoffeeProvider>(
+                  builder: (ctx, model, _) {
+                    return Container(
+                      padding: const EdgeInsets.only(
+                          top: 10, right: 10, bottom: 10, left: 10),
+                      child: IconButton(
+                        icon: Icon(coffee.favorite
+                            ? Icons.favorite
+                            : Icons.favorite_border),
+                        onPressed: () {
+                          var _db = CoffeeFirebase();
+                          _db.updateFavorite(coffee.id, !coffee.favorite);
+                          model.toggleFavorite(coffee);
+                        },
+                      ),
+                    );
+                  },
+                ),
+                Container(
+                  width: 5,
+                  height: 100,
+                  color: coffee.coffeeType == 'BEAN' ? Colors.red : Colors.blue,
+                ),
+              ],
+            ),
           ),
         ),
       ),

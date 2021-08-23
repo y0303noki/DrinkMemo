@@ -1,3 +1,4 @@
+import 'package:coffee_project2/const/common.dart';
 import 'package:coffee_project2/pages/coffeePage/coffee_list_page.dart';
 import 'package:coffee_project2/pages/home_page.dart';
 import 'package:coffee_project2/pages/login_check_page.dart';
@@ -56,9 +57,12 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        // theme: ThemeData(
+        //   primarySwatch: Common.lightPrimaryColor, // ここ
+        // ),
+        // darkTheme: ThemeData(
+        //   primarySwatch: Common.darkPrimaryColor,
+        // ),
         home: LoginCheck(),
         builder: (BuildContext context, Widget? child) {
           return FlutterEasyLoading(child: child);
