@@ -41,6 +41,31 @@ class CoffeeListProvider extends ChangeNotifier {
     _isFavoriteFilter = e;
   }
 
+  // コーヒータイプ 家
+  bool _homeCoffee = false;
+  bool get homeCoffee => _homeCoffee;
+  set homeCoffee(bool e) {
+    _homeCoffee = e;
+  }
+
+  // コーヒータイプ 店
+  bool _storeCoffee = false;
+  bool get storeCoffee => _storeCoffee;
+  set storeCoffee(bool e) {
+    _storeCoffee = e;
+  }
+
+// フィルターリスト
+  List<String> _filterList = [];
+  List<String> get filterList => _filterList;
+  void addilterList(String filter) {
+    _filterList.add(filter);
+  }
+
+  void removeFilterList(String filter) {
+    _filterList.remove(filter);
+  }
+
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
   ShopOrBeanFirebase _brandDb = ShopOrBeanFirebase();
 
@@ -63,16 +88,64 @@ class CoffeeListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void filterCoffeeModels(String filterType) {
-    if (filterType == 'FAVORITE') {
-      _viewCoffeeModels =
-          _coffeeModels.where((coffeeModel) => coffeeModel.favorite).toList();
-    }
-    notifyListeners();
-  }
+  // void filterCoffeeModels(String filterType) {
+  //   if (filterType == 'FAVORITE') {
+  //     _viewCoffeeModels =
+  //         _coffeeModels.where((coffeeModel) => coffeeModel.favorite).toList();
+  //   }
+
+  //   if (filterType == 'BEAN') {
+  //     _viewCoffeeModels = _coffeeModels
+  //         .where((coffeeModel) => coffeeModel.coffeeType == 'BEAN')
+  //         .toList();
+  //   }
+
+  //   if (filterType == 'SHOP') {
+  //     _viewCoffeeModels = _coffeeModels
+  //         .where((coffeeModel) => coffeeModel.coffeeType == 'SHOP')
+  //         .toList();
+  //   }
+  //   notifyListeners();
+  // }
 
   void refreshviewCoffeeModels() {
     _viewCoffeeModels = _coffeeModels;
+    notifyListeners();
+  }
+
+  void refresh() {
+    notifyListeners();
+  }
+
+  void refreshFilterCoffeeModels() {
+    if (_filterList.isEmpty) {
+      _viewCoffeeModels = _coffeeModels;
+      notifyListeners();
+      return;
+    }
+
+    List<CoffeeModel> _tempCoffeeModels = [..._coffeeModels];
+
+    for (String filter in _filterList) {
+      if (filter == 'FAVORITE') {
+        _tempCoffeeModels = _tempCoffeeModels
+            .where((coffeeModel) => coffeeModel.favorite)
+            .toList();
+      }
+
+      if (filter == 'SHOP') {
+        _tempCoffeeModels = _tempCoffeeModels
+            .where((coffeeModel) => coffeeModel.coffeeType == 'SHOP')
+            .toList();
+      }
+
+      if (filter == 'BEAN') {
+        _tempCoffeeModels = _tempCoffeeModels
+            .where((coffeeModel) => coffeeModel.coffeeType == 'BEAN')
+            .toList();
+      }
+    }
+    _viewCoffeeModels = _tempCoffeeModels;
     notifyListeners();
   }
 

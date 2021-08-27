@@ -78,7 +78,9 @@ class Modal {
             return Container(
               height: size.height * 0.8,
               decoration: BoxDecoration(
-                border: Border.all(width: 3.0, color: Colors.blue),
+                border: Border.all(
+                  width: 3.0,
+                ),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -86,7 +88,6 @@ class Modal {
                   Container(
                     height: 50,
                     width: double.infinity,
-                    color: Colors.blue,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -131,9 +132,7 @@ class Modal {
                             children: [
                               Expanded(
                                 child: Material(
-                                  color: Colors.blue,
                                   child: InkWell(
-                                    // highlightColor: Colors.red,
                                     onTap: () {
                                       print('tap');
                                       modalTabData.setCurrentIndex(0);
@@ -141,15 +140,28 @@ class Modal {
                                     child: Container(
                                       height: 30,
                                       child: Container(
+                                        width: 20,
                                         decoration: model.currentIndex == 0
-                                            ? BoxDecoration(
-                                                color: Colors.grey[300],
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                            ? const BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 2,
+                                                  ),
+                                                ),
                                               )
                                             : null,
-                                        child: const Center(
-                                          child: Text('おみせで'),
+                                        child: Center(
+                                          child: Text(
+                                            'おみせで',
+                                            style: model.currentIndex == 1
+                                                ? const TextStyle(
+                                                    color: Colors.grey,
+                                                  )
+                                                : const TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -158,7 +170,6 @@ class Modal {
                               ),
                               Expanded(
                                 child: Material(
-                                  color: Colors.blue,
                                   child: InkWell(
                                     onTap: () {
                                       print('tap');
@@ -168,14 +179,26 @@ class Modal {
                                       height: 30,
                                       child: Container(
                                         decoration: model.currentIndex == 1
-                                            ? BoxDecoration(
-                                                color: Colors.grey[300],
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                            ? const BoxDecoration(
+                                                border: Border(
+                                                  bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 2,
+                                                  ),
+                                                ),
                                               )
                                             : null,
-                                        child: const Center(
-                                          child: Text('おうちで'),
+                                        child: Center(
+                                          child: Text(
+                                            'おうちで',
+                                            style: model.currentIndex == 0
+                                                ? const TextStyle(
+                                                    color: Colors.grey,
+                                                  )
+                                                : const TextStyle(
+                                                    color: Colors.black,
+                                                  ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -210,8 +233,14 @@ class Modal {
                     child: TypeAheadField(
                       textFieldConfiguration: TextFieldConfiguration(
                         // autofocus: true,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
                         controller: _nameTextEditingCntroller,
                         decoration: const InputDecoration(
+                          focusColor: Colors.black,
+                          fillColor: Colors.black,
+                          hoverColor: Colors.black,
                           border: OutlineInputBorder(),
                           labelText: 'コーヒーの名前',
                           prefixIcon: Icon(Icons.local_drink_outlined),
@@ -397,12 +426,22 @@ class Modal {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const Text('飲んだ日'),
+                        const Text(
+                          '飲んだ日',
+                          style: TextStyle(
+                              // color: Colors.blue,
+                              ),
+                        ),
                         TextButton(
                           onPressed: () {
                             showCoffeeDatePicker(context, coffeeData);
                           },
-                          child: Text(coffeeData.labelCoffeeAt),
+                          child: Text(
+                            coffeeData.labelCoffeeAt,
+                            style: const TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -435,21 +474,36 @@ class Modal {
                                         child: Column(
                                           children: [
                                             TextButton(
-                                              child: const Text('カメラ起動'),
+                                              child: const Text(
+                                                'カメラ起動',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
                                               onPressed: () {
                                                 coffeeData.showImageCamera();
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             TextButton(
-                                              child: const Text('ギャラリー'),
+                                              child: const Text(
+                                                'ギャラリー',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
                                               onPressed: () {
                                                 coffeeData.showImageGallery();
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             TextButton(
-                                              child: const Text('アルバム'),
+                                              child: const Text(
+                                                'アルバム',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
                                               onPressed: () {
                                                 Navigator.push(
                                                   context,
@@ -470,7 +524,12 @@ class Modal {
                                               },
                                             ),
                                             TextButton(
-                                              child: const Text('キャンセル'),
+                                              child: const Text(
+                                                'キャンセル',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                ),
+                                              ),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
@@ -484,7 +543,12 @@ class Modal {
                               },
                             );
                           },
-                          child: const Text('画像を選択する'),
+                          child: const Text(
+                            '画像を選択する',
+                            style: TextStyle(
+                              color: Colors.blue,
+                            ),
+                          ),
                         ),
                         Container(),
                       ],

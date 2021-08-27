@@ -12,7 +12,6 @@ class CoffeeList extends StatelessWidget {
   Widget build(BuildContext context) {
     final CoffeeListProvider coffeeDatas =
         Provider.of<CoffeeListProvider>(context, listen: false);
-    print('coffeelist');
     return RefreshIndicator(
       // 下に引っ張って更新
       onRefresh: () async {

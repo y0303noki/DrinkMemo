@@ -10,13 +10,66 @@ class SettingListPage extends StatelessWidget {
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
-    // if (albumsData.albumModels.isEmpty) {
-    //   print('album');
-    //   albumsData.findAlbumDatas();
-    // }
+    Widget _menuItem(String title) {
+      return Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(
+              width: 1.0,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        child: ListTile(
+          title: Text(
+            title,
+            style: TextStyle(color: Colors.black, fontSize: 18.0),
+          ),
+          onTap: () {
+            print("onTap called.");
+          }, // タップ
+          onLongPress: () {
+            print("onLongPress called.");
+          }, // 長押し
+        ),
+      );
+    }
 
-    return ListView(
-      children: <Widget>[
+    return Container(
+      color: Colors.grey,
+      child: ListView(children: [
+        Container(
+          child: Text(
+            'ユーザー情報',
+          ),
+        ),
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(
+                width: 1.0,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          child: ListTile(
+            title: Text(
+              '匿名ログイン中',
+              style: TextStyle(color: Colors.black, fontSize: 18.0),
+            ),
+            onTap: () {
+              print("onTap called.");
+            }, // タップ
+            onLongPress: () {
+              print("onLongPress called.");
+            }, // 長押し
+          ),
+        ),
+        _menuItem(
+          "メニュー1",
+        ),
         Card(
           child: InkWell(
             onTap: () {
@@ -29,55 +82,12 @@ class SettingListPage extends StatelessWidget {
                 ),
               );
             },
-            child: ListTile(
+            child: const ListTile(
               title: Text('開発モード'),
             ),
           ),
         ),
-        Card(
-          child: ListTile(
-            leading: FlutterLogo(),
-            title: Text('One-line with leading widget'),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            title: Text('One-line with trailing widget'),
-            trailing: Icon(Icons.more_vert),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            leading: FlutterLogo(),
-            title: Text('One-line with both widgets'),
-            trailing: Icon(Icons.more_vert),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            title: Text('One-line dense ListTile'),
-            dense: true,
-          ),
-        ),
-        Card(
-          child: ListTile(
-            leading: FlutterLogo(size: 56.0),
-            title: Text('Two-line ListTile'),
-            subtitle: Text('Here is a second line'),
-            trailing: Icon(Icons.more_vert),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            leading: FlutterLogo(size: 72.0),
-            title: Text('Three-line ListTile'),
-            subtitle:
-                Text('A sufficiently long subtitle warrants three lines.'),
-            trailing: Icon(Icons.more_vert),
-            isThreeLine: true,
-          ),
-        ),
-      ],
+      ]),
     );
   }
 }

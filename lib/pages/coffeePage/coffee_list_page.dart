@@ -42,81 +42,90 @@ class CoffeeListPage extends StatelessWidget {
             // mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               const SizedBox(
-                width: 20,
+                width: 2,
               ),
-              // お気に入りだけ表示
               Consumer<CoffeeListProvider>(
                 builder: (ctx, coffeesData, _) {
-                  print(coffeesData.isFavoriteFilter);
-                  return coffeesData.isFavoriteFilter
-                      ? SizedBox(
-                          width: 160,
-                          child: ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.favorite_border,
-                              color: Colors.white,
-                            ),
-                            label: const Text(
-                              'お気に入り表示中',
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.black,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blue[100],
-                              onPrimary: Colors.white,
-                            ),
-                            onPressed: () {
-                              coffeesData.isFavoriteFilter =
-                                  !coffeesData.isFavoriteFilter;
-                              coffeesData.refreshviewCoffeeModels();
-                            },
-                          ),
-                        )
-                      : SizedBox(
-                          width: 160,
-                          child: ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.favorite,
-                              color: Colors.white,
-                            ),
-                            label: const Text(
-                              'お気に入り',
-                              style: TextStyle(
-                                fontSize: 12,
-                                // color: Colors.black,
-                              ),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
-                              onPrimary: Colors.white,
-                            ),
-                            onPressed: () {
-                              coffeesData.isFavoriteFilter =
-                                  !coffeesData.isFavoriteFilter;
-                              coffeesData.filterCoffeeModels('FAVORITE');
-                            },
-                          ),
-                        );
+                  return InkWell(
+                    onTap: () {
+                      print(coffeesData.isFavoriteFilter);
+                      coffeesData.isFavoriteFilter =
+                          !coffeesData.isFavoriteFilter;
+                      if (coffeesData.isFavoriteFilter) {
+                        coffeesData.addilterList('FAVORITE');
+                        coffeesData.refreshFilterCoffeeModels();
+                      } else {
+                        coffeesData.removeFilterList('FAVORITE');
+                        coffeesData.refreshFilterCoffeeModels();
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          activeColor: Colors.pink,
+                          value: coffeesData.isFavoriteFilter,
+                          onChanged: (bool? e) {},
+                        ),
+                        const Text('お気に入り'),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              Consumer<CoffeeListProvider>(
+                builder: (ctx, coffeesData, _) {
+                  return InkWell(
+                    onTap: () {
+                      coffeesData.homeCoffee = !coffeesData.homeCoffee;
+                      if (coffeesData.homeCoffee) {
+                        coffeesData.addilterList('BEAN');
+                        coffeesData.refreshFilterCoffeeModels();
+                      } else {
+                        coffeesData.removeFilterList('BEAN');
+                        coffeesData.refreshFilterCoffeeModels();
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          activeColor: Colors.pink,
+                          value: coffeesData.homeCoffee,
+                          onChanged: (bool? e) {},
+                        ),
+                        const Text('おうち'),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              Consumer<CoffeeListProvider>(
+                builder: (ctx, coffeesData, _) {
+                  return InkWell(
+                    onTap: () {
+                      coffeesData.storeCoffee = !coffeesData.storeCoffee;
+                      if (coffeesData.storeCoffee) {
+                        coffeesData.addilterList('SHOP');
+                        coffeesData.refreshFilterCoffeeModels();
+                      } else {
+                        coffeesData.removeFilterList('SHOP');
+                        coffeesData.refreshFilterCoffeeModels();
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        Checkbox(
+                          activeColor: Colors.pink,
+                          value: coffeesData.storeCoffee,
+                          onChanged: (bool? e) {},
+                        ),
+                        const Text('おみせ'),
+                      ],
+                    ),
+                  );
                 },
               ),
             ],
           ),
-          // IconButton(
-          //   icon: Icon(Icons.replay),
-          //   onPressed: () => {
-          //     coffeesData.findCoffeeDatas(),
-          //   },
-          // ),
-
-          // Container(
-          //   child: Consumer<CoffeeListProvider>(
-          //     builder: (ctx, coffeesData, _) => Center(
-          //       child: Text('totalCount: ${coffeesData.coffeeModels.length}'),
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: Consumer<CoffeeListProvider>(
               builder: (ctx, coffeesData, _) => Center(
