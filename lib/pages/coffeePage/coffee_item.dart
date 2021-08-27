@@ -13,7 +13,6 @@ class CoffeeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('coffeeitem');
     final CoffeeListProvider coffeeDatas =
         Provider.of<CoffeeListProvider>(context, listen: false);
     CoffeeProvider coffeeData =
@@ -140,10 +139,11 @@ class CoffeeItem extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           String url = snapshot.data;
           if (url.isEmpty) {
+            // noimage画像
             return Container(
-              color: Colors.grey,
               width: 100,
               height: 100,
+              child: Image.asset('asset/images/noimage.png'),
             );
           } else {
             return Image.network(
