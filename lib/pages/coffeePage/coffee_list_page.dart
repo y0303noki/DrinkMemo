@@ -38,94 +38,95 @@ class CoffeeListPage extends StatelessWidget {
               },
             ),
           ),
-          Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const SizedBox(
-                width: 2,
-              ),
-              Consumer<CoffeeListProvider>(
-                builder: (ctx, coffeesData, _) {
-                  return InkWell(
-                    onTap: () {
-                      print(coffeesData.isFavoriteFilter);
-                      coffeesData.isFavoriteFilter =
-                          !coffeesData.isFavoriteFilter;
-                      if (coffeesData.isFavoriteFilter) {
-                        coffeesData.addilterList('FAVORITE');
-                        coffeesData.refreshFilterCoffeeModels();
-                      } else {
-                        coffeesData.removeFilterList('FAVORITE');
-                        coffeesData.refreshFilterCoffeeModels();
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          activeColor: Colors.pink,
-                          value: coffeesData.isFavoriteFilter,
-                          onChanged: (bool? e) {},
-                        ),
-                        const Text('お気に入り'),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              Consumer<CoffeeListProvider>(
-                builder: (ctx, coffeesData, _) {
-                  return InkWell(
-                    onTap: () {
-                      coffeesData.homeCoffee = !coffeesData.homeCoffee;
-                      if (coffeesData.homeCoffee) {
-                        coffeesData.addilterList('BEAN');
-                        coffeesData.refreshFilterCoffeeModels();
-                      } else {
-                        coffeesData.removeFilterList('BEAN');
-                        coffeesData.refreshFilterCoffeeModels();
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          activeColor: Colors.pink,
-                          value: coffeesData.homeCoffee,
-                          onChanged: (bool? e) {},
-                        ),
-                        const Text('おうち'),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              Consumer<CoffeeListProvider>(
-                builder: (ctx, coffeesData, _) {
-                  return InkWell(
-                    onTap: () {
-                      coffeesData.storeCoffee = !coffeesData.storeCoffee;
-                      if (coffeesData.storeCoffee) {
-                        coffeesData.addilterList('SHOP');
-                        coffeesData.refreshFilterCoffeeModels();
-                      } else {
-                        coffeesData.removeFilterList('SHOP');
-                        coffeesData.refreshFilterCoffeeModels();
-                      }
-                    },
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          activeColor: Colors.pink,
-                          value: coffeesData.storeCoffee,
-                          onChanged: (bool? e) {},
-                        ),
-                        const Text('おみせ'),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+          // フィルター 動きが重いのでコメントアウト
+          // Row(
+          //   // mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //   children: [
+          //     const SizedBox(
+          //       width: 2,
+          //     ),
+          //     Consumer<CoffeeListProvider>(
+          //       builder: (ctx, coffeesData, _) {
+          //         return InkWell(
+          //           onTap: () {
+          //             print(coffeesData.isFavoriteFilter);
+          //             coffeesData.isFavoriteFilter =
+          //                 !coffeesData.isFavoriteFilter;
+          //             if (coffeesData.isFavoriteFilter) {
+          //               coffeesData.addilterList('FAVORITE');
+          //               coffeesData.refreshFilterCoffeeModels();
+          //             } else {
+          //               coffeesData.removeFilterList('FAVORITE');
+          //               coffeesData.refreshFilterCoffeeModels();
+          //             }
+          //           },
+          //           child: Row(
+          //             children: [
+          //               Checkbox(
+          //                 activeColor: Colors.pink,
+          //                 value: coffeesData.isFavoriteFilter,
+          //                 onChanged: (bool? e) {},
+          //               ),
+          //               const Text('お気に入り'),
+          //             ],
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //     Consumer<CoffeeListProvider>(
+          //       builder: (ctx, coffeesData, _) {
+          //         return InkWell(
+          //           onTap: () {
+          //             coffeesData.homeCoffee = !coffeesData.homeCoffee;
+          //             if (coffeesData.homeCoffee) {
+          //               coffeesData.addilterList('BEAN');
+          //               coffeesData.refreshFilterCoffeeModels();
+          //             } else {
+          //               coffeesData.removeFilterList('BEAN');
+          //               coffeesData.refreshFilterCoffeeModels();
+          //             }
+          //           },
+          //           child: Row(
+          //             children: [
+          //               Checkbox(
+          //                 activeColor: Colors.pink,
+          //                 value: coffeesData.homeCoffee,
+          //                 onChanged: (bool? e) {},
+          //               ),
+          //               const Text('おうち'),
+          //             ],
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //     Consumer<CoffeeListProvider>(
+          //       builder: (ctx, coffeesData, _) {
+          //         return InkWell(
+          //           onTap: () {
+          //             coffeesData.storeCoffee = !coffeesData.storeCoffee;
+          //             if (coffeesData.storeCoffee) {
+          //               coffeesData.addilterList('SHOP');
+          //               coffeesData.refreshFilterCoffeeModels();
+          //             } else {
+          //               coffeesData.removeFilterList('SHOP');
+          //               coffeesData.refreshFilterCoffeeModels();
+          //             }
+          //           },
+          //           child: Row(
+          //             children: [
+          //               Checkbox(
+          //                 activeColor: Colors.pink,
+          //                 value: coffeesData.storeCoffee,
+          //                 onChanged: (bool? e) {},
+          //               ),
+          //               const Text('おみせ'),
+          //             ],
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ],
+          // ),
           Expanded(
             child: Consumer<CoffeeListProvider>(
               builder: (ctx, coffeesData, _) => Center(
