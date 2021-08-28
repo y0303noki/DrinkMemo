@@ -10,119 +10,128 @@ class SettingListPage extends StatelessWidget {
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
-    Widget _menuItem(String title) {
-      return Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(
-              width: 1.0,
-              color: Colors.grey,
-            ),
-          ),
-        ),
-        child: ListTile(
-          title: Text(
-            title,
-            style: TextStyle(color: Colors.black, fontSize: 18.0),
-          ),
-          onTap: () {
-            print("onTap called.");
-          }, // タップ
-          onLongPress: () {
-            print("onLongPress called.");
-          }, // 長押し
-        ),
-      );
-    }
-
     return Container(
-      color: Colors.grey,
-      child: ListView(children: [
-        Container(
-          child: const Text(
-            'ユーザー情報',
+      color: Colors.grey[100],
+      child: ListView(
+        children: [
+          Container(
+            child: const Text(
+              'ユーザー情報',
+            ),
           ),
-        ),
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              top: BorderSide(
-                width: 1.0,
-                color: Colors.grey,
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.grey,
+                ),
               ),
             ),
-          ),
-          child: ListTile(
-            title: Text(
-              '匿名ログイン中',
-              style: TextStyle(color: Colors.black, fontSize: 18.0),
+            child: ListTile(
+              title: Text(
+                '匿名ログイン中',
+                style: TextStyle(color: Colors.black, fontSize: 15.0),
+              ),
+              onTap: () {
+                print("onTap called.");
+              }, // タップ
+              onLongPress: () {
+                print("onLongPress called.");
+              }, // 長押し
             ),
-            onTap: () {
-              print("onTap called.");
-            }, // タップ
-            onLongPress: () {
-              print("onLongPress called.");
-            }, // 長押し
           ),
-        ),
-        Container(
-          child: const Text(
-            'アプリについて',
+          Container(
+            child: const Text(
+              'アプリについて',
+            ),
           ),
-        ),
-        Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              top: BorderSide(
-                width: 1.0,
-                color: Colors.grey,
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.grey,
+                ),
               ),
             ),
-          ),
-          child: ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'アプリバージョン',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18.0,
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'アプリバージョン',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15.0,
+                    ),
                   ),
-                ),
-                Text(
-                  '1.0.0',
-                  style: TextStyle(color: Colors.black, fontSize: 18.0),
-                ),
-              ],
-            ),
-            onTap: () {
-              print("onTap called.");
-            },
-            trailing: Icon(Icons.more_vert),
-          ),
-        ),
-        Card(
-          child: InkWell(
-            onTap: () {
-              print("tapped");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => DeveloperPage(),
-                  fullscreenDialog: true,
-                ),
-              );
-            },
-            child: const ListTile(
-              title: Text('開発モード'),
+                  Text(
+                    '1.0.0',
+                    style: TextStyle(color: Colors.black, fontSize: 15.0),
+                  ),
+                ],
+              ),
+              onTap: () {
+                print("onTap called.");
+              },
             ),
           ),
-        ),
-      ]),
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     color: Colors.white,
+          //     border: Border(
+          //       top: BorderSide(
+          //         width: 1.0,
+          //         color: Colors.grey,
+          //       ),
+          //     ),
+          //   ),
+          //   child: ListTile(
+          //     title: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Text(
+          //           'アプリの使い方',
+          //           style: TextStyle(
+          //             color: Colors.black,
+          //             fontSize: 15.0,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //     onTap: () {
+          //       print("onTap called.");
+          //     },
+          //     trailing: IconButton(
+          //       icon: const Icon(
+          //         Icons.arrow_forward_ios,
+          //       ),
+          //       onPressed: () async {},
+          //     ),
+          //   ),
+          // ),
+          // Card(
+          //   child: InkWell(
+          //     onTap: () {
+          //       print("tapped");
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => DeveloperPage(),
+          //           fullscreenDialog: true,
+          //         ),
+          //       );
+          //     },
+          //     child: const ListTile(
+          //       title: Text('開発モード'),
+          //     ),
+          //   ),
+          // ),
+        ],
+      ),
     );
   }
 }
