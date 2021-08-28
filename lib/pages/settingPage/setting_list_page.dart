@@ -40,7 +40,7 @@ class SettingListPage extends StatelessWidget {
       color: Colors.grey,
       child: ListView(children: [
         Container(
-          child: Text(
+          child: const Text(
             'ユーザー情報',
           ),
         ),
@@ -67,8 +67,43 @@ class SettingListPage extends StatelessWidget {
             }, // 長押し
           ),
         ),
-        _menuItem(
-          "メニュー1",
+        Container(
+          child: const Text(
+            'アプリについて',
+          ),
+        ),
+        Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(
+                width: 1.0,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          child: ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'アプリバージョン',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18.0,
+                  ),
+                ),
+                Text(
+                  '1.0.0',
+                  style: TextStyle(color: Colors.black, fontSize: 18.0),
+                ),
+              ],
+            ),
+            onTap: () {
+              print("onTap called.");
+            },
+            trailing: Icon(Icons.more_vert),
+          ),
         ),
         Card(
           child: InkWell(

@@ -80,7 +80,7 @@ class Modal {
             return SingleChildScrollView(
               reverse: true,
               child: Padding(
-                padding: EdgeInsets.only(bottom: bottomSpace * 0.8),
+                padding: EdgeInsets.only(bottom: 0),
                 child: Container(
                   height: size.height * 0.8,
                   decoration: BoxDecoration(
@@ -218,9 +218,6 @@ class Modal {
                           );
                         },
                       ),
-                      const SizedBox(height: 20),
-                      // 画像
-                      setModalImage(modalCoffeeModel, coffeeData),
 
                       // coffeeData.imageFile == null
                       //     ? Container(
@@ -583,6 +580,8 @@ class Modal {
                       ),
 
                       const SizedBox(height: 10),
+                      // 画像
+                      setModalImage(modalCoffeeModel, coffeeData),
 
                       ElevatedButton.icon(
                         icon: const Icon(
@@ -679,11 +678,7 @@ class Modal {
       // 更新
       // 画像未設定
       if (coffeeData.imageUrl == '' && coffeeData.imageFile == null) {
-        return Container(
-          height: 200,
-          width: 200,
-          color: Colors.grey,
-        );
+        return Container();
       }
       if (coffeeData.imageFile != null) {
         // 画像変更
@@ -720,19 +715,11 @@ class Modal {
         );
       } else {
         // 未選択
-        return Container(
-          height: 200,
-          width: 200,
-          color: Colors.grey,
-        );
+        return Container();
       }
     }
 
-    return Container(
-      height: 200,
-      width: 200,
-      color: Colors.grey,
-    );
+    return Container();
   }
 
   static void showCoffeeDatePicker(
