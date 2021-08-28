@@ -33,6 +33,7 @@ class Modal {
 
     final Size size = MediaQuery.of(context).size;
     coffeeData.changeIsSabeavle(false);
+
     // 更新するとき
     if (isUpdate) {
       bottomTitle = '更新';
@@ -48,6 +49,8 @@ class Modal {
       modalTabData.setCurrentIndex(_index);
     } else {
       bottomTitle = '登録';
+      coffeeData.imageFile = null;
+      coffeeData.imageUrl = '';
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
     }
 
