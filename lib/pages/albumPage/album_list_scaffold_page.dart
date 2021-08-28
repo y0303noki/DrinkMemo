@@ -12,7 +12,7 @@ class AlbumListScaffoldPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('アルバムテスト'),
+        title: const Text('アルバムから画像を選択'),
       ),
       body: AlbumListPage(false),
     );

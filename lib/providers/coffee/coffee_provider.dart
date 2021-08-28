@@ -46,6 +46,13 @@ class CoffeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // 選択中の画像を取り消す
+  void resetImageUrlAndFile() {
+    imageUrl = '';
+    imageFile = null;
+    notifyListeners();
+  }
+
   void changeIsSabeavle(bool afterState) {
     _isSaveable = afterState;
     notifyListeners();
