@@ -1,4 +1,5 @@
 import 'package:coffee_project2/pages/albumPage/album_list_page.dart';
+import 'package:coffee_project2/pages/analyticsPage/analytics_page.dart';
 import 'package:coffee_project2/pages/coffeePage/coffee_list_page.dart';
 import 'package:coffee_project2/pages/settingPage/setting_list_page.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
@@ -44,6 +45,24 @@ class HomePage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
+        actions: <Widget>[
+          // アナリティkす
+          IconButton(
+            icon: const Icon(
+              Icons.analytics_outlined,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AnalyticsPage(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
+        ],
         elevation: 0,
       ),
       body: bodys[bottomNavigationData.currentIndex],

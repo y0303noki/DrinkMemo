@@ -268,6 +268,53 @@ class CoffeeFirebase {
     return coffeeAllDatas;
   }
 
+  Future<List<CoffeeModel>> fetchCoffeeDatasByAt(
+      DateTime startAt, DateTime endAt) async {
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+    try {
+      final QuerySnapshot snapshots = await _firestore
+          .collection(coffeeCards)
+          .where('userId', isEqualTo: userId)
+          .where(
+            'coffeeAt',
+            isGreaterThanOrEqualTo: DateTime(startAt.year, startAt.month, 1),
+            isLessThanOrEqualTo: DateTime(endAt.year, endAt.month, 31),
+          )
+          // .orderBy('updatedAt', descending: true)
+          .limit(20)
+          .get();
+
+      final coffeeAllDatas = snapshots.docs
+          .map(
+            (doc) => CoffeeModel(
+              id: doc.data()['id'] ?? '',
+              name: doc.data()['name'] ?? '',
+              favorite: doc.data()['favorite'] ?? false,
+              coffeeType: doc.data()['coffeeType'] ?? '',
+              shopName: doc.data()['brandName'] ?? '',
+              beanName: doc.data()['beanName'] ?? '',
+              imageId: doc.data()['imageId'] ?? '',
+              coffeeAt: doc.data()['coffeeAt'].toDate(),
+              createdAt: doc.data()['createdAt'].toDate(),
+              updatedAt: doc.data()['updatedAt'].toDate(),
+            ),
+          )
+          .toList();
+      return coffeeAllDatas;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   // お気に入りを変更
   Future<void> updateFavorite(String docId, bool isFavorite) async {
     // ドキュメント更新
