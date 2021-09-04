@@ -41,3 +41,7 @@ app.*.symbols
 app.*.map.json
 
 .ipa
+
+
+ExportOptions.plist
+ios/Runner.xcodeproj/project.pbxproj
