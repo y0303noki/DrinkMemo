@@ -67,7 +67,6 @@ class CoffeeListPage extends StatelessWidget {
                 builder: (ctx, model, _) {
                   return InkWell(
                     onTap: () {
-                      print(model.isFavoriteFilter);
                       model.isFavoriteFilter = !model.isFavoriteFilter;
                       if (model.isFavoriteFilter) {
                         model.addilterList('FAVORITE');
@@ -146,8 +145,8 @@ class CoffeeListPage extends StatelessWidget {
           ),
           Expanded(
             child: Consumer<CoffeeListProvider>(
-              builder: (ctx, coffeesData, _) => Center(
-                child: CoffeeList(coffeesData.viewCoffeeModels),
+              builder: (ctx, model, _) => Center(
+                child: CoffeeList(model.viewCoffeeModels),
               ),
             ),
           ),

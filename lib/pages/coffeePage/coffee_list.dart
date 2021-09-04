@@ -19,9 +19,9 @@ class CoffeeList extends StatelessWidget {
       },
       child: ListView.builder(
         itemCount: coffees.length,
-        itemBuilder: (ctx, index) => CoffeeItem(
-          coffees[index].id,
-        ),
+        itemBuilder: (BuildContext ctx, int index) {
+          return CoffeeItem(coffees[index].id);
+        },
       ),
     );
   }
