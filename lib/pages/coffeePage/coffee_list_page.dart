@@ -21,16 +21,26 @@ class CoffeeListPage extends StatelessWidget {
       ),
     );
 
+    TextEditingController _keywordTextEditingCntroller =
+        TextEditingController(text: '');
+
     return Center(
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: TextField(
+              controller: _keywordTextEditingCntroller,
               textInputAction: TextInputAction.search,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: Colors.black),
                 hintText: "キーワード検索",
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    _keywordTextEditingCntroller.clear();
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
               ),
               onSubmitted: (term) {
                 // キーボードの検索ボタンを押した時の処理

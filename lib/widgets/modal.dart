@@ -245,14 +245,19 @@ class Modal {
                               color: Colors.black,
                             ),
                             controller: _nameTextEditingCntroller,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               focusColor: Colors.black,
                               fillColor: Colors.black,
                               hoverColor: Colors.black,
                               border: OutlineInputBorder(),
                               labelText: 'コーヒーの名前',
                               prefixIcon: Icon(Icons.local_drink_outlined),
-                              suffixIcon: Icon(Icons.local_drink_outlined),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  _nameTextEditingCntroller.clear();
+                                },
+                                icon: const Icon(Icons.clear),
+                              ),
                             ),
                             onChanged: (text) {
                               if (text != null && text.length > 20) {
@@ -371,11 +376,16 @@ class Modal {
                               child: TypeAheadField(
                                 textFieldConfiguration: TextFieldConfiguration(
                                   controller: _brandTextEditingCntroller,
-                                  decoration: const InputDecoration(
+                                  decoration:  InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: '豆の種類/ブランドの名前',
                                     prefixIcon: Icon(Icons.store_outlined),
-                                    suffixIcon: Icon(Icons.store_outlined),
+                                    suffixIcon: IconButton(
+                                onPressed: () {
+                                  _brandTextEditingCntroller.clear();
+                                },
+                                icon: const Icon(Icons.clear),
+                              ),
                                   ),
                                   onChanged: (text) {
                                     if (modalCoffeeModel != null) {
