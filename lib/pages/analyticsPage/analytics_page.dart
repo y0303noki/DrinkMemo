@@ -24,7 +24,6 @@ class AnalyticsPage extends StatelessWidget {
     for (int index = 1; index <= 12; index++) {
       _monthList.add(index.toString());
     }
-    print(_monthList);
   }
 
   @override
@@ -60,27 +59,43 @@ class AnalyticsPage extends StatelessWidget {
     }
 
     // デフォルトサイズのアイテム
-    Widget _defaultItem(String title, String description) {
-      return Container(
-        child: Column(
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+    Widget _topCoffeeItem(AnalyticsProvider model) {
+      if (model.topCoffeeName != '' && model.topCoffeeCount > 0) {
+        String description =
+            '${model.selectedMonth.toString()}月は${model.topCoffeeName}を${model.topCoffeeCount}杯飲みました';
+        return Container(
+          child: Column(
+            children: [
+              // 名前
+              Text(
+                model.topCoffeeName ?? '',
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            Text(description),
-          ],
-        ),
-        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-      );
+              Text(description),
+            ],
+          ),
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        );
+      } else {
+        // 条件に合うデータがない場合
+        return Container(
+          child: Text('データが揃えば表示されます'),
+        );
+      }
     }
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+      ),
       body: Consumer<AnalyticsProvider>(builder: (ctx, model, _) {
         return Column(
           children: [
@@ -208,9 +223,9 @@ class AnalyticsPage extends StatelessWidget {
                       thickness: 1.0,
                     ),
                   ),
-                  _defaultItem('アイスコーヒー', '最も多いコーヒー'),
-                  _defaultItem('キリマンジャロ', '最も多いブランド'),
-                  _defaultItem('スタバ', '最も多いカフェ'),
+                  _topCoffeeItem(model),
+                  // _defaultItem('キリマンジャロ', '最も多いブランド'),
+                  // _defaultItem('スタバ', '最も多いカフェ'),
                 ],
               ),
             ),

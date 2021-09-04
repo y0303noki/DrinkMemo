@@ -25,6 +25,15 @@ class AnalyticsProvider extends ChangeNotifier {
   int _homeCount = 0;
   get homeCount => _homeCount;
 
+  String _topCoffeeName = '';
+  get topCoffeeName => _topCoffeeName;
+
+  int _topCoffeeCount = 0;
+  get topCoffeeCount => _topCoffeeCount;
+
+  String _topShopName = '';
+  get topShopName => _topShopName;
+
   void setSelectedMonth(int _month) {
     _selectedMonth = _month;
     notifyListeners();
@@ -60,22 +69,23 @@ class AnalyticsProvider extends ChangeNotifier {
     // 集計が無効
     if (result.isEmpty) {
       print('2件以上同じコーヒーがないので無効');
+      _topCoffeeName = '';
     }
 
-    // TODO：集計処理
-    var mapEntries = result.entries.toList()
+    // 集計処理
+    List<MapEntry<String, int>> mapEntries = result.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
     result
       ..clear()
       ..addEntries(mapEntries);
-    var _list = result.keys.toList();
-    print(_list);
+    // objectをlistにして先頭を取得する
+    List<String> _list = result.keys.toList();
 
-    final String topName = _list.first;
-    final int? topCount = result[topName];
-    print(topName);
-    print(topCount);
+    if (_list.isNotEmpty) {
+      _topCoffeeName = _list.first;
+      _topCoffeeCount = result[_topCoffeeName] as int;
+    }
 
     // ショップリスト
     List<CoffeeModel> _shopCoffees =
@@ -108,7 +118,6 @@ class AnalyticsProvider extends ChangeNotifier {
         _result[lowerName] = _result[lowerName]! + 1;
       }
     }
-    print(_result);
     if (isValid) {
       return _result;
     } else {
