@@ -15,6 +15,7 @@ class SettingListPage extends StatelessWidget {
       child: ListView(
         children: [
           Container(
+            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: const Text(
               'ユーザー情報',
             ),
@@ -43,6 +44,7 @@ class SettingListPage extends StatelessWidget {
             ),
           ),
           Container(
+            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: const Text(
               'アプリについて',
             ),

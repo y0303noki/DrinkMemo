@@ -37,6 +37,7 @@ class Modal {
     // 更新するとき
     if (isUpdate) {
       bottomTitle = '更新';
+      coffeeData.changeIsSabeavle(true);
       // coffeeId = coffeeModel!.id;
       coffeeData.labelCoffeeAt =
           DateUtility(coffeeModel!.coffeeAt).toDateFormatted();
@@ -244,14 +245,19 @@ class Modal {
                               color: Colors.black,
                             ),
                             controller: _nameTextEditingCntroller,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               focusColor: Colors.black,
                               fillColor: Colors.black,
                               hoverColor: Colors.black,
                               border: OutlineInputBorder(),
                               labelText: 'コーヒーの名前',
                               prefixIcon: Icon(Icons.local_drink_outlined),
-                              suffixIcon: Icon(Icons.local_drink_outlined),
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  _nameTextEditingCntroller.clear();
+                                },
+                                icon: const Icon(Icons.clear),
+                              ),
                             ),
                             onChanged: (text) {
                               if (text != null && text.length > 20) {
@@ -314,13 +320,14 @@ class Modal {
                                   onChanged: (text) {
                                     if (modalCoffeeModel != null) {
                                       // 更新の時の非活性処理
-                                      if (_nameTextEditingCntroller
-                                              .text.isNotEmpty &&
-                                          modalCoffeeModel.shopName != text) {
-                                        coffeeData.changeIsSabeavle(true);
-                                      } else {
-                                        coffeeData.changeIsSabeavle(false);
-                                      }
+                                      coffeeData.changeIsSabeavle(true);
+                                      // if (_nameTextEditingCntroller
+                                      //         .text.isNotEmpty &&
+                                      //     modalCoffeeModel.shopName != text) {
+                                      //   coffeeData.changeIsSabeavle(true);
+                                      // } else {
+                                      //   coffeeData.changeIsSabeavle(false);
+                                      // }
                                     } else {
                                       // 登録の時の非活性処理
                                       if (_nameTextEditingCntroller
@@ -369,22 +376,28 @@ class Modal {
                               child: TypeAheadField(
                                 textFieldConfiguration: TextFieldConfiguration(
                                   controller: _brandTextEditingCntroller,
-                                  decoration: const InputDecoration(
+                                  decoration:  InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: '豆の種類/ブランドの名前',
                                     prefixIcon: Icon(Icons.store_outlined),
-                                    suffixIcon: Icon(Icons.store_outlined),
+                                    suffixIcon: IconButton(
+                                onPressed: () {
+                                  _brandTextEditingCntroller.clear();
+                                },
+                                icon: const Icon(Icons.clear),
+                              ),
                                   ),
                                   onChanged: (text) {
                                     if (modalCoffeeModel != null) {
                                       // 更新の時の非活性処理
-                                      if (_nameTextEditingCntroller
-                                              .text.isNotEmpty &&
-                                          modalCoffeeModel.shopName != text) {
-                                        coffeeData.changeIsSabeavle(true);
-                                      } else {
-                                        coffeeData.changeIsSabeavle(false);
-                                      }
+                                      coffeeData.changeIsSabeavle(true);
+                                      // if (_nameTextEditingCntroller
+                                      //         .text.isNotEmpty &&
+                                      //     modalCoffeeModel.shopName != text) {
+                                      //   coffeeData.changeIsSabeavle(true);
+                                      // } else {
+                                      //   coffeeData.changeIsSabeavle(false);
+                                      // }
                                     } else {
                                       // 登録の時の非活性処理
                                       if (_nameTextEditingCntroller

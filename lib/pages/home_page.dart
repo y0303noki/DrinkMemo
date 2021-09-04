@@ -5,6 +5,7 @@ import 'package:coffee_project2/pages/settingPage/setting_list_page.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
+import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:coffee_project2/widgets/modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,7 +47,16 @@ class HomePage extends StatelessWidget {
           ),
         ),
         actions: <Widget>[
-          // アナリティkす
+          IconButton(
+            icon: const Icon(
+              Icons.help_outline_outlined,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              CustomDialog().openSimpleDialog(context);
+            },
+          ),
+          // アナリティクス
           IconButton(
             icon: const Icon(
               Icons.analytics_outlined,
