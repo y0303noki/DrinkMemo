@@ -1,3 +1,4 @@
+import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/model/shop_or_bean_model.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,6 +15,37 @@ class ShopOrBeanFirebase {
         .collection(shopOrBeans)
         .where('isCommon', isEqualTo: true)
         .where('isDeleted', isEqualTo: false)
+        .limit(100)
+        .get();
+
+    final brandAllDatas = snapshots.docs
+        .map(
+          (doc) => ShopOrBeanModel(
+            id: doc.data()['id'] ?? '',
+            name: doc.data()['name'] ?? '',
+            isCommon: doc.data()['isCommon'] ?? false,
+            type: doc.data()['type'] ?? 'SHOP',
+            isDeleted: doc.data()['isDeleted'] ?? false,
+            createdAt: doc.data()['createdAt'].toDate(),
+            updatedAt: doc.data()['updatedAt'].toDate(),
+          ),
+        )
+        .toList();
+    if (brandAllDatas.isNotEmpty) {
+      print(brandAllDatas.length);
+    }
+    return brandAllDatas;
+  }
+
+  Future<List<ShopOrBeanModel>> fetchShopOrBeanDatasByAt(
+      DateTime startAt, DateTime endAt) async {
+    final QuerySnapshot snapshots = await _firestore
+        .collection(shopOrBeans)
+        .where('isCommon', isEqualTo: true)
+        .where('isDeleted', isEqualTo: false)
+        .where('coffeeAt',
+            isGreaterThanOrEqualTo: DateTime(startAt.year, startAt.month, 1),
+            isLessThanOrEqualTo: DateTime(endAt.year, endAt.month, 31))
         .limit(100)
         .get();
 

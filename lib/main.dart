@@ -3,6 +3,7 @@ import 'package:coffee_project2/pages/coffeePage/coffee_list_page.dart';
 import 'package:coffee_project2/pages/home_page.dart';
 import 'package:coffee_project2/pages/login_check_page.dart';
 import 'package:coffee_project2/providers/album/album_list_provider.dart';
+import 'package:coffee_project2/providers/analytics/analytics_provider.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
@@ -53,6 +54,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => DeveloperProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => AnalyticsProvider(),
         ),
       ],
       child: MaterialApp(
