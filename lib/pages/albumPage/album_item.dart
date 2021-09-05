@@ -23,7 +23,7 @@ class AlbumItem extends StatelessWidget {
               if (isHomeAlbum) {
                 // フッターのアルバムボタン
               } else {
-                // 洗濯したアルバムデータを返す
+                // 選択したアルバムデータを返す
                 Navigator.pop(context, album);
               }
             },

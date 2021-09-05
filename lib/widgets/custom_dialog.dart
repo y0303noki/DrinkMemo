@@ -81,4 +81,90 @@ class CustomDialog {
       },
     );
   }
+
+  Future<String?> myCoffeeDialog(
+    BuildContext context,
+    bool isUpdate,
+    String name,
+    String brandName,
+    String shopName,
+  ) async {
+    var result = showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('このコーヒーをマイコーヒーに登録しますか？'),
+          content: !isUpdate
+              ? Text('よく飲むコーヒーをマイコーヒーにすることで次から簡単に登録できます')
+              : Container(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min, // columnの高さを自動調整
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('登録中のマイコーヒー'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              name,
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      brandName != ''
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    brandName,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(),
+                      shopName != ''
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    shopName,
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(),
+                    ],
+                  ),
+                ),
+          // content: Text("This is the content"),
+          actions: [
+            TextButton(
+              child: const Text('キャンセル'),
+              onPressed: () => Navigator.pop(context, 'NO'),
+            ),
+            TextButton(
+              child: const Text('登録する'),
+              onPressed: () => Navigator.pop(context, 'YES'),
+            ),
+          ],
+        );
+      },
+    );
+    return result;
+  }
 }

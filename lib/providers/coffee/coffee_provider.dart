@@ -20,6 +20,7 @@ class CoffeeProvider extends ChangeNotifier {
   File? imageFile;
   String imageId = '';
   String imageUrl = '';
+  String myCoffeeImageUrl = '';
 
   // コーヒー日付
   String labelCoffeeAt = '';

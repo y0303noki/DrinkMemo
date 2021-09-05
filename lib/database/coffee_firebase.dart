@@ -332,4 +332,47 @@ class CoffeeFirebase {
       print(e);
     }
   }
+
+  // cooffeeIdを指定して単体取得
+  Future<CoffeeModel?> fetchCoffeeDataById(String coffeeId) async {
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+
+    final QuerySnapshot snapshots = await _firestore
+        .collection(coffeeCards)
+        .where('userId', isEqualTo: userId)
+        .where('id', isEqualTo: coffeeId)
+        .orderBy('updatedAt', descending: true)
+        .limit(1)
+        .get();
+
+    final coffeeAllDatas = snapshots.docs
+        .map(
+          (doc) => CoffeeModel(
+            id: doc.data()['id'] ?? '',
+            name: doc.data()['name'] ?? '',
+            favorite: doc.data()['favorite'] ?? false,
+            coffeeType: doc.data()['coffeeType'] ?? '',
+            shopName: doc.data()['brandName'] ?? '',
+            beanName: doc.data()['beanName'] ?? '',
+            imageId: doc.data()['imageId'] ?? '',
+            coffeeAt: doc.data()['coffeeAt'].toDate(),
+            createdAt: doc.data()['createdAt'].toDate(),
+            updatedAt: doc.data()['updatedAt'].toDate(),
+          ),
+        )
+        .toList();
+    if (coffeeAllDatas.isNotEmpty) {
+      return coffeeAllDatas.first;
+    } else {
+      null;
+    }
+  }
 }

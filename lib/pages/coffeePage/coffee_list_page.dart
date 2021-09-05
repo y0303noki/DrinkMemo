@@ -13,13 +13,6 @@ class CoffeeListPage extends StatelessWidget {
     final coffeesData = Provider.of<CoffeeListProvider>(context, listen: false);
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
-    coffeesData.chipList.add(
-      Chip(
-        key: const Key('chip_key_0'),
-        label: Text('お気に入り'),
-        // onDeleted: () => _deleteChip(chipKey),
-      ),
-    );
 
     TextEditingController _keywordTextEditingCntroller =
         TextEditingController(text: '');
@@ -81,7 +74,16 @@ class CoffeeListPage extends StatelessWidget {
                         Checkbox(
                           activeColor: Colors.pink,
                           value: model.isFavoriteFilter,
-                          onChanged: (bool? e) {},
+                          onChanged: (bool? e) {
+                            model.isFavoriteFilter = !model.isFavoriteFilter;
+                            if (model.isFavoriteFilter) {
+                              model.addilterList('FAVORITE');
+                              model.refreshFilterCoffeeModels();
+                            } else {
+                              model.removeFilterList('FAVORITE');
+                              model.refreshFilterCoffeeModels();
+                            }
+                          },
                         ),
                         const Text('お気に入り'),
                       ],

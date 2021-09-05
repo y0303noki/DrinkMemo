@@ -5,7 +5,6 @@ import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserFirebase _userDb = UserFirebase();

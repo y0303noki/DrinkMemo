@@ -62,9 +62,6 @@ class CoffeeListProvider extends ChangeNotifier {
     _filterList.add(filter);
   }
 
-  List<Chip> _chipList = [];
-  List<Chip> get chipList => _chipList;
-
   void removeFilterList(String filter) {
     _filterList.remove(filter);
   }
