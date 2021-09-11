@@ -938,7 +938,7 @@ class Modal {
   // マイドリンクの星アイコン
   Widget myDrinkStarWidget(BuildContext context, CoffeeModel? coffeeModel,
       UserMyCoffeeProvider userMyCoffeeData) {
-    if (coffeeModel == null) {
+    if (coffeeModel == null || userMyCoffeeData.userMyCoffeeModel == null) {
       // 表示なし
       return Container();
     }
