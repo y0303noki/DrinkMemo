@@ -38,7 +38,7 @@ Widget bottomSheat(BuildContext context) {
                 },
               ),
               TextButton(
-                child: const Text('アルバム'),
+                child: const Text('マイアルバム'),
                 onPressed: () {
                   Navigator.push(
                     context,

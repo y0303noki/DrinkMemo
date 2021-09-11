@@ -763,7 +763,7 @@ class Modal {
                                                 ),
                                                 TextButton(
                                                   child: const Text(
-                                                    'アルバム',
+                                                    'マイアルバム',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                     ),

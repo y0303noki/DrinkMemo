@@ -327,4 +327,37 @@ class CustomDialog {
     );
     return result;
   }
+
+  // サインアウト確認ダイアログ
+  Future<String?> signOutDialog(
+    BuildContext context,
+  ) async {
+    var result = showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('ログアウトしますか？'),
+          content: const Text('連携をしていない場合はデータが失われます。'),
+          actions: [
+            TextButton(
+              child: const Text('キャンセル'),
+              onPressed: () => Navigator.pop(context, 'NO'),
+            ),
+            TextButton(
+              child: const Text(
+                'ログアウトする',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () => Navigator.pop(context, 'YES'),
+            ),
+          ],
+        );
+      },
+    );
+    return result;
+  }
 }

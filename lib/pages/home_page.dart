@@ -18,7 +18,7 @@ class HomePage extends StatelessWidget {
   // タブの変更で画面の中身を変える
   final List<String> titles = [
     'ホーム',
-    'アルバム',
+    'マイアルバム',
     '設定',
   ];
   final List<StatelessWidget> bodys = [
@@ -108,7 +108,7 @@ class HomePage extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_album_outlined),
-            label: 'アルバム',
+            label: 'マイアルバム',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),

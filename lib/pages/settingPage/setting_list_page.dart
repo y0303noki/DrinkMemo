@@ -1,6 +1,7 @@
 import 'package:coffee_project2/pages/settingPage/developer_page.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/user/user_provider.dart';
+import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,18 +56,16 @@ class SettingListPage extends StatelessWidget {
               ),
             ),
             child: ListTile(
-              title: Text(
+              title: const Text(
                 'ログアウト',
                 style: TextStyle(color: Colors.black, fontSize: 15.0),
               ),
-              onTap: () {
-                print("onTap called.");
+              onTap: () async {
+                String? result = await CustomDialog().signOutDialog(context);
+                if (result != null && result == 'YES') {
+                  UserProvider().signOut();
+                }
               }, // タップ
-              onLongPress: () {
-                //　ロングタップでサインアウト
-                print("onLongPress called.");
-                UserProvider().signOut();
-              }, // 長押し
             ),
           ),
           Container(
