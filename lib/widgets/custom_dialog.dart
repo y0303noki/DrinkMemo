@@ -86,7 +86,7 @@ class CustomDialog {
       // barrierDismissible: false,
       builder: (_) {
         return AlertDialog(
-          title: const Text('マイドリンク'),
+          title: Container(child: Text('マイドリンク')),
           content: dialogContent(myCoffeeModel, imageUrl),
           // content: Text("This is the content"),
           actions: [
@@ -305,6 +305,63 @@ class CustomDialog {
 
 // deleteMyDrinkDialog
   Future<String?> simpleDefaultDialog(
+    BuildContext context,
+    String _title,
+    String _content,
+  ) async {
+    var result = showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: _title != '' ? Text(_title) : null,
+          content: _content != '' ? Text(_content) : null,
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context, 'YES'),
+            ),
+          ],
+        );
+      },
+    );
+    return result;
+  }
+
+  // サインアウト確認ダイアログ
+  Future<String?> signOutDialog(
+    BuildContext context,
+  ) async {
+    var result = showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('ログアウトしますか？'),
+          content: const Text('連携をしていない場合はデータが失われます。'),
+          actions: [
+            TextButton(
+              child: const Text('キャンセル'),
+              onPressed: () => Navigator.pop(context, 'NO'),
+            ),
+            TextButton(
+              child: const Text(
+                'ログアウトする',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onPressed: () => Navigator.pop(context, 'YES'),
+            ),
+          ],
+        );
+      },
+    );
+    return result;
+  }
+
+  Future<String?> showErrorDialog(
     BuildContext context,
     String _title,
     String _content,

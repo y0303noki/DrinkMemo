@@ -4,6 +4,7 @@ import 'package:coffee_project2/database/coffee_image_firebase.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/providers/user/user_provider.dart';
+import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -110,6 +111,7 @@ class CoffeeFirebase {
     addObject['cafeType'] = coffeeModel.cafeType;
     addObject['shopName'] = coffeeModel.shopName;
     addObject['brandName'] = coffeeModel.brandName;
+    addObject['isIce'] = coffeeModel.isIce;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -182,6 +184,7 @@ class CoffeeFirebase {
     updateData['name'] = coffeeModel.name;
     // updateData['favorite'] = coffeeModel.favorite;
     updateData['cafeType'] = coffeeModel.cafeType;
+    updateData['isIce'] = coffeeModel.isIce;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
@@ -258,6 +261,7 @@ class CoffeeFirebase {
             cafeType: doc.data()['cafeType'] ?? 0,
             shopName: doc.data()['shopName'] ?? '',
             brandName: doc.data()['brandName'] ?? '',
+            isIce: doc.data()['isIce'] ?? false,
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -301,6 +305,7 @@ class CoffeeFirebase {
               cafeType: doc.data()['cafeType'] ?? 0,
               shopName: doc.data()['shopName'] ?? '',
               brandName: doc.data()['brandName'] ?? '',
+              isIce: doc.data()['isIce'] ?? false,
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
@@ -362,6 +367,7 @@ class CoffeeFirebase {
             cafeType: doc.data()['cafeType'] ?? 0,
             shopName: doc.data()['shopName'] ?? '',
             brandName: doc.data()['brandName'] ?? '',
+            isIce: doc.data()['isIce'] ?? false,
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),

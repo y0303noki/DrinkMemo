@@ -45,76 +45,102 @@ class CoffeeItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
-                  ),
-                  child: _setCofeeImage(coffeeData, coffee.imageId!),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Column(
+              children: [
+                Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      DateUtility(coffee.coffeeAt).toDateFormatted(),
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        color: Color(0xff333333),
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
                       ),
+                      child: _setCofeeImage(coffeeData, coffee.imageId!),
                     ),
-                    const SizedBox(height: 10),
-                    Text(
-                      coffee.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xff333333),
-                      ),
+                    const SizedBox(
+                      width: 10,
                     ),
-                    Text(
-                      coffee.cafeType == CafeType.TYPE_HOME_CAFE
-                          ? coffee.brandName
-                          : coffee.shopName,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.normal,
-                        color: Color(0xff333333),
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          DateUtility(coffee.coffeeAt).toDateFormatted(),
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Color(0xff333333),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: Text(
+                            coffee.name,
+                            textAlign: TextAlign.right,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xff333333),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          coffee.cafeType == CafeType.TYPE_HOME_CAFE
+                              ? coffee.brandName
+                              : coffee.shopName,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal,
+                            color: Color(0xff333333),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                Consumer<CoffeeProvider>(
-                  builder: (ctx, model, _) {
-                    return Container(
-                      padding: const EdgeInsets.only(
-                          top: 10, right: 10, bottom: 10, left: 10),
-                      child: IconButton(
-                        icon: Icon(coffee.favorite
-                            ? Icons.favorite
-                            : Icons.favorite_border),
-                        onPressed: () {
-                          var _db = CoffeeFirebase();
-                          _db.updateFavorite(coffee.id, !coffee.favorite);
-                          model.toggleFavorite(coffee);
-                        },
-                      ),
-                    );
-                  },
-                ),
-                Container(
-                  width: 5,
-                  height: 100,
-                  color: coffee.cafeType == CafeType.TYPE_HOME_CAFE
-                      ? Colors.red
-                      : Colors.blue,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Consumer<CoffeeProvider>(
+                      builder: (ctx, model, _) {
+                        return Container(
+                          padding: const EdgeInsets.only(
+                              top: 10, right: 0, bottom: 10, left: 0),
+                          child: IconButton(
+                              icon: Icon(coffee.favorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border),
+                              onPressed: () {
+                                var _db = CoffeeFirebase();
+                                _db.updateFavorite(coffee.id, !coffee.favorite);
+                                model.toggleFavorite(coffee);
+                                String _text = coffee.favorite
+                                    ? 'お気に入りに追加しました。'
+                                    : 'お気に入りから削除しました。';
+                                SnackBar snackBar = SnackBar(
+                                  duration: const Duration(seconds: 1),
+                                  content: Text(_text),
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                );
+                                // 保存が完了したら画面下部に完了メッセージを出す
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }),
+                        );
+                      },
+                    ),
+                    Container(
+                      width: 5,
+                      height: 100,
+                      color: coffee.cafeType == CafeType.TYPE_HOME_CAFE
+                          ? Colors.red
+                          : Colors.blue,
+                    ),
+                  ],
                 ),
               ],
             ),
