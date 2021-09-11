@@ -360,4 +360,28 @@ class CustomDialog {
     );
     return result;
   }
+
+  Future<String?> showErrorDialog(
+    BuildContext context,
+    String _title,
+    String _content,
+  ) async {
+    var result = showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) {
+        return AlertDialog(
+          title: _title != '' ? Text(_title) : null,
+          content: _content != '' ? Text(_content) : null,
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () => Navigator.pop(context, 'YES'),
+            ),
+          ],
+        );
+      },
+    );
+    return result;
+  }
 }

@@ -97,15 +97,27 @@ class CoffeeItem extends StatelessWidget {
                       padding: const EdgeInsets.only(
                           top: 10, right: 10, bottom: 10, left: 10),
                       child: IconButton(
-                        icon: Icon(coffee.favorite
-                            ? Icons.favorite
-                            : Icons.favorite_border),
-                        onPressed: () {
-                          var _db = CoffeeFirebase();
-                          _db.updateFavorite(coffee.id, !coffee.favorite);
-                          model.toggleFavorite(coffee);
-                        },
-                      ),
+                          icon: Icon(coffee.favorite
+                              ? Icons.favorite
+                              : Icons.favorite_border),
+                          onPressed: () {
+                            var _db = CoffeeFirebase();
+                            _db.updateFavorite(coffee.id, !coffee.favorite);
+                            model.toggleFavorite(coffee);
+                            String _text = coffee.favorite
+                                ? 'お気に入りに追加しました。'
+                                : 'お気に入りから削除しました。';
+                            SnackBar snackBar = SnackBar(
+                              duration: const Duration(seconds: 1),
+                              content: Text(_text),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                            );
+                            // 保存が完了したら画面下部に完了メッセージを出す
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }),
                     );
                   },
                 ),
