@@ -35,6 +35,10 @@ class CoffeeProvider extends ChangeNotifier {
   bool _isFavorite = false;
   bool get isFavorite => _isFavorite;
 
+  // アイス or　ホット (True: hot, False: ice)
+  bool _isIce = false;
+  bool get isIce => _isIce;
+
   // お気に入り変更
   void toggleFavorite(CoffeeModel coffeeModel) {
     coffeeModel.favorite = !coffeeModel.favorite;
@@ -62,6 +66,11 @@ class CoffeeProvider extends ChangeNotifier {
   Future setLabelCoffeeAt(DateTime selectDateTime) async {
     labelCoffeeAt = DateUtility(selectDateTime).toDateFormatted();
     _coffeeAt = selectDateTime;
+    notifyListeners();
+  }
+
+  void changeIsIce(bool e) {
+    _isIce = e;
     notifyListeners();
   }
 

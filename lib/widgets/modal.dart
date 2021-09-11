@@ -636,6 +636,56 @@ class Modal {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
                         child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              coffeeData.isIce
+                                  ? Container(
+                                      child: Row(
+                                        children: const [
+                                          Text(
+                                            'アイス',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Icon(Icons.icecream_outlined)
+                                        ],
+                                      ),
+                                    )
+                                  : Container(
+                                      child: Row(
+                                        children: const [
+                                          Text(
+                                            'ホット',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Icon(Icons
+                                              .local_fire_department_outlined),
+                                        ],
+                                      ),
+                                    ),
+                              // アイス or　ホット
+                              Switch(
+                                activeColor: Colors.green,
+                                activeTrackColor: Colors.blue,
+                                inactiveThumbColor: Colors.orange,
+                                inactiveTrackColor: Colors.red,
+                                value: coffeeData.isIce,
+                                onChanged: (bool? e) {
+                                  if (e == null) {
+                                    return;
+                                  }
+                                  coffeeData.changeIsIce(e);
+                                },
+                              ),
+                            ]),
+                      ),
+
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             const Text(
@@ -829,6 +879,7 @@ class Modal {
                                 _coffeeModel.name =
                                     _nameTextEditingCntroller.text;
                                 _coffeeModel.favorite = false;
+                                _coffeeModel.isIce = coffeeData.isIce;
                                 _coffeeModel.updatedAt = now;
                                 _coffeeModel.coffeeAt = coffeeData.coffeeAt;
                                 var _coffeeDb = CoffeeFirebase();
@@ -1037,7 +1088,6 @@ class Modal {
     );
 
     if (selectDateTime != null) {
-      print(selectDateTime);
       coffeeData.setLabelCoffeeAt(selectDateTime);
     }
   }

@@ -86,7 +86,7 @@ class CustomDialog {
       // barrierDismissible: false,
       builder: (_) {
         return AlertDialog(
-          title: const Text('マイドリンク'),
+          title: Container(child: Text('マイドリンク')),
           content: dialogContent(myCoffeeModel, imageUrl),
           // content: Text("This is the content"),
           actions: [
