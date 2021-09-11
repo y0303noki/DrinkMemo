@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
@@ -78,8 +79,8 @@ class CoffeeItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      coffee.coffeeType == 'BEAN'
-                          ? coffee.beanName
+                      coffee.cafeType == CafeType.TYPE_HOME_CAFE
+                          ? coffee.brandName
                           : coffee.shopName,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -111,7 +112,9 @@ class CoffeeItem extends StatelessWidget {
                 Container(
                   width: 5,
                   height: 100,
-                  color: coffee.coffeeType == 'BEAN' ? Colors.red : Colors.blue,
+                  color: coffee.cafeType == CafeType.TYPE_HOME_CAFE
+                      ? Colors.red
+                      : Colors.blue,
                 ),
               ],
             ),

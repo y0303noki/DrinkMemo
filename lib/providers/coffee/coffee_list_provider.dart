@@ -1,3 +1,4 @@
+import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/shop_or_bean_firebase.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/model/shop_or_bean_model.dart';
@@ -61,9 +62,6 @@ class CoffeeListProvider extends ChangeNotifier {
   void addilterList(String filter) {
     _filterList.add(filter);
   }
-
-  List<Chip> _chipList = [];
-  List<Chip> get chipList => _chipList;
 
   void removeFilterList(String filter) {
     _filterList.remove(filter);
@@ -138,13 +136,15 @@ class CoffeeListProvider extends ChangeNotifier {
 
       if (filter == 'SHOP') {
         _tempCoffeeModels = _tempCoffeeModels
-            .where((coffeeModel) => coffeeModel.coffeeType == 'SHOP')
+            .where((coffeeModel) =>
+                coffeeModel.cafeType == CafeType.TYPE_SHOP_CAFE)
             .toList();
       }
 
       if (filter == 'BEAN') {
         _tempCoffeeModels = _tempCoffeeModels
-            .where((coffeeModel) => coffeeModel.coffeeType == 'BEAN')
+            .where((coffeeModel) =>
+                coffeeModel.cafeType == CafeType.TYPE_HOME_CAFE)
             .toList();
       }
     }

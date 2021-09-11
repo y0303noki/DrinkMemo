@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
 import 'package:coffee_project2/database/shop_or_bean_firebase.dart';
@@ -88,15 +89,16 @@ class AnalyticsProvider extends ChangeNotifier {
     }
 
     // ショップリスト
-    List<CoffeeModel> _shopCoffees =
-        _coffeeModels.where((element) => element.coffeeType == 'SHOP').toList();
+    List<CoffeeModel> _shopCoffees = _coffeeModels
+        .where((element) => element.cafeType == CafeType.TYPE_SHOP_CAFE)
+        .toList();
 
     _shopCount = _shopCoffees.length;
 
     // おうち
     List<CoffeeModel> _homeCoffees = _coffeeModels
         .where(
-          (element) => element.coffeeType == 'BEAN',
+          (element) => element.cafeType == CafeType.TYPE_HOME_CAFE,
         )
         .toList();
 

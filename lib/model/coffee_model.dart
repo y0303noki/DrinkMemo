@@ -2,9 +2,9 @@ class CoffeeModel {
   String id;
   String name;
   bool favorite;
-  String coffeeType = '';
+  int cafeType = 0;
   String shopName = '';
-  String beanName = '';
+  String brandName = '';
   String? imageId;
   String imageUrl;
   DateTime? coffeeAt;
@@ -14,9 +14,9 @@ class CoffeeModel {
       {this.id = '',
       this.name = '',
       this.favorite = false,
-      this.coffeeType = '',
+      this.cafeType = 0,
       this.shopName = '',
-      this.beanName = '',
+      this.brandName = '',
       this.imageId,
       this.imageUrl = '',
       this.coffeeAt,
