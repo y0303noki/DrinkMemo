@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           create: (ctx) => AnalyticsProvider(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => UserMyCoffeeProvider(),
+          create: (ctx) => UserMyCoffeeProvider()..findUserMyCoffeeData(),
         ),
       ],
       child: MaterialApp(

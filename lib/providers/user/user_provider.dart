@@ -77,4 +77,9 @@ class UserProvider extends ChangeNotifier {
     UserCredential user = await _auth.signInAnonymously();
     return user;
   }
+
+  // サインアウト
+  Future signOut() async {
+    await _auth.signOut();
+  }
 }

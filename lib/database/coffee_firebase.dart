@@ -107,9 +107,9 @@ class CoffeeFirebase {
     addObject['userId'] = userId;
     addObject['name'] = coffeeModel.name;
     addObject['favorite'] = coffeeModel.favorite;
-    addObject['coffeeType'] = coffeeModel.coffeeType;
-    addObject['brandName'] = coffeeModel.shopName;
-    addObject['beanName'] = coffeeModel.beanName;
+    addObject['cafeType'] = coffeeModel.cafeType;
+    addObject['shopName'] = coffeeModel.shopName;
+    addObject['brandName'] = coffeeModel.brandName;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -181,9 +181,9 @@ class CoffeeFirebase {
     Map<String, dynamic> updateData = {};
     updateData['name'] = coffeeModel.name;
     // updateData['favorite'] = coffeeModel.favorite;
-    updateData['coffeeType'] = coffeeModel.coffeeType;
-    updateData['brandName'] = coffeeModel.shopName;
-    updateData['beanName'] = coffeeModel.beanName;
+    updateData['cafeType'] = coffeeModel.cafeType;
+    updateData['shopName'] = coffeeModel.shopName;
+    updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
     updateData['isDeleted'] = false;
     updateData['coffeeAt'] = coffeeModel.coffeeAt;
@@ -255,9 +255,9 @@ class CoffeeFirebase {
             id: doc.data()['id'] ?? '',
             name: doc.data()['name'] ?? '',
             favorite: doc.data()['favorite'] ?? false,
-            coffeeType: doc.data()['coffeeType'] ?? '',
-            shopName: doc.data()['brandName'] ?? '',
-            beanName: doc.data()['beanName'] ?? '',
+            cafeType: doc.data()['cafeType'] ?? 0,
+            shopName: doc.data()['shopName'] ?? '',
+            brandName: doc.data()['brandName'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -298,9 +298,9 @@ class CoffeeFirebase {
               id: doc.data()['id'] ?? '',
               name: doc.data()['name'] ?? '',
               favorite: doc.data()['favorite'] ?? false,
-              coffeeType: doc.data()['coffeeType'] ?? '',
-              shopName: doc.data()['brandName'] ?? '',
-              beanName: doc.data()['beanName'] ?? '',
+              cafeType: doc.data()['cafeType'] ?? 0,
+              shopName: doc.data()['shopName'] ?? '',
+              brandName: doc.data()['brandName'] ?? '',
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
@@ -359,9 +359,9 @@ class CoffeeFirebase {
             id: doc.data()['id'] ?? '',
             name: doc.data()['name'] ?? '',
             favorite: doc.data()['favorite'] ?? false,
-            coffeeType: doc.data()['coffeeType'] ?? '',
-            shopName: doc.data()['brandName'] ?? '',
-            beanName: doc.data()['beanName'] ?? '',
+            cafeType: doc.data()['cafeType'] ?? 0,
+            shopName: doc.data()['shopName'] ?? '',
+            brandName: doc.data()['brandName'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),

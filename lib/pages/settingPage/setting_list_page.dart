@@ -1,5 +1,6 @@
 import 'package:coffee_project2/pages/settingPage/developer_page.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
+import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +41,31 @@ class SettingListPage extends StatelessWidget {
               }, // タップ
               onLongPress: () {
                 print("onLongPress called.");
+              }, // 長押し
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: Text(
+                'ログアウト',
+                style: TextStyle(color: Colors.black, fontSize: 15.0),
+              ),
+              onTap: () {
+                print("onTap called.");
+              }, // タップ
+              onLongPress: () {
+                //　ロングタップでサインアウト
+                print("onLongPress called.");
+                UserProvider().signOut();
               }, // 長押し
             ),
           ),

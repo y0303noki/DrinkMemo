@@ -1,4 +1,5 @@
 // 下からモーダルを出す
+import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/database/user_mycofee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
@@ -26,7 +27,7 @@ class Modal {
         TextEditingController(text: '');
     TextEditingController _brandTextEditingCntroller =
         TextEditingController(text: '');
-    TextEditingController _storeTextEditingCntroller =
+    TextEditingController _shopTextEditingCntroller =
         TextEditingController(text: '');
     String bottomTitle = '';
     CoffeeModel? modalCoffeeModel = coffeeModel;
@@ -42,20 +43,27 @@ class Modal {
     coffeeData.changeIsSabeavle(false);
     modalTabData.hasMyCoffee = false;
     CoffeeModel? myCoffee;
+    bool myDrinkSelected = false;
 
     // 更新するとき
     if (isUpdate) {
       bottomTitle = '更新';
+      await userMyCoffeeData.findUserMyCoffeeData();
       coffeeData.changeIsSabeavle(true);
       // coffeeId = coffeeModel!.id;
       coffeeData.labelCoffeeAt =
           DateUtility(coffeeModel!.coffeeAt).toDateFormatted();
       _nameTextEditingCntroller.text = coffeeModel.name;
-      _brandTextEditingCntroller.text = coffeeModel.beanName;
-      _storeTextEditingCntroller.text = coffeeModel.shopName;
+      _brandTextEditingCntroller.text = coffeeModel.brandName;
+      _shopTextEditingCntroller.text = coffeeModel.shopName;
       // coffeeData.imageUrl = coffeeModel.imageUrl;
 
-      int _index = coffeeModel.coffeeType == 'BEAN' ? 1 : 0;
+      // マイドリンクと選択中のドリンクが同じか判定
+      if (userMyCoffeeData.myCoffee != null) {
+        myDrinkSelected = coffeeModel.id == userMyCoffeeData.myCoffee!.id;
+      }
+
+      int _index = coffeeModel.cafeType;
       modalTabData.setCurrentIndex(_index);
     } else {
       bottomTitle = '登録';
@@ -63,12 +71,12 @@ class Modal {
       coffeeData.imageUrl = '';
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
 
-      // マイコーヒー
+      // マイドリンク
       var _coffeeDb = CoffeeFirebase();
 
-      userMyCoffeeData.resetUserMyCoffeeModel();
-      await userMyCoffeeData.findUserMyCoffeeData();
-      // マイコーヒーを登録ずみかどうかチェック
+      // userMyCoffeeData.resetUserMyCoffeeModel();
+
+      // マイドリンクを登録ずみかどうかチェック
 
       if (userMyCoffeeData.userMyCoffeeModel != null) {
         myCoffee = await _coffeeDb
@@ -94,7 +102,7 @@ class Modal {
     List<String> _suggestShopNameList =
         coffeeDatas.shopModels.map((e) => e.name).toSet().toList();
 
-    List<String> _suggestBeanNameList =
+    List<String> _suggestBrandNameList =
         coffeeDatas.brandModels.map((e) => e.name).toSet().toList();
 
     var value = await showModalBottomSheet(
@@ -142,89 +150,36 @@ class Modal {
                             ),
                             Row(
                               children: [
+                                myDrinkStarWidget(context, modalCoffeeModel,
+                                    userMyCoffeeData),
                                 modalCoffeeModel != null
                                     ? IconButton(
                                         onPressed: () async {
-                                          // マイコーヒー
-                                          var _coffeeDb = CoffeeFirebase();
-
-                                          userMyCoffeeData
-                                              .resetUserMyCoffeeModel();
-                                          await userMyCoffeeData
-                                              .findUserMyCoffeeData();
-                                          // マイコーヒーを登録ずみかどうかチェック
-                                          bool isUpdate = false;
-                                          String cooffeeName = '';
-                                          String shopName = '';
-                                          String brandName = '';
+                                          // データ削除確認
                                           if (userMyCoffeeData
-                                                  .userMyCoffeeModel !=
-                                              null) {
-                                            CoffeeModel? cooffee =
-                                                await _coffeeDb
-                                                    .fetchCoffeeDataById(
-                                                        userMyCoffeeData
-                                                            .userMyCoffeeModel!
-                                                            .coffeeId);
-                                            if (cooffee != null) {
-                                              isUpdate = true;
-                                              cooffeeName = cooffee.name;
-                                              shopName = cooffee.shopName;
-                                              brandName = cooffee.beanName;
-                                            }
+                                                      .userMyCoffeeModel !=
+                                                  null &&
+                                              userMyCoffeeData
+                                                      .userMyCoffeeModel!
+                                                      .coffeeId ==
+                                                  modalCoffeeModel.id) {
+                                            // マイドリンクを削除しようとしたらキャンセルさせる
+                                            String? result =
+                                                await CustomDialog()
+                                                    .simpleDefaultDialog(
+                                                        context,
+                                                        '',
+                                                        'マイドリンクに登録中なので削除できません');
+                                            return;
                                           }
 
                                           String? result = await CustomDialog()
-                                              .myCoffeeDialog(
-                                                  context,
-                                                  isUpdate,
-                                                  cooffeeName,
-                                                  brandName,
-                                                  shopName);
+                                              .deleteCoffeeDialog(context);
                                           if (result == null ||
                                               result == 'NO') {
-                                            Navigator.pop(context);
                                             return;
                                           }
-                                          UserMyCoffeeFirebase
-                                              _userMyCooffeeDb =
-                                              UserMyCoffeeFirebase();
-                                          // 新規登録
-                                          if (userMyCoffeeData
-                                                  .userMyCoffeeModel ==
-                                              null) {
-                                            UserMyCoffeeModel newMyCoffeeModel =
-                                                UserMyCoffeeModel(
-                                              coffeeId: coffeeModel!.id,
-                                            );
-                                            await _userMyCooffeeDb
-                                                .insertUserMyCoffeeData(
-                                                    newMyCoffeeModel);
-                                          } else {
-                                            UserMyCoffeeModel
-                                                updateMyCoffeeModel =
-                                                UserMyCoffeeModel(
-                                              id: userMyCoffeeData
-                                                  .userMyCoffeeModel!.id,
-                                              coffeeId: coffeeModel!.id,
-                                            );
-                                            await _userMyCooffeeDb
-                                                .updateUserMyCoffeeData(
-                                                    updateMyCoffeeModel);
-                                          }
 
-                                          Navigator.pop(context);
-                                        },
-                                        icon: const Icon(
-                                          Icons.star_border_outlined,
-                                          color: Colors.yellow,
-                                        ),
-                                      )
-                                    : Container(),
-                                modalCoffeeModel != null
-                                    ? IconButton(
-                                        onPressed: () async {
-                                          // データ削除
                                           var _coffeeDb = CoffeeFirebase();
                                           await _coffeeDb.deleteCoffeeData(
                                               modalCoffeeModel);
@@ -256,14 +211,15 @@ class Modal {
                                     child: Material(
                                       child: InkWell(
                                         onTap: () {
-                                          print('tap');
-                                          modalTabData.setCurrentIndex(0);
+                                          modalTabData.setCurrentIndex(
+                                              CafeType.TYPE_HOME_CAFE);
                                         },
                                         child: Container(
                                           height: 30,
                                           child: Container(
                                             width: 20,
-                                            decoration: model.currentIndex == 0
+                                            decoration: model.currentIndex ==
+                                                    CafeType.TYPE_HOME_CAFE
                                                 ? const BoxDecoration(
                                                     border: Border(
                                                       bottom: BorderSide(
@@ -274,16 +230,28 @@ class Modal {
                                                   )
                                                 : null,
                                             child: Center(
-                                              child: Text(
-                                                'おみせで',
-                                                style: model.currentIndex != 0
-                                                    ? const TextStyle(
-                                                        color: Colors.grey,
-                                                      )
-                                                    : const TextStyle(
-                                                        color: Colors.black,
-                                                      ),
-                                              ),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    const Icon(
+                                                        Icons.house_outlined),
+                                                    Text(
+                                                      CafeType.HOME_CAFE,
+                                                      style: model.currentIndex !=
+                                                              CafeType
+                                                                  .TYPE_HOME_CAFE
+                                                          ? const TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                            )
+                                                          : const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                    ),
+                                                  ]),
                                             ),
                                           ),
                                         ),
@@ -294,13 +262,14 @@ class Modal {
                                     child: Material(
                                       child: InkWell(
                                         onTap: () {
-                                          print('tap');
-                                          modalTabData.setCurrentIndex(1);
+                                          modalTabData.setCurrentIndex(
+                                              CafeType.TYPE_SHOP_CAFE);
                                         },
                                         child: Container(
                                           height: 30,
                                           child: Container(
-                                            decoration: model.currentIndex == 1
+                                            decoration: model.currentIndex ==
+                                                    CafeType.TYPE_SHOP_CAFE
                                                 ? const BoxDecoration(
                                                     border: Border(
                                                       bottom: BorderSide(
@@ -312,8 +281,9 @@ class Modal {
                                                 : null,
                                             child: Center(
                                               child: Text(
-                                                'おうちで',
-                                                style: model.currentIndex != 1
+                                                CafeType.SHOP_CAFE,
+                                                style: model.currentIndex !=
+                                                        CafeType.TYPE_SHOP_CAFE
                                                     ? const TextStyle(
                                                         color: Colors.grey,
                                                       )
@@ -332,15 +302,19 @@ class Modal {
                                           child: Material(
                                             child: InkWell(
                                               onTap: () {
-                                                print('tap');
-                                                modalTabData.setCurrentIndex(2);
+                                                _nameTextEditingCntroller.text =
+                                                    myCoffee != null
+                                                        ? myCoffee.name
+                                                        : '';
+                                                modalTabData.setCurrentIndex(
+                                                    CafeType.TYPE_MY_DRINK);
                                               },
                                               child: Container(
                                                 height: 30,
                                                 child: Container(
                                                   decoration: model
                                                               .currentIndex ==
-                                                          2
+                                                          CafeType.TYPE_MY_DRINK
                                                       ? const BoxDecoration(
                                                           border: Border(
                                                             bottom: BorderSide(
@@ -353,18 +327,18 @@ class Modal {
                                                       : null,
                                                   child: Center(
                                                     child: Text(
-                                                      'マイコーヒー',
-                                                      style:
-                                                          model.currentIndex !=
-                                                                  2
-                                                              ? const TextStyle(
-                                                                  color: Colors
-                                                                      .grey,
-                                                                )
-                                                              : const TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
+                                                      CafeType.MY_DRINK,
+                                                      style: model.currentIndex !=
+                                                              CafeType
+                                                                  .TYPE_MY_DRINK
+                                                          ? const TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                            )
+                                                          : const TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
                                                     ),
                                                   ),
                                                 ),
@@ -380,57 +354,119 @@ class Modal {
                         },
                       ),
 
-                      // coffeeData.imageFile == null
-                      //     ? Container(
-                      //         height: 200,
-                      //         width: 200,
-                      //         color: Colors.grey,
-                      //       )
-                      //     : Container(
-                      //         height: 200,
-                      //         width: 200,
-                      //         child: Image.file(coffeeData.imageFile!),
-                      //       ),
                       const SizedBox(height: 20),
                       // コーヒー名
                       Consumer<ModalTabProvider>(
                         builder: (ctx, model, _) {
-                          if (modalTabData.currentIndex != 2) {
+                          if (model.currentIndex == CafeType.TYPE_MY_DRINK) {
+                            _nameTextEditingCntroller.text =
+                                myCoffee != null ? myCoffee.name : '';
+                          }
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: TypeAheadField(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                                enabled: modalTabData.currentIndex ==
+                                        CafeType.TYPE_HOME_CAFE ||
+                                    modalTabData.currentIndex ==
+                                        CafeType.TYPE_SHOP_CAFE,
+                                controller: _nameTextEditingCntroller,
+                                decoration: InputDecoration(
+                                  focusColor: Colors.black,
+                                  fillColor: Colors.black,
+                                  hoverColor: Colors.black,
+                                  border: OutlineInputBorder(),
+                                  labelText: '名前',
+                                  prefixIcon: Icon(Icons.local_drink_outlined),
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      _nameTextEditingCntroller.clear();
+                                    },
+                                    icon: const Icon(Icons.clear),
+                                  ),
+                                ),
+                                onChanged: (text) {
+                                  if (text != null && text.length > 20) {}
+
+                                  if (text != null &&
+                                      text.length > 0 &&
+                                      text.length < 20) {
+                                    coffeeData.changeIsSabeavle(true);
+                                  } else {
+                                    coffeeData.changeIsSabeavle(false);
+                                  }
+                                },
+                              ),
+                              suggestionsCallback: (pattern) async {
+                                if (pattern.isEmpty) {
+                                  return [];
+                                }
+                                // pattern:入力された文字
+                                // return: サジェスト候補となる文字列を返す
+                                List<String> _filter = _suggestCoffeeNameList
+                                    .where((element) => (element.toLowerCase())
+                                        .contains(pattern.toLowerCase()))
+                                    .take(5)
+                                    .toList();
+                                return _filter;
+                              },
+                              itemBuilder: (context, suggestion) {
+                                return ListTile(
+                                  title: Text(suggestion as String),
+                                );
+                              },
+                              // サジェストの結果が0件の時のメッセージ
+                              noItemsFoundBuilder: (context) {
+                                return Container();
+                              },
+                              onSuggestionSelected: (suggestion) {
+                                _nameTextEditingCntroller.text =
+                                    suggestion as String;
+                              },
+                            ),
+                          );
+                        },
+                      ),
+
+                      const SizedBox(height: 10),
+                      Consumer<ModalTabProvider>(
+                        builder: (ctx, model, _) {
+                          if (modalTabData.currentIndex ==
+                              CafeType.TYPE_HOME_CAFE) {
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                               child: TypeAheadField(
                                 textFieldConfiguration: TextFieldConfiguration(
-                                  // autofocus: true,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  controller: _nameTextEditingCntroller,
+                                  controller: _brandTextEditingCntroller,
                                   decoration: InputDecoration(
-                                    focusColor: Colors.black,
-                                    fillColor: Colors.black,
-                                    hoverColor: Colors.black,
                                     border: OutlineInputBorder(),
-                                    labelText: 'コーヒーの名前',
-                                    prefixIcon:
-                                        Icon(Icons.local_drink_outlined),
+                                    labelText: '銘柄',
+                                    prefixIcon: const Icon(
+                                        Icons.where_to_vote_outlined),
                                     suffixIcon: IconButton(
                                       onPressed: () {
-                                        _nameTextEditingCntroller.clear();
+                                        _brandTextEditingCntroller.clear();
                                       },
                                       icon: const Icon(Icons.clear),
                                     ),
                                   ),
                                   onChanged: (text) {
-                                    if (text != null && text.length > 20) {
-                                      print('20文字超えたらもう無理!');
-                                    }
-
-                                    if (text != null &&
-                                        text.length > 0 &&
-                                        text.length < 20) {
+                                    if (modalCoffeeModel != null) {
+                                      // 更新の時の非活性処理
                                       coffeeData.changeIsSabeavle(true);
                                     } else {
-                                      coffeeData.changeIsSabeavle(false);
+                                      // 登録の時の非活性処理
+                                      if (_nameTextEditingCntroller
+                                              .text.isNotEmpty &&
+                                          text.isNotEmpty &&
+                                          text.length < 20) {
+                                        coffeeData.changeIsSabeavle(true);
+                                      } else {
+                                        coffeeData.changeIsSabeavle(false);
+                                      }
                                     }
                                   },
                                 ),
@@ -440,7 +476,7 @@ class Modal {
                                   }
                                   // pattern:入力された文字
                                   // return: サジェスト候補となる文字列を返す
-                                  List<String> _filter = _suggestCoffeeNameList
+                                  List<String> _filter = _suggestBrandNameList
                                       .where((element) =>
                                           (element.toLowerCase())
                                               .contains(pattern.toLowerCase()))
@@ -458,77 +494,92 @@ class Modal {
                                   return Container();
                                 },
                                 onSuggestionSelected: (suggestion) {
-                                  _nameTextEditingCntroller.text =
+                                  _brandTextEditingCntroller.text =
                                       suggestion as String;
                                 },
                               ),
                             );
-                          } else {
-                            _nameTextEditingCntroller.text = myCoffee!.name;
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                              child: TypeAheadField(
-                                textFieldConfiguration: TextFieldConfiguration(
-                                  enabled: false,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  controller: _nameTextEditingCntroller,
-                                  decoration: InputDecoration(
-                                    focusColor: Colors.black,
-                                    fillColor: Colors.black,
-                                    hoverColor: Colors.black,
-                                    border: OutlineInputBorder(),
-                                    labelText: 'コーヒーの名前',
-                                    prefixIcon:
-                                        Icon(Icons.local_drink_outlined),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.clear),
+                          } else if (modalTabData.currentIndex ==
+                              CafeType.TYPE_MY_DRINK) {
+                            // マイドリンク
+                            if (myCoffee!.cafeType == CafeType.TYPE_HOME_CAFE) {
+                              _brandTextEditingCntroller.text =
+                                  myCoffee.brandName;
+                              return Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: TypeAheadField(
+                                  textFieldConfiguration:
+                                      TextFieldConfiguration(
+                                    enabled: false,
+                                    controller: _brandTextEditingCntroller,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: '銘柄',
+                                      prefixIcon: Icon(Icons.store_outlined),
+                                      suffixIcon: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.clear),
+                                      ),
                                     ),
+                                    onChanged: (text) {},
                                   ),
-                                  onChanged: (text) {
-                                    if (text != null && text.length > 20) {
-                                      print('20文字超えたらもう無理!');
-                                    }
-
-                                    if (text != null &&
-                                        text.length > 0 &&
-                                        text.length < 20) {
-                                      coffeeData.changeIsSabeavle(true);
-                                    } else {
-                                      coffeeData.changeIsSabeavle(false);
-                                    }
+                                  suggestionsCallback: (pattern) async {
+                                    return [];
                                   },
+                                  itemBuilder:
+                                      (BuildContext context, itemData) {
+                                    return ListTile();
+                                  },
+                                  onSuggestionSelected: (suggestion) {},
                                 ),
-                                suggestionsCallback: (pattern) async {
-                                  return [];
-                                },
-                                itemBuilder: (context, suggestion) {
-                                  return ListTile();
-                                },
-                                onSuggestionSelected: (suggestion) {},
-                              ),
-                            );
-                          }
-                        },
-                      ),
-
-                      const SizedBox(height: 10),
-                      Consumer<ModalTabProvider>(
-                        builder: (ctx, model, _) {
-                          if (modalTabData.currentIndex == 0) {
-                            // カフェ
+                              );
+                            } else if (myCoffee.cafeType ==
+                                CafeType.TYPE_SHOP_CAFE) {
+                              _brandTextEditingCntroller.text =
+                                  myCoffee.shopName;
+                              return Padding(
+                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                child: TypeAheadField(
+                                  textFieldConfiguration:
+                                      TextFieldConfiguration(
+                                    enabled: false,
+                                    controller: _brandTextEditingCntroller,
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: '店名',
+                                      prefixIcon: Icon(Icons.store_outlined),
+                                      suffixIcon: IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.clear),
+                                      ),
+                                    ),
+                                    onChanged: (text) {},
+                                  ),
+                                  suggestionsCallback: (pattern) async {
+                                    return [];
+                                  },
+                                  itemBuilder:
+                                      (BuildContext context, itemData) {
+                                    return ListTile();
+                                  },
+                                  onSuggestionSelected: (suggestion) {},
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          } else if (modalTabData.currentIndex ==
+                              CafeType.TYPE_SHOP_CAFE) {
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
                               child: TypeAheadField(
                                 textFieldConfiguration: TextFieldConfiguration(
-                                  controller: _storeTextEditingCntroller,
+                                  controller: _shopTextEditingCntroller,
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'おみせの名前',
+                                    labelText: '店名',
                                     prefixIcon: Icon(Icons.store_outlined),
-                                    suffixIcon: Icon(Icons.store_outlined),
+                                    suffixIcon: Icon(Icons.clear),
                                   ),
                                   onChanged: (text) {
                                     if (modalCoffeeModel != null) {
@@ -571,141 +622,11 @@ class Modal {
                                   return Container();
                                 },
                                 onSuggestionSelected: (suggestion) {
-                                  _storeTextEditingCntroller.text =
+                                  _shopTextEditingCntroller.text =
                                       suggestion as String;
                                 },
                               ),
                             );
-                          } else if (modalTabData.currentIndex == 1) {
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                              child: TypeAheadField(
-                                textFieldConfiguration: TextFieldConfiguration(
-                                  controller: _brandTextEditingCntroller,
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(),
-                                    labelText: '豆の種類/ブランドの名前',
-                                    prefixIcon: Icon(Icons.store_outlined),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        _brandTextEditingCntroller.clear();
-                                      },
-                                      icon: const Icon(Icons.clear),
-                                    ),
-                                  ),
-                                  onChanged: (text) {
-                                    if (modalCoffeeModel != null) {
-                                      // 更新の時の非活性処理
-                                      coffeeData.changeIsSabeavle(true);
-                                    } else {
-                                      // 登録の時の非活性処理
-                                      if (_nameTextEditingCntroller
-                                              .text.isNotEmpty &&
-                                          text.isNotEmpty &&
-                                          text.length < 20) {
-                                        coffeeData.changeIsSabeavle(true);
-                                      } else {
-                                        coffeeData.changeIsSabeavle(false);
-                                      }
-                                    }
-                                  },
-                                ),
-                                suggestionsCallback: (pattern) async {
-                                  if (pattern.isEmpty) {
-                                    return [];
-                                  }
-                                  // pattern:入力された文字
-                                  // return: サジェスト候補となる文字列を返す
-                                  List<String> _filter = _suggestBeanNameList
-                                      .where((element) =>
-                                          (element.toLowerCase())
-                                              .contains(pattern.toLowerCase()))
-                                      .take(5)
-                                      .toList();
-                                  return _filter;
-                                },
-                                itemBuilder: (context, suggestion) {
-                                  return ListTile(
-                                    title: Text(suggestion as String),
-                                  );
-                                },
-                                // サジェストの結果が0件の時のメッセージ
-                                noItemsFoundBuilder: (context) {
-                                  return Container();
-                                },
-                                onSuggestionSelected: (suggestion) {
-                                  _brandTextEditingCntroller.text =
-                                      suggestion as String;
-                                },
-                              ),
-                            );
-                          } else if (modalTabData.currentIndex == 2) {
-                            // マイコーヒー
-                            if (myCoffee!.coffeeType == 'BEAN') {
-                              _brandTextEditingCntroller.text =
-                                  myCoffee.beanName;
-                              return Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: TypeAheadField(
-                                  textFieldConfiguration:
-                                      TextFieldConfiguration(
-                                    enabled: true,
-                                    controller: _brandTextEditingCntroller,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: '豆の種類/ブランドの名前',
-                                      prefixIcon: Icon(Icons.store_outlined),
-                                      suffixIcon: IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.clear),
-                                      ),
-                                    ),
-                                    onChanged: (text) {},
-                                  ),
-                                  suggestionsCallback: (pattern) async {
-                                    return [];
-                                  },
-                                  itemBuilder:
-                                      (BuildContext context, itemData) {
-                                    return ListTile();
-                                  },
-                                  onSuggestionSelected: (suggestion) {},
-                                ),
-                              );
-                            } else if (myCoffee!.coffeeType == 'SHOP') {
-                              _brandTextEditingCntroller.text =
-                                  myCoffee.shopName;
-                              return Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                child: TypeAheadField(
-                                  textFieldConfiguration:
-                                      TextFieldConfiguration(
-                                    enabled: false,
-                                    controller: _brandTextEditingCntroller,
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'おみせの名前',
-                                      prefixIcon: Icon(Icons.store_outlined),
-                                      suffixIcon: IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(Icons.clear),
-                                      ),
-                                    ),
-                                    onChanged: (text) {},
-                                  ),
-                                  suggestionsCallback: (pattern) async {
-                                    return [];
-                                  },
-                                  itemBuilder:
-                                      (BuildContext context, itemData) {
-                                    return ListTile();
-                                  },
-                                  onSuggestionSelected: (suggestion) {},
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
                           } else {
                             return Container();
                           }
@@ -891,15 +812,19 @@ class Modal {
                                 // coffeeをDBに追加
                                 CoffeeModel _coffeeModel = CoffeeModel();
                                 DateTime now = DateTime.now();
-                                if (modalTabData.currentIndex == 0) {
-                                  _coffeeModel.coffeeType = 'SHOP';
+                                if (modalTabData.currentIndex ==
+                                    CafeType.TYPE_SHOP_CAFE) {
+                                  _coffeeModel.cafeType =
+                                      CafeType.TYPE_SHOP_CAFE;
                                   _coffeeModel.shopName =
-                                      _storeTextEditingCntroller.text;
-                                } else {
-                                  _coffeeModel.coffeeType = 'BEAN';
-                                  _coffeeModel.beanName =
+                                      _shopTextEditingCntroller.text;
+                                } else if (modalTabData.currentIndex ==
+                                    CafeType.TYPE_HOME_CAFE) {
+                                  _coffeeModel.cafeType =
+                                      CafeType.TYPE_HOME_CAFE;
+                                  _coffeeModel.brandName =
                                       _brandTextEditingCntroller.text;
-                                }
+                                } else {}
 
                                 _coffeeModel.name =
                                     _nameTextEditingCntroller.text;
@@ -928,7 +853,7 @@ class Modal {
                                 // 追加が終わったらtextEditerをクリアして戻る
                                 _nameTextEditingCntroller.clear();
                                 _brandTextEditingCntroller.clear();
-                                _storeTextEditingCntroller.clear();
+                                _shopTextEditingCntroller.clear();
                                 coffeeDatas.findCoffeeDatas();
                                 const SnackBar snackBar = SnackBar(
                                   content: Text('保存完了'),
@@ -957,6 +882,86 @@ class Modal {
   // 画像が選択されているかどうか
   bool isSetImage(CoffeeProvider coffeeData) {
     return coffeeData.imageFile != null || coffeeData.imageUrl != '';
+  }
+
+  // マイドリンクの星アイコン
+  Widget myDrinkStarWidget(BuildContext context, CoffeeModel? coffeeModel,
+      UserMyCoffeeProvider userMyCoffeeData) {
+    if (coffeeModel == null) {
+      // 表示なし
+      return Container();
+    }
+    bool myDrinkSelected =
+        coffeeModel.id == userMyCoffeeData.userMyCoffeeModel!.coffeeId;
+
+    if (!myDrinkSelected) {
+      // マイドリンクではないので登録or更新できる
+      return Container(
+        child: IconButton(
+          onPressed: () async {
+            // マイドリンク
+            var _coffeeDb = CoffeeFirebase();
+            bool isUpdate = false;
+            String cooffeeName = '';
+            String shopName = '';
+            String brandName = '';
+            if (userMyCoffeeData.userMyCoffeeModel != null) {
+              CoffeeModel? cooffee = await _coffeeDb.fetchCoffeeDataById(
+                  userMyCoffeeData.userMyCoffeeModel!.coffeeId);
+              if (cooffee != null) {
+                isUpdate = true;
+                cooffeeName = cooffee.name;
+                shopName = cooffee.shopName;
+                brandName = cooffee.brandName;
+              }
+            }
+
+            String? result = await CustomDialog().myCoffeeDialog(
+                context, isUpdate, cooffeeName, brandName, shopName);
+            if (result == null || result == 'NO') {
+              return;
+            }
+            UserMyCoffeeFirebase _userMyCooffeeDb = UserMyCoffeeFirebase();
+            // 新規登録
+            if (userMyCoffeeData.userMyCoffeeModel == null) {
+              UserMyCoffeeModel newMyCoffeeModel = UserMyCoffeeModel(
+                coffeeId: coffeeModel.id,
+              );
+              await _userMyCooffeeDb.insertUserMyCoffeeData(newMyCoffeeModel);
+            } else {
+              UserMyCoffeeModel updateMyCoffeeModel = UserMyCoffeeModel(
+                id: userMyCoffeeData.userMyCoffeeModel!.id,
+                coffeeId: coffeeModel.id,
+              );
+              await _userMyCooffeeDb
+                  .updateUserMyCoffeeData(updateMyCoffeeModel);
+            }
+            await userMyCoffeeData.findUserMyCoffeeData();
+
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.star_border_outlined,
+            color: Colors.yellow[800],
+          ),
+        ),
+      );
+    } else {
+      // マイドリンク済みのコーヒー
+      return Container(
+        child: IconButton(
+          onPressed: () async {
+            // マイドリンク済みの場合は表示するだけ
+            await CustomDialog()
+                .simpleDefaultDialog(context, '', 'マイドリンクに登録済みです');
+          },
+          icon: Icon(
+            Icons.star,
+            color: Colors.yellow[800],
+          ),
+        ),
+      );
+    }
   }
 
   Widget setMyCoffeeImage(CoffeeModel coffeeModel, CoffeeProvider coffeeData) {

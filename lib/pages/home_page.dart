@@ -5,6 +5,7 @@ import 'package:coffee_project2/pages/settingPage/setting_list_page.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
+import 'package:coffee_project2/providers/user/user_mycoffee_provider.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:coffee_project2/widgets/modal.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,8 @@ class HomePage extends StatelessWidget {
     final bottomNavigationData = Provider.of<BottomNavigationProvider>(
       context,
     );
+    final UserMyCoffeeProvider userMyCoffeeData =
+        Provider.of<UserMyCoffeeProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -48,12 +51,22 @@ class HomePage extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
+            icon: Icon(
+              Icons.star_border_outlined,
+              color: Colors.yellow[800],
+            ),
+            onPressed: () {
+              CustomDialog().opneMyCoffee(context, userMyCoffeeData.myCoffee,
+                  userMyCoffeeData.imageUrl);
+            },
+          ),
+          IconButton(
             icon: const Icon(
               Icons.help_outline_outlined,
               color: Colors.black,
             ),
             onPressed: () {
-              CustomDialog().openSimpleDialog(context);
+              CustomDialog().openIconDescription(context);
             },
           ),
           // アナリティクス
