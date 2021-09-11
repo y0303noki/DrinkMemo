@@ -938,12 +938,15 @@ class Modal {
   // マイドリンクの星アイコン
   Widget myDrinkStarWidget(BuildContext context, CoffeeModel? coffeeModel,
       UserMyCoffeeProvider userMyCoffeeData) {
-    if (coffeeModel == null || userMyCoffeeData.userMyCoffeeModel == null) {
+    if (coffeeModel == null) {
       // 表示なし
       return Container();
     }
-    bool myDrinkSelected =
-        coffeeModel.id == userMyCoffeeData.userMyCoffeeModel!.coffeeId;
+    bool myDrinkSelected = false;
+    if (userMyCoffeeData.userMyCoffeeModel != null &&
+        coffeeModel.id == userMyCoffeeData.userMyCoffeeModel!.coffeeId) {
+      myDrinkSelected = true;
+    }
 
     if (!myDrinkSelected) {
       // マイドリンクではないので登録or更新できる
