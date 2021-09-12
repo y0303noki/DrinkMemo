@@ -10,6 +10,7 @@ import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
 import 'package:coffee_project2/providers/user/user_mycoffee_provider.dart';
+import 'package:coffee_project2/utils/color_utility.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
@@ -220,10 +221,13 @@ class Modal {
                                             width: 20,
                                             decoration: model.currentIndex ==
                                                     CafeType.TYPE_HOME_CAFE
-                                                ? const BoxDecoration(
+                                                ? BoxDecoration(
                                                     border: Border(
                                                       bottom: BorderSide(
-                                                        color: Colors.blue,
+                                                        color: ColorUtility()
+                                                            .toColorByCofeType(
+                                                                CafeType
+                                                                    .TYPE_HOME_CAFE),
                                                         width: 2,
                                                       ),
                                                     ),
@@ -270,10 +274,13 @@ class Modal {
                                           child: Container(
                                             decoration: model.currentIndex ==
                                                     CafeType.TYPE_SHOP_CAFE
-                                                ? const BoxDecoration(
+                                                ? BoxDecoration(
                                                     border: Border(
                                                       bottom: BorderSide(
-                                                        color: Colors.red,
+                                                        color: ColorUtility()
+                                                            .toColorByCofeType(
+                                                                CafeType
+                                                                    .TYPE_SHOP_CAFE),
                                                         width: 2,
                                                       ),
                                                     ),

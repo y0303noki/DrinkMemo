@@ -1,5 +1,6 @@
 import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/utils/color_utility.dart';
 import 'package:flutter/material.dart';
 
 class CustomDialog {
@@ -119,7 +120,8 @@ class CustomDialog {
                         margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                         width: 3,
                         height: 25,
-                        color: Colors.red,
+                        color: ColorUtility()
+                            .toColorByCofeType(CafeType.TYPE_HOME_CAFE),
                       ),
                       const Text(
                         'おうち',
@@ -138,7 +140,8 @@ class CustomDialog {
                         margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
                         width: 3,
                         height: 25,
-                        color: Colors.blue,
+                        color: ColorUtility()
+                            .toColorByCofeType(CafeType.TYPE_SHOP_CAFE),
                       ),
                       const Text(
                         'おみせ',

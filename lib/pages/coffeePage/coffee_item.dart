@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee_project2/const/cafe_type.dart';
+import 'package:coffee_project2/const/common_style.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
+import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
+import 'package:coffee_project2/utils/color_utility.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:coffee_project2/widgets/modal.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +57,7 @@ class CoffeeItem extends StatelessWidget {
                         topLeft: Radius.circular(10),
                         bottomLeft: Radius.circular(10),
                       ),
-                      child: _setCofeeImage(coffeeData, coffee.imageId!),
+                      child: _setCofeeImage(coffeeData, coffee),
                     ),
                     const SizedBox(
                       width: 10,
@@ -133,13 +136,6 @@ class CoffeeItem extends StatelessWidget {
                         );
                       },
                     ),
-                    Container(
-                      width: 5,
-                      height: 100,
-                      color: coffee.cafeType == CafeType.TYPE_HOME_CAFE
-                          ? Colors.red
-                          : Colors.blue,
-                    ),
                   ],
                 ),
               ],
@@ -151,10 +147,10 @@ class CoffeeItem extends StatelessWidget {
   }
 
   // 遅延で画像を読み込む
-  Widget _setCofeeImage(CoffeeProvider coffeeData, String imageId) {
+  Widget _setCofeeImage(CoffeeProvider coffeeData, CoffeeModel coffee) {
     return FutureBuilder(
       // future属性で非同期処理を書く
-      future: coffeeData.findCoffeeImage(imageId),
+      future: coffeeData.findCoffeeImage(coffee.imageId),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         // 取得完了するまで別のWidgetを表示する
         if (!snapshot.hasData) {
@@ -172,14 +168,38 @@ class CoffeeItem extends StatelessWidget {
             return Container(
               width: 100,
               height: 100,
-              child: Image.asset('asset/images/noimage.png'),
+              child: Image.asset(
+                'asset/images/noimage.png',
+                fit: BoxFit.cover,
+              ),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: ColorUtility().toColorByCofeType(coffee.cafeType),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
             );
           } else {
-            return Image.network(
-              url,
+            return Container(
               width: 100.0,
               height: 100.0,
-              fit: BoxFit.fill,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: ColorUtility().toColorByCofeType(coffee.cafeType),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(9),
+                child: Image.network(
+                  url,
+                  width: 100.0,
+                  height: 100.0,
+                  fit: BoxFit.cover,
+                ),
+              ),
             );
           }
         }
