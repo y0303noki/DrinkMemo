@@ -12,4 +12,7 @@ class CafeType {
   static const MY_DRINK = 'マイドリンク';
   // ショップ
   static const SHOP_CAFE = '喫茶店';
+
+  // 銘柄
+  static final BRAND = '銘柄';
 }

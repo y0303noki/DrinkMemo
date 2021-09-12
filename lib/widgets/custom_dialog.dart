@@ -19,7 +19,7 @@ class CustomDialog {
   Widget dialogContent(CoffeeModel? myCoffeeModel, String url) {
     if (myCoffeeModel == null) {
       return Container(
-        child: Text('マイドリンクの説明'),
+        child: Text('${CafeType.MY_DRINK}の説明'),
       );
     } else {
       return Container(
@@ -87,9 +87,10 @@ class CustomDialog {
       // barrierDismissible: false,
       builder: (_) {
         return AlertDialog(
-          title: Container(child: Text('マイドリンク')),
+          title: Container(
+            child: Text('${CafeType.MY_DRINK}'),
+          ),
           content: dialogContent(myCoffeeModel, imageUrl),
-          // content: Text("This is the content"),
           actions: [
             TextButton(
               child: const Text('閉じる'),
@@ -124,7 +125,7 @@ class CustomDialog {
                             .toColorByCofeType(CafeType.TYPE_HOME_CAFE),
                       ),
                       const Text(
-                        'おうち',
+                        CafeType.HOME_CAFE,
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -144,7 +145,7 @@ class CustomDialog {
                             .toColorByCofeType(CafeType.TYPE_SHOP_CAFE),
                       ),
                       const Text(
-                        'おみせ',
+                        CafeType.SHOP_CAFE,
                         style: TextStyle(
                           fontSize: 20,
                         ),
@@ -196,16 +197,16 @@ class CustomDialog {
       barrierDismissible: false,
       builder: (_) {
         return AlertDialog(
-          title: const Text('マイドリンクに登録しますか？'),
+          title: const Text('${CafeType.MY_DRINK}に登録しますか？'),
           content: !isUpdate
-              ? const Text('マイドリンクにすることで次回から簡単に登録できます')
+              ? const Text('${CafeType.MY_DRINK}にすることで次回から簡単に登録できます')
               : Container(
                   child: Column(
                     mainAxisSize: MainAxisSize.min, // columnの高さを自動調整
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text('登録中のマイドリンク'),
+                        child: Text('登録中の${CafeType.MY_DRINK}'),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -282,7 +283,6 @@ class CustomDialog {
       builder: (_) {
         return AlertDialog(
           title: const Text('削除しますか？'),
-          // content: const Text('マイドリンクにすることで次回から簡単に登録できます'),
           actions: [
             TextButton(
               child: const Text('キャンセル'),

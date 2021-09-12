@@ -165,12 +165,11 @@ class Modal {
                                                       .coffeeId ==
                                                   modalCoffeeModel.id) {
                                             // マイドリンクを削除しようとしたらキャンセルさせる
-                                            String? result =
-                                                await CustomDialog()
-                                                    .simpleDefaultDialog(
-                                                        context,
-                                                        '',
-                                                        'マイドリンクに登録中なので削除できません');
+                                            String? result = await CustomDialog()
+                                                .simpleDefaultDialog(
+                                                    context,
+                                                    '',
+                                                    '${CafeType.MY_DRINK}に登録中なので削除できません');
                                             return;
                                           }
 
@@ -450,7 +449,7 @@ class Modal {
                                   controller: _brandTextEditingCntroller,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: '銘柄',
+                                    labelText: CafeType.BRAND,
                                     prefixIcon: const Icon(
                                         Icons.where_to_vote_outlined),
                                     suffixIcon: IconButton(
@@ -521,8 +520,9 @@ class Modal {
                                     controller: _brandTextEditingCntroller,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: '銘柄',
-                                      prefixIcon: Icon(Icons.store_outlined),
+                                      labelText: CafeType.BRAND,
+                                      prefixIcon: const Icon(
+                                          Icons.where_to_vote_outlined),
                                       suffixIcon: IconButton(
                                         onPressed: () {},
                                         icon: const Icon(Icons.clear),
@@ -1014,7 +1014,7 @@ class Modal {
           onPressed: () async {
             // マイドリンク済みの場合は表示するだけ
             await CustomDialog()
-                .simpleDefaultDialog(context, '', 'マイドリンクに登録済みです');
+                .simpleDefaultDialog(context, '', '${CafeType.BRAND}に登録済みです');
           },
           icon: Icon(
             Icons.star,
