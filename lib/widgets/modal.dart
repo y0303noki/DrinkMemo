@@ -749,8 +749,8 @@ class Modal {
                                                       color: Colors.black,
                                                     ),
                                                   ),
-                                                  onPressed: () {
-                                                    coffeeData
+                                                  onPressed: () async {
+                                                    await coffeeData
                                                         .showImageCamera();
                                                     Navigator.pop(context);
                                                   },
@@ -786,6 +786,8 @@ class Modal {
                                                     ).then(
                                                       (value) {
                                                         if (value != null) {
+                                                          coffeeData.imageId =
+                                                              value.id;
                                                           coffeeData
                                                               .changeImageUrl(
                                                                   value
@@ -871,12 +873,14 @@ class Modal {
                                 DateTime now = DateTime.now();
                                 if (modalTabData.currentIndex ==
                                     CafeType.TYPE_SHOP_CAFE) {
+                                  // 喫茶店
                                   _coffeeModel.cafeType =
                                       CafeType.TYPE_SHOP_CAFE;
                                   _coffeeModel.shopName =
                                       _shopTextEditingCntroller.text;
                                 } else if (modalTabData.currentIndex ==
                                     CafeType.TYPE_HOME_CAFE) {
+                                  // おうちカフェ
                                   _coffeeModel.cafeType =
                                       CafeType.TYPE_HOME_CAFE;
                                   _coffeeModel.brandName =
@@ -889,10 +893,14 @@ class Modal {
                                 _coffeeModel.isIce = coffeeData.isIce;
                                 _coffeeModel.updatedAt = now;
                                 _coffeeModel.coffeeAt = coffeeData.coffeeAt;
+                                _coffeeModel.imageId = coffeeData.imageId;
+
                                 var _coffeeDb = CoffeeFirebase();
                                 if (isUpdate) {
                                   // 更新
                                   _coffeeModel.id = modalCoffeeModel!.id;
+                                  _coffeeModel.imageId =
+                                      coffeeModel!.imageId ?? '';
                                   await _coffeeDb.updateCoffeeData(
                                       _coffeeModel, coffeeData.imageFile);
                                 } else {

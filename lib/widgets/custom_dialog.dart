@@ -27,9 +27,13 @@ class CustomDialog {
           mainAxisSize: MainAxisSize.min, // columnの高さを自動調整
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Row(
                 children: [
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Text('名前'),
+                  ),
                   Text(
                     myCoffeeModel.name,
                     style: const TextStyle(
@@ -40,11 +44,16 @@ class CustomDialog {
                 ],
               ),
             ),
+            const Divider(color: Colors.black),
             myCoffeeModel.cafeType == CafeType.TYPE_SHOP_CAFE
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: Text('店名'),
+                        ),
                         Text(
                           myCoffeeModel.shopName,
                           style: const TextStyle(
@@ -60,6 +69,10 @@ class CustomDialog {
                     padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                     child: Row(
                       children: [
+                        const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                          child: Text('銘柄'),
+                        ),
                         Text(
                           myCoffeeModel.brandName,
                           style: const TextStyle(
@@ -70,6 +83,7 @@ class CustomDialog {
                     ),
                   )
                 : Container(),
+            const Divider(color: Colors.black),
             setMyCoffeeImage(url),
           ],
         ),
