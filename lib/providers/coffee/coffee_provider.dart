@@ -21,6 +21,8 @@ class CoffeeProvider extends ChangeNotifier {
   String imageId = '';
   String imageUrl = '';
   String myCoffeeImageUrl = '';
+  // True:画像が変更 False:画像が変更してない
+  bool isImageChanged = false;
 
   // コーヒー日付
   String labelCoffeeAt = '';
@@ -81,7 +83,9 @@ class CoffeeProvider extends ChangeNotifier {
       if (pickedFile == null) {
         return;
       }
+      File? tempFile = imageFile;
       imageFile = File(pickedFile.path);
+      isImageChanged = tempFile != imageFile;
     } catch (e) {
       return;
     } finally {
@@ -96,7 +100,9 @@ class CoffeeProvider extends ChangeNotifier {
       if (pickedFile == null) {
         return;
       }
+      File? tempFile = imageFile;
       imageFile = File(pickedFile.path);
+      isImageChanged = tempFile != imageFile;
     } catch (e) {
       print(e);
     } finally {

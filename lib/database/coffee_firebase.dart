@@ -133,7 +133,7 @@ class CoffeeFirebase {
   Future<String> setCoffeeImage(
       CoffeeModel coffeeModel, File? imageFile) async {
     String _imageId;
-    if (coffeeModel.imageId != null) {
+    if (coffeeModel.imageId!.isNotEmpty) {
       // 既存画像
       _imageId = coffeeModel.imageId!;
     } else if (imageFile != null) {
@@ -178,7 +178,15 @@ class CoffeeFirebase {
   Future<void> updateCoffeeData(
       CoffeeModel coffeeModel, File? imageFile) async {
     // 画像をアップロードしてimageIdを返す
-    String _imageId = await setCoffeeImage(coffeeModel, imageFile);
+    String _imageId = '';
+    if (imageFile != null) {
+      _imageId = await setCoffeeImage(coffeeModel, imageFile);
+    }
+
+    if (_imageId.isEmpty) {
+      _imageId = coffeeModel.imageId ?? '';
+    }
+
     // ドキュメント更新
     Map<String, dynamic> updateData = {};
     updateData['name'] = coffeeModel.name;

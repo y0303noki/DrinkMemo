@@ -10,6 +10,7 @@ import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
 import 'package:coffee_project2/providers/user/user_mycoffee_provider.dart';
+import 'package:coffee_project2/utils/color_utility.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
@@ -164,12 +165,11 @@ class Modal {
                                                       .coffeeId ==
                                                   modalCoffeeModel.id) {
                                             // マイドリンクを削除しようとしたらキャンセルさせる
-                                            String? result =
-                                                await CustomDialog()
-                                                    .simpleDefaultDialog(
-                                                        context,
-                                                        '',
-                                                        'マイドリンクに登録中なので削除できません');
+                                            String? result = await CustomDialog()
+                                                .simpleDefaultDialog(
+                                                    context,
+                                                    '',
+                                                    '${CafeType.MY_DRINK}に登録中なので削除できません');
                                             return;
                                           }
 
@@ -220,10 +220,13 @@ class Modal {
                                             width: 20,
                                             decoration: model.currentIndex ==
                                                     CafeType.TYPE_HOME_CAFE
-                                                ? const BoxDecoration(
+                                                ? BoxDecoration(
                                                     border: Border(
                                                       bottom: BorderSide(
-                                                        color: Colors.blue,
+                                                        color: ColorUtility()
+                                                            .toColorByCofeType(
+                                                                CafeType
+                                                                    .TYPE_HOME_CAFE),
                                                         width: 2,
                                                       ),
                                                     ),
@@ -270,10 +273,13 @@ class Modal {
                                           child: Container(
                                             decoration: model.currentIndex ==
                                                     CafeType.TYPE_SHOP_CAFE
-                                                ? const BoxDecoration(
+                                                ? BoxDecoration(
                                                     border: Border(
                                                       bottom: BorderSide(
-                                                        color: Colors.red,
+                                                        color: ColorUtility()
+                                                            .toColorByCofeType(
+                                                                CafeType
+                                                                    .TYPE_SHOP_CAFE),
                                                         width: 2,
                                                       ),
                                                     ),
@@ -443,7 +449,7 @@ class Modal {
                                   controller: _brandTextEditingCntroller,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: '銘柄',
+                                    labelText: CafeType.BRAND,
                                     prefixIcon: const Icon(
                                         Icons.where_to_vote_outlined),
                                     suffixIcon: IconButton(
@@ -514,8 +520,9 @@ class Modal {
                                     controller: _brandTextEditingCntroller,
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(),
-                                      labelText: '銘柄',
-                                      prefixIcon: Icon(Icons.store_outlined),
+                                      labelText: CafeType.BRAND,
+                                      prefixIcon: const Icon(
+                                          Icons.where_to_vote_outlined),
                                       suffixIcon: IconButton(
                                         onPressed: () {},
                                         icon: const Icon(Icons.clear),
@@ -742,8 +749,8 @@ class Modal {
                                                       color: Colors.black,
                                                     ),
                                                   ),
-                                                  onPressed: () {
-                                                    coffeeData
+                                                  onPressed: () async {
+                                                    await coffeeData
                                                         .showImageCamera();
                                                     Navigator.pop(context);
                                                   },
@@ -779,6 +786,8 @@ class Modal {
                                                     ).then(
                                                       (value) {
                                                         if (value != null) {
+                                                          coffeeData.imageId =
+                                                              value.id;
                                                           coffeeData
                                                               .changeImageUrl(
                                                                   value
@@ -864,12 +873,14 @@ class Modal {
                                 DateTime now = DateTime.now();
                                 if (modalTabData.currentIndex ==
                                     CafeType.TYPE_SHOP_CAFE) {
+                                  // 喫茶店
                                   _coffeeModel.cafeType =
                                       CafeType.TYPE_SHOP_CAFE;
                                   _coffeeModel.shopName =
                                       _shopTextEditingCntroller.text;
                                 } else if (modalTabData.currentIndex ==
                                     CafeType.TYPE_HOME_CAFE) {
+                                  // おうちカフェ
                                   _coffeeModel.cafeType =
                                       CafeType.TYPE_HOME_CAFE;
                                   _coffeeModel.brandName =
@@ -882,10 +893,13 @@ class Modal {
                                 _coffeeModel.isIce = coffeeData.isIce;
                                 _coffeeModel.updatedAt = now;
                                 _coffeeModel.coffeeAt = coffeeData.coffeeAt;
+                                _coffeeModel.imageId = coffeeData.imageId;
+
                                 var _coffeeDb = CoffeeFirebase();
                                 if (isUpdate) {
                                   // 更新
                                   _coffeeModel.id = modalCoffeeModel!.id;
+
                                   await _coffeeDb.updateCoffeeData(
                                       _coffeeModel, coffeeData.imageFile);
                                 } else {
@@ -1007,7 +1021,7 @@ class Modal {
           onPressed: () async {
             // マイドリンク済みの場合は表示するだけ
             await CustomDialog()
-                .simpleDefaultDialog(context, '', 'マイドリンクに登録済みです');
+                .simpleDefaultDialog(context, '', '${CafeType.BRAND}に登録済みです');
           },
           icon: Icon(
             Icons.star,
@@ -1042,7 +1056,10 @@ class Modal {
         return Container(
           height: 200,
           width: 200,
-          child: Image.file(coffeeData.imageFile!),
+          child: Image.file(
+            coffeeData.imageFile!,
+            fit: BoxFit.cover,
+          ),
         );
       }
 
@@ -1051,7 +1068,7 @@ class Modal {
           coffeeData.imageUrl,
           width: 200.0,
           height: 200.0,
-          // fit: BoxFit.fill,
+          fit: BoxFit.cover,
         );
       }
     } else {
@@ -1062,13 +1079,17 @@ class Modal {
           coffeeData.imageUrl,
           width: 200.0,
           height: 200.0,
+          fit: BoxFit.cover,
         );
       } else if (coffeeData.imageFile != null) {
         // 端末のギャラリーから選択
         return Container(
           height: 200,
           width: 200,
-          child: Image.file(coffeeData.imageFile!),
+          child: Image.file(
+            coffeeData.imageFile!,
+            fit: BoxFit.cover,
+          ),
         );
       } else {
         // 未選択
