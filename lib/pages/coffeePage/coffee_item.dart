@@ -175,7 +175,7 @@ class CoffeeItem extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: ColorUtility().toColorByCofeType(coffee.cafeType),
-                  width: 2,
+                  width: 3,
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -187,7 +187,7 @@ class CoffeeItem extends StatelessWidget {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: ColorUtility().toColorByCofeType(coffee.cafeType),
-                  width: 2,
+                  width: 3,
                 ),
                 borderRadius: BorderRadius.circular(10),
               ),

@@ -899,8 +899,7 @@ class Modal {
                                 if (isUpdate) {
                                   // 更新
                                   _coffeeModel.id = modalCoffeeModel!.id;
-                                  _coffeeModel.imageId =
-                                      coffeeModel!.imageId ?? '';
+
                                   await _coffeeDb.updateCoffeeData(
                                       _coffeeModel, coffeeData.imageFile);
                                 } else {
@@ -1057,7 +1056,10 @@ class Modal {
         return Container(
           height: 200,
           width: 200,
-          child: Image.file(coffeeData.imageFile!),
+          child: Image.file(
+            coffeeData.imageFile!,
+            fit: BoxFit.cover,
+          ),
         );
       }
 
@@ -1066,7 +1068,7 @@ class Modal {
           coffeeData.imageUrl,
           width: 200.0,
           height: 200.0,
-          // fit: BoxFit.fill,
+          fit: BoxFit.cover,
         );
       }
     } else {
@@ -1077,13 +1079,17 @@ class Modal {
           coffeeData.imageUrl,
           width: 200.0,
           height: 200.0,
+          fit: BoxFit.cover,
         );
       } else if (coffeeData.imageFile != null) {
         // 端末のギャラリーから選択
         return Container(
           height: 200,
           width: 200,
-          child: Image.file(coffeeData.imageFile!),
+          child: Image.file(
+            coffeeData.imageFile!,
+            fit: BoxFit.cover,
+          ),
         );
       } else {
         // 未選択
