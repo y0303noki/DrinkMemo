@@ -20,6 +20,7 @@ class UserFirebase {
       Map<String, dynamic> data = docs.first.data();
       final _userModel = UserModel(
         id: data['id'] ?? '',
+        memebrId: data['memebrId'] ?? '',
         status: data['status'] ?? 0,
         googleId: data['googleId'] ?? '',
         isDeleted: data['isDeleted'] ?? false,
@@ -38,6 +39,7 @@ class UserFirebase {
     Map<String, dynamic> addObject = new Map<String, dynamic>();
 
     addObject['id'] = userModel.id;
+    addObject['memebrId'] = userModel.memebrId;
     addObject['status'] = userModel.status;
     addObject['googleId'] = userModel.googleId;
     addObject['isDeleted'] = false;

@@ -19,7 +19,7 @@ class CustomDialog {
   Widget dialogContent(CoffeeModel? myCoffeeModel, String url) {
     if (myCoffeeModel == null) {
       return Container(
-        child: Text('${CafeType.MY_DRINK}の説明'),
+        child: Text('${CafeType.MY_DRINK}に登録することで次回から同じドリンクを簡単に追加できます。'),
       );
     } else {
       return Container(

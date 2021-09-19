@@ -12,6 +12,8 @@ class SettingListPage extends StatelessWidget {
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
+    final userData = Provider.of<UserProvider>(context, listen: false);
+
     return Container(
       color: Colors.grey[100],
       child: ListView(
@@ -43,6 +45,24 @@ class SettingListPage extends StatelessWidget {
               onLongPress: () {
                 print("onLongPress called.");
               }, // 長押し
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: const Text(
+                '会員ID',
+                style: TextStyle(color: Colors.black, fontSize: 15.0),
+              ),
+              trailing: Text(userData.userModel!.memebrId),
             ),
           ),
           Container(
