@@ -192,7 +192,7 @@ class CoffeeItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(9),
+                borderRadius: BorderRadius.circular(7),
                 child: Image.network(
                   url,
                   width: 100.0,
