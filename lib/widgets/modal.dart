@@ -602,9 +602,7 @@ class Modal {
                                         );
                                       },
                                       // サジェストの結果が0件の時のメッセージ
-                                      noItemsFoundBuilder: (context) {
-                                        return Container();
-                                      },
+                                      hideOnEmpty: true,
                                       onSuggestionSelected: (suggestion) {
                                         _brandTextEditingCntroller.text =
                                             suggestion as String;
@@ -646,6 +644,7 @@ class Modal {
                                             (BuildContext context, itemData) {
                                           return ListTile();
                                         },
+                                        hideOnEmpty: true,
                                         onSuggestionSelected: (suggestion) {},
                                       ),
                                     );
@@ -681,6 +680,7 @@ class Modal {
                                             (BuildContext context, itemData) {
                                           return ListTile();
                                         },
+                                        hideOnEmpty: true,
                                         onSuggestionSelected: (suggestion) {},
                                       ),
                                     );
@@ -743,9 +743,7 @@ class Modal {
                                         );
                                       },
                                       // サジェストの結果が0件の時のメッセージ
-                                      noItemsFoundBuilder: (context) {
-                                        return Container();
-                                      },
+                                      hideOnEmpty: true,
                                       onSuggestionSelected: (suggestion) {
                                         _shopTextEditingCntroller.text =
                                             suggestion as String;
