@@ -1,5 +1,6 @@
 // 下からモーダルを出す
 import 'package:coffee_project2/const/cafe_type.dart';
+import 'package:coffee_project2/const/coffee_name.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/database/user_mycofee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
@@ -92,6 +93,10 @@ class Modal {
         }
       }
     }
+
+    // 初期化
+    modalTabData.setCurrentIndex(CafeType.TYPE_HOME_CAFE);
+    coffeeData.selectedCoffeeName = CoffeeName.coffeeNameList[0];
 
     if (coffeeDatas.allbrandModels.isEmpty) {
       await coffeeDatas.findBrandDatas();
@@ -321,6 +326,8 @@ class Modal {
                                               child: Material(
                                                 child: InkWell(
                                                   onTap: () {
+                                                    coffeeData
+                                                        .changeIsSabeavle(true);
                                                     _nameTextEditingCntroller
                                                             .text =
                                                         myCoffee != null
@@ -379,6 +386,65 @@ class Modal {
                           ),
 
                           const SizedBox(height: 20),
+                          Consumer<CoffeeProvider>(
+                            builder: (ctx, coffeeModel, _) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    child: const Text(
+                                      'よくある名前から選択',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: DropdownButton<String>(
+                                      value: coffeeModel.selectedCoffeeName,
+                                      icon: const Icon(Icons.arrow_downward),
+                                      iconSize: 24,
+                                      elevation: 16,
+                                      style: const TextStyle(
+                                          color: Colors.deepPurple),
+                                      underline: Container(
+                                        height: 2,
+                                        color: Colors.deepPurpleAccent,
+                                      ),
+                                      onChanged: (String? newValue) {
+                                        if (newValue == null) {
+                                          return;
+                                        }
+                                        coffeeModel.selectCoffeeName(newValue);
+
+                                        // 未選択以外ならテキストフィールドにセット
+                                        // 保存可能にする
+                                        if (newValue !=
+                                            CoffeeName.coffeeNameList[0]) {
+                                          _nameTextEditingCntroller.text =
+                                              newValue;
+                                          coffeeModel.changeIsSabeavle(true);
+                                        } else {
+                                          _nameTextEditingCntroller.clear();
+                                          coffeeModel.changeIsSabeavle(false);
+                                        }
+                                      },
+                                      items: CoffeeName.coffeeNameList
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
                           // コーヒー名
                           Consumer<ModalTabProvider>(
                             builder: (ctx, model, _) {
@@ -428,7 +494,7 @@ class Modal {
                                     },
                                   ),
                                   suggestionsCallback: (pattern) async {
-                                    if (pattern.isEmpty) {
+                                    if (pattern.isEmpty || pattern.length < 2) {
                                       return [];
                                     }
                                     // pattern:入力された文字
@@ -448,10 +514,8 @@ class Modal {
                                       title: Text(suggestion as String),
                                     );
                                   },
-                                  // サジェストの結果が0件の時のメッセージ
-                                  noItemsFoundBuilder: (context) {
-                                    return Container();
-                                  },
+                                  // サジェストの結果が0件の時は何も出さない
+                                  hideOnEmpty: true,
                                   onSuggestionSelected: (suggestion) {
                                     _nameTextEditingCntroller.text =
                                         suggestion as String;
@@ -1143,15 +1207,15 @@ class Modal {
         // アルバムから選択
         return Image.network(
           coffeeData.imageUrl,
-          width: 200.0,
-          height: 200.0,
+          width: 100.0,
+          height: 100.0,
           fit: BoxFit.cover,
         );
       } else if (coffeeData.imageFile != null) {
         // 端末のギャラリーから選択
         return Container(
-          height: 200,
-          width: 200,
+          height: 100,
+          width: 100,
           child: Image.file(
             coffeeData.imageFile!,
             fit: BoxFit.cover,

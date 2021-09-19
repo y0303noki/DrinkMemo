@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:coffee_project2/const/coffee_name.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
@@ -40,6 +41,14 @@ class CoffeeProvider extends ChangeNotifier {
   // アイス or　ホット (True: hot, False: ice)
   bool _isIce = false;
   bool get isIce => _isIce;
+
+  // コーヒー名リストから選択された値
+  String selectedCoffeeName = CoffeeName.coffeeNameList[0];
+
+  void selectCoffeeName(String name) {
+    selectedCoffeeName = name;
+    notifyListeners();
+  }
 
   // お気に入り変更
   void toggleFavorite(CoffeeModel coffeeModel) {

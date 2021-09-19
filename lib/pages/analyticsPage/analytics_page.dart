@@ -177,7 +177,7 @@ class AnalyticsPage extends StatelessWidget {
                 // height: 400,
                 width: size.width,
                 decoration: BoxDecoration(
-                  color: Colors.lime,
+                  color: Colors.lime[200],
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
