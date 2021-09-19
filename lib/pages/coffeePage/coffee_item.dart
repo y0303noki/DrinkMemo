@@ -112,9 +112,12 @@ class CoffeeItem extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               top: 10, right: 0, bottom: 10, left: 0),
                           child: IconButton(
-                              icon: Icon(coffee.favorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border),
+                              icon: Icon(
+                                coffee.favorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: Colors.pink,
+                              ),
                               onPressed: () {
                                 var _db = CoffeeFirebase();
                                 _db.updateFavorite(coffee.id, !coffee.favorite);
