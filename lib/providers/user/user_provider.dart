@@ -52,8 +52,11 @@ class UserProvider extends ChangeNotifier {
       // ない場合はユーザーを新規登録
       if (findUserData == null || findUserData.isDeleted) {
         DateTime now = DateTime.now();
+        // 会員IDを作成
+        String _memberId = now.millisecondsSinceEpoch.toString();
         _userModel = UserModel(
           id: _user!.uid,
+          memebrId: _memberId,
           status: 0,
           googleId: '',
           isDeleted: false,
@@ -81,5 +84,6 @@ class UserProvider extends ChangeNotifier {
   // サインアウト
   Future signOut() async {
     await _auth.signOut();
+    await loginTypeTo('ANONUMOUSLY');
   }
 }

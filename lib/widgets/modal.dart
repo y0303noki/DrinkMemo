@@ -417,10 +417,10 @@ class Modal {
                                         iconSize: 24,
                                         elevation: 16,
                                         style: const TextStyle(
-                                            color: Colors.deepPurple),
+                                            color: Colors.brown),
                                         underline: Container(
                                           height: 2,
-                                          color: Colors.deepPurpleAccent,
+                                          color: Colors.black,
                                         ),
                                         onChanged: (String? newValue) {
                                           if (newValue == null) {
