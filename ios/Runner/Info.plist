@@ -45,5 +45,10 @@
 	<string>写真ライブラリを利用します。</string>
 	<key>NSCameraUsageDescription</key>
 	<string>カメラを利用します。</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+		<string>http</string>
+	</array>
 </dict>
 </plist>
