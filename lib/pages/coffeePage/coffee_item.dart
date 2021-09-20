@@ -25,7 +25,7 @@ class CoffeeItem extends StatelessWidget {
     final coffee = coffeeDatas.findById(coffeeId);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor,
+        color: Colors.white.withOpacity(0.9),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           bottomLeft: Radius.circular(20),
