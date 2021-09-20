@@ -984,7 +984,7 @@ class Modal {
                           ],
                         ),
                         Container(
-                          margin: const EdgeInsets.only(bottom: 30),
+                          margin: const EdgeInsets.only(bottom: 0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [

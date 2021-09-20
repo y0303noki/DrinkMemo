@@ -12,7 +12,18 @@ class AlbumListScaffoldPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('マイアルバムから画像を選択'),
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white,
+        title: const Text(
+          'マイアルバムから画像を選択',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: AlbumListPage(false),
     );

@@ -16,7 +16,6 @@ class AlbumListPage extends StatelessWidget {
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
     if (albumsData.albumModels.isEmpty) {
-      print('album');
       albumsData.findAlbumDatas();
     }
 
@@ -27,8 +26,23 @@ class AlbumListPage extends StatelessWidget {
           return Center(
             child: Column(
               children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+                  width: double.infinity,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text('画像を選択して投稿した画像が表示されます。'
+                      'マイアルバムから画像を選択したものは画像のアップロード上限数に引っかかりません。'),
+                ),
                 Expanded(
-                  child: AlbumList(albumsData.coffeeImageModels, isHomeAlbum),
+                  child: Container(
+                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                    child: AlbumList(albumsData.coffeeImageModels, isHomeAlbum),
+                  ),
                 ),
               ],
             ),
