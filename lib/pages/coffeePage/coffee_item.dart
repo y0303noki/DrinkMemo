@@ -25,7 +25,7 @@ class CoffeeItem extends StatelessWidget {
     final coffee = coffeeDatas.findById(coffeeId);
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor,
+        color: Colors.white.withOpacity(0.9),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           bottomLeft: Radius.circular(20),
@@ -112,9 +112,12 @@ class CoffeeItem extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               top: 10, right: 0, bottom: 10, left: 0),
                           child: IconButton(
-                              icon: Icon(coffee.favorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border),
+                              icon: Icon(
+                                coffee.favorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: Colors.pink,
+                              ),
                               onPressed: () {
                                 var _db = CoffeeFirebase();
                                 _db.updateFavorite(coffee.id, !coffee.favorite);
@@ -192,7 +195,7 @@ class CoffeeItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(9),
+                borderRadius: BorderRadius.circular(7),
                 child: Image.network(
                   url,
                   width: 100.0,

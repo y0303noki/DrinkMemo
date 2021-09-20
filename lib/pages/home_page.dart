@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.yellow[100],
         title: Text(
           titles[bottomNavigationData.currentIndex],
           style: const TextStyle(

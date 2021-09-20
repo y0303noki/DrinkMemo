@@ -173,7 +173,10 @@ class CustomDialog {
                     children: [
                       Container(
                         margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: const Icon(Icons.favorite_outline_outlined),
+                        child: const Icon(
+                          Icons.favorite_outline_outlined,
+                          color: Colors.pink,
+                        ),
                       ),
                       const Text(
                         'お気に入り',

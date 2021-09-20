@@ -66,6 +66,7 @@ class CoffeeProvider extends ChangeNotifier {
   void resetImageUrlAndFile() {
     imageUrl = '';
     imageFile = null;
+    imageId = '';
     notifyListeners();
   }
 

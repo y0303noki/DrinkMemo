@@ -3,6 +3,7 @@ import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_pr
 import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
 
 class SettingListPage extends StatelessWidget {
@@ -126,6 +127,30 @@ class SettingListPage extends StatelessWidget {
               },
             ),
           ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: const Text(
+                'お問い合わせはこちら',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15.0,
+                ),
+              ),
+              onTap: () async {
+                print("onTap called.");
+                await _launchURL();
+              },
+            ),
+          ),
           // Container(
           //   decoration: const BoxDecoration(
           //     color: Colors.white,
@@ -180,5 +205,15 @@ class SettingListPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _launchURL() async {
+    const url =
+        "https://docs.google.com/forms/d/e/1FAIpQLScCE2yV4JuW8LExcBbn9dtVdvQKoEboLk1BjkqTBgaSyFHNRg/viewform";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not Launch $url';
+    }
   }
 }
