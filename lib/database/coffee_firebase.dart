@@ -112,6 +112,7 @@ class CoffeeFirebase {
     addObject['shopName'] = coffeeModel.shopName;
     addObject['brandName'] = coffeeModel.brandName;
     addObject['isIce'] = coffeeModel.isIce;
+    addObject['countDrink'] = coffeeModel.countDrink;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -193,6 +194,7 @@ class CoffeeFirebase {
     // updateData['favorite'] = coffeeModel.favorite;
     updateData['cafeType'] = coffeeModel.cafeType;
     updateData['isIce'] = coffeeModel.isIce;
+    updateData['countDrink'] = coffeeModel.countDrink;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
@@ -270,6 +272,7 @@ class CoffeeFirebase {
             shopName: doc.data()['shopName'] ?? '',
             brandName: doc.data()['brandName'] ?? '',
             isIce: doc.data()['isIce'] ?? false,
+            countDrink: doc.data()['countDrink'] ?? 1,
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -314,6 +317,7 @@ class CoffeeFirebase {
               shopName: doc.data()['shopName'] ?? '',
               brandName: doc.data()['brandName'] ?? '',
               isIce: doc.data()['isIce'] ?? false,
+              countDrink: doc.data()['countDrink'] ?? 1,
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
@@ -376,6 +380,7 @@ class CoffeeFirebase {
             shopName: doc.data()['shopName'] ?? '',
             brandName: doc.data()['brandName'] ?? '',
             isIce: doc.data()['isIce'] ?? false,
+            countDrink: doc.data()['countDrink'] ?? 1,
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),

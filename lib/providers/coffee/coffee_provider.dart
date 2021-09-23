@@ -41,6 +41,16 @@ class CoffeeProvider extends ChangeNotifier {
   // アイス or　ホット (True: hot, False: ice)
   bool _isIce = false;
   bool get isIce => _isIce;
+  set isIce(bool _e) {
+    _isIce = _e;
+  }
+
+  // 同じコーヒー何杯
+  int _countDrink = 1;
+  int get countDrink => _countDrink;
+  set countDrink(int _count) {
+    _countDrink = _count;
+  }
 
   // コーヒー名リストから選択された値
   String selectedCoffeeName = CoffeeName.coffeeNameList[0];
@@ -83,6 +93,20 @@ class CoffeeProvider extends ChangeNotifier {
 
   void changeIsIce(bool e) {
     _isIce = e;
+    notifyListeners();
+  }
+
+  void plusCountDrink() {
+    if (_countDrink < 5) {
+      _countDrink++;
+    }
+    notifyListeners();
+  }
+
+  void minusCountDreink() {
+    if (_countDrink > 1) {
+      _countDrink--;
+    }
     notifyListeners();
   }
 

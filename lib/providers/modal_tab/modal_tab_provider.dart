@@ -12,6 +12,7 @@ class ModalTabProvider extends ChangeNotifier {
   }
 
   void setCurrentIndex(int index) {
+    print('index:$index');
     if (index < 0) {
       return;
     }

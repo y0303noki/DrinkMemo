@@ -6,6 +6,7 @@ class CoffeeModel {
   String shopName = '';
   String brandName = '';
   bool isIce = false;
+  int countDrink = 1;
   String? imageId;
   String imageUrl;
   DateTime? coffeeAt;
@@ -19,6 +20,7 @@ class CoffeeModel {
       this.shopName = '',
       this.brandName = '',
       this.isIce = false,
+      this.countDrink = 1,
       this.imageId,
       this.imageUrl = '',
       this.coffeeAt,

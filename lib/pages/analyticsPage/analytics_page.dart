@@ -202,7 +202,7 @@ class AnalyticsPage extends StatelessWidget {
                           child: CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 30,
-                            child: Icon(Icons.coffee_outlined),
+                            child: Icon(Icons.analytics),
                           ),
                         ),
                         Text(
@@ -236,6 +236,26 @@ class AnalyticsPage extends StatelessWidget {
                         thickness: 1.0,
                       ),
                     ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 30,
+                            child: Icon(Icons.local_drink),
+                          ),
+                        ),
+                        const Text(
+                          'たくさん飲んだ',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+
                     _topCoffeeItem(model),
                     // _defaultItem('キリマンジャロ', '最も多いブランド'),
                     // _defaultItem('スタバ', '最も多いカフェ'),

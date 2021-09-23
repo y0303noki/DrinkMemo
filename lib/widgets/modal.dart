@@ -59,6 +59,8 @@ class Modal {
       _nameTextEditingCntroller.text = coffeeModel.name;
       _brandTextEditingCntroller.text = coffeeModel.brandName;
       _shopTextEditingCntroller.text = coffeeModel.shopName;
+      coffeeData.isIce = coffeeModel.isIce;
+      coffeeData.countDrink = coffeeModel.countDrink;
       // coffeeData.imageUrl = coffeeModel.imageUrl;
 
       // マイドリンクと選択中のドリンクが同じか判定
@@ -70,10 +72,12 @@ class Modal {
       modalTabData.setCurrentIndex(_index);
     } else {
       bottomTitle = '登録';
+      modalTabData.setCurrentIndex(CafeType.TYPE_HOME_CAFE);
       coffeeData.imageFile = null;
       coffeeData.imageUrl = '';
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
-
+      coffeeData.countDrink = 1;
+      coffeeData.isIce = true;
       // マイドリンク
       var _coffeeDb = CoffeeFirebase();
 
@@ -95,7 +99,7 @@ class Modal {
     }
 
     // 初期化
-    modalTabData.setCurrentIndex(CafeType.TYPE_HOME_CAFE);
+
     coffeeData.selectedCoffeeName = CoffeeName.coffeeNameList[0];
 
     if (coffeeDatas.allbrandModels.isEmpty) {
@@ -756,54 +760,109 @@ class Modal {
                               },
                             ),
                             const SizedBox(height: 5),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      coffeeData.isIce
+                                          ? Container(
+                                              child: Row(
+                                                children: const [
+                                                  Text(
+                                                    'アイス',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Icon(Icons.icecream_outlined)
+                                                ],
+                                              ),
+                                            )
+                                          : Container(
+                                              child: Row(
+                                                children: const [
+                                                  Text(
+                                                    'ホット',
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Icon(Icons
+                                                      .local_fire_department_outlined),
+                                                ],
+                                              ),
+                                            ),
+                                      // アイス or　ホット
+                                      Switch(
+                                        activeColor: Colors.green,
+                                        activeTrackColor: Colors.blue,
+                                        inactiveThumbColor: Colors.orange,
+                                        inactiveTrackColor: Colors.red,
+                                        value: coffeeData.isIce,
+                                        onChanged: (bool? e) {
+                                          if (e == null) {
+                                            return;
+                                          }
+                                          coffeeData.changeIsIce(e);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
                                   children: [
-                                    coffeeData.isIce
-                                        ? Container(
-                                            child: Row(
-                                              children: const [
-                                                Text(
-                                                  'アイス',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                Icon(Icons.icecream_outlined)
-                                              ],
-                                            ),
-                                          )
-                                        : Container(
-                                            child: Row(
-                                              children: const [
-                                                Text(
-                                                  'ホット',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                Icon(Icons
-                                                    .local_fire_department_outlined),
-                                              ],
-                                            ),
-                                          ),
-                                    // アイス or　ホット
-                                    Switch(
-                                      activeColor: Colors.green,
-                                      activeTrackColor: Colors.blue,
-                                      inactiveThumbColor: Colors.orange,
-                                      inactiveTrackColor: Colors.red,
-                                      value: coffeeData.isIce,
-                                      onChanged: (bool? e) {
-                                        if (e == null) {
-                                          return;
-                                        }
-                                        coffeeData.changeIsIce(e);
-                                      },
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          coffeeData.minusCountDreink();
+                                        },
+                                        icon: Icon(Icons.exposure_minus_1),
+                                      ),
                                     ),
-                                  ]),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      coffeeData.countDrink.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 30,
+                                      ),
+                                    ),
+                                    const Text(
+                                      '杯',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () {
+                                          coffeeData.plusCountDrink();
+                                        },
+                                        icon: Icon(Icons.plus_one),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
 
                             Padding(
@@ -1032,6 +1091,8 @@ class Modal {
                                             _nameTextEditingCntroller.text;
                                         _coffeeModel.favorite = false;
                                         _coffeeModel.isIce = coffeeData.isIce;
+                                        _coffeeModel.countDrink =
+                                            coffeeData.countDrink;
                                         _coffeeModel.updatedAt = now;
                                         _coffeeModel.coffeeAt =
                                             coffeeData.coffeeAt;
