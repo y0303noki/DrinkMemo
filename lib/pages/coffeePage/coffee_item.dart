@@ -96,7 +96,12 @@ class CoffeeItem extends StatelessWidget {
                                     ),
                                   )),
                                 )
-                              : Container(),
+                              : Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(80, 80, 10, 5),
+                                  width: 30,
+                                  height: 30,
+                                ),
                         ],
                       ),
                     ),
