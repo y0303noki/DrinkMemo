@@ -75,24 +75,28 @@ class CoffeeItem extends StatelessWidget {
                       child: Stack(
                         children: [
                           _setCofeeImage(coffeeData, coffee),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(80, 80, 10, 5),
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.brown[100],
-                            ),
-                            child: Center(
-                                child: Text(
-                              coffee.countDrink.toString(),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            )),
-                          ),
+                          // カウントが2以上だったら表示する
+                          coffee.countDrink > 1
+                              ? Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(80, 80, 10, 5),
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.brown[100],
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                    coffee.countDrink.toString(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                                )
+                              : Container(),
                         ],
                       ),
                     ),
