@@ -16,10 +16,12 @@ class AlbumListProvider extends ChangeNotifier {
   CoffeeImageFirebase _coffeeImageDb = CoffeeImageFirebase();
 
   CoffeeImageModel findById(String id) {
-    return _coffeeImageModels.firstWhere((album) => album.id == id);
+    return _coffeeImageModels.firstWhere((album) => album.id == id,
+        orElse: () => CoffeeImageModel());
   }
 
   Future findAlbumDatas() async {
+    _coffeeImageModels = [];
     _coffeeImageModels = await _coffeeImageDb.fetchCoffeeImageDatas();
     notifyListeners();
   }

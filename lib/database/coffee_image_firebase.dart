@@ -55,8 +55,10 @@ class CoffeeImageFirebase {
           .collection(coffeeImages)
           .doc(coffeeImageModel.id)
           .set(addObject);
+      print('SUCCSESS');
       return;
     } catch (e) {
+      print('ERROR!${e.toString()}');
       return;
     }
   }
@@ -122,6 +124,10 @@ class CoffeeImageFirebase {
         .limit(20)
         .get();
 
+    if (snapshots.docs.isNotEmpty) {
+      print(snapshots.docs.first.id);
+    }
+
     final coffeeImageAllDatas = snapshots.docs
         .map(
           (doc) => CoffeeImageModel(
@@ -135,5 +141,17 @@ class CoffeeImageFirebase {
         )
         .toList();
     return coffeeImageAllDatas;
+  }
+
+  // 物理削除
+  Future<void> deleteCoffeeImageData(CoffeeImageModel coffeeImageModel) async {
+    try {
+      final result = await _firestore
+          .collection(coffeeImages)
+          .doc(coffeeImageModel.id)
+          .delete();
+    } catch (e) {
+      print(e);
+    }
   }
 }

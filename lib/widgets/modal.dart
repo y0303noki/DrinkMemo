@@ -940,8 +940,8 @@ class Modal {
                                                             color: Colors.black,
                                                           ),
                                                         ),
-                                                        onPressed: () {
-                                                          coffeeData
+                                                        onPressed: () async {
+                                                          await coffeeData
                                                               .showImageGallery();
                                                           Navigator.pop(
                                                               context);
@@ -1064,8 +1064,7 @@ class Modal {
                                     ? null
                                     : () async {
                                         // プログレスアイコン表示中
-                                        showProgressDialog(
-                                            context, coffeeDatas);
+                                        showProgressDialog(context);
                                         coffeeDatas.changeIsProgressive(true);
                                         // coffeeをDBに追加
                                         CoffeeModel _coffeeModel =
@@ -1341,7 +1340,6 @@ class Modal {
   /// 消すときは「Navigator.of(context).pop();」
   static void showProgressDialog(
     BuildContext context,
-    CoffeeListProvider coffeeDatas,
   ) {
     showGeneralDialog(
         context: context,

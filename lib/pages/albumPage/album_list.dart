@@ -11,22 +11,25 @@ class AlbumList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final albumsData = Provider.of<AlbumListProvider>(context, listen: false);
-    return RefreshIndicator(
-      // 下に引っ張って更新
-      onRefresh: () async {
-        await albumsData.findAlbumDatas();
-      },
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+    // final albumsData = Provider.of<AlbumListProvider>(context, listen: false);
+    return Consumer<AlbumListProvider>(builder: (ctx, model, _) {
+      print(model.albumModels.length);
+      return RefreshIndicator(
+        // 下に引っ張って更新
+        onRefresh: () async {
+          await model.findAlbumDatas();
+        },
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+          itemCount: model.coffeeImageModels.length,
+          itemBuilder: (ctx, index) => AlbumItem(
+            model.coffeeImageModels[index].id,
+            isHomeAlbum,
+          ),
         ),
-        itemCount: albums.length,
-        itemBuilder: (ctx, index) => AlbumItem(
-          albums[index].id,
-          isHomeAlbum,
-        ),
-      ),
-    );
+      );
+    });
   }
 }

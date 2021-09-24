@@ -82,7 +82,7 @@ class CoffeeFirebase {
 
     // アルバムから画像を選択された場合はaddCoffeeCardにuserImageIdが設定されている
     String _imageId;
-    if (coffeeModel.imageId != null) {
+    if (coffeeModel.imageId != null && coffeeModel.imageId != '') {
       // 既存画像
       _imageId = coffeeModel.imageId!;
     } else if (imageFile != null) {
@@ -233,7 +233,6 @@ class CoffeeFirebase {
     } else {
       print('userId取得失敗');
     }
-
     TaskSnapshot snapshot = await _fireStorage
         .ref()
         .child("coffee/user/$userId/$uuId")
