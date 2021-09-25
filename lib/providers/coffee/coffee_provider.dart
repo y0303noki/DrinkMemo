@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee_project2/const/coffee_name.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
+import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,13 @@ class CoffeeProvider extends ChangeNotifier {
     _countDrink = _count;
   }
 
+  // マイアルバムの数
+  int _countMyAlbum = 0;
+  int get countMyAlbum => _countMyAlbum;
+  set countMyAlbum(int _count) {
+    _countMyAlbum = _count;
+  }
+
   // コーヒー名リストから選択された値
   String selectedCoffeeName = CoffeeName.coffeeNameList[0];
 
@@ -84,6 +92,7 @@ class CoffeeProvider extends ChangeNotifier {
     imageUrl = '';
     imageFile = null;
     imageId = '';
+    imageType = 0;
     notifyListeners();
   }
 
@@ -161,5 +170,9 @@ class CoffeeProvider extends ChangeNotifier {
     var result = await _coffeeImageFirebase.imageIdToUrl(imageId);
 
     return result;
+  }
+
+  Future<int> findMyAlbumCount() async {
+    return await _coffeeImageFirebase.fetchCoffeeImageCount();
   }
 }

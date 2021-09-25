@@ -178,9 +178,11 @@ class CoffeeFirebase {
       CoffeeModel coffeeModel, File? imageFile, int imageType) async {
     // 画像をアップロードしてimageIdを返す
     String _imageId = '';
-    if (imageType == 0) {
+    if (imageType == -1) {
+      _imageId = coffeeModel.imageId!;
+    } else if (imageType == 0) {
       _imageId = '';
-    } else if (imageType == 1 || imageType == 2 || imageType == 3) {
+    } else if (imageType == 1 || imageType == 2) {
       if (imageFile != null) {
         // // 新規画像
         // アップロード処理
@@ -190,9 +192,9 @@ class CoffeeFirebase {
           print('upload error');
           print(e);
         }
-      } else if (coffeeModel.imageId != null && coffeeModel.imageId != '') {
-        _imageId = coffeeModel.imageId!;
       }
+    } else if (imageType == 3) {
+      _imageId = coffeeModel.imageId!;
     }
 
     // ドキュメント更新
