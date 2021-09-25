@@ -1346,8 +1346,17 @@ class Modal {
                                               coffeeData.imageType);
                                         } else {
                                           // 追加
+                                          // TODO:マイドリンクで画像追加ができてない
                                           print(myCoffee);
+                                          if (modalTabData.currentIndex ==
+                                              CafeType.TYPE_MY_DRINK) {
+                                            _coffeeModel.imageId =
+                                                myCoffee != null
+                                                    ? myCoffee.imageId
+                                                    : '';
+                                          }
                                           _coffeeModel.createdAt = now;
+
                                           await _coffeeDb.insertCoffeeData(
                                               _coffeeModel,
                                               coffeeData.imageFile,

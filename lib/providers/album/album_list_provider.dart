@@ -19,6 +19,10 @@ class AlbumListProvider extends ChangeNotifier {
   bool get descriptionShowing => _descriptionShowing;
   set descriptionShowing(bool e) {
     _descriptionShowing = e;
+  }
+
+  void changeDescriptionShowing(bool e) {
+    _descriptionShowing = e;
     notifyListeners();
   }
 

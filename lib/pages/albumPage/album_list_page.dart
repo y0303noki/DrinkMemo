@@ -49,8 +49,8 @@ class AlbumListPage extends StatelessWidget {
                             ),
                           ),
                           onPressed: () {
-                            model.descriptionShowing =
-                                !model.descriptionShowing;
+                            model.changeDescriptionShowing(
+                                !model.descriptionShowing);
                           },
                         ),
                         model.descriptionShowing
