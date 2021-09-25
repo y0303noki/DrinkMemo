@@ -101,6 +101,7 @@ class Modal {
     // 初期化
 
     coffeeData.selectedCoffeeName = CoffeeName.coffeeNameList[0];
+    coffeeData.imageType = 0;
 
     if (coffeeDatas.allbrandModels.isEmpty) {
       await coffeeDatas.findBrandDatas();
@@ -968,6 +969,8 @@ class Modal {
                                                               if (value !=
                                                                   null) {
                                                                 coffeeData
+                                                                    .imageType = 3;
+                                                                coffeeData
                                                                         .imageId =
                                                                     value.id;
                                                                 coffeeData
@@ -1106,13 +1109,15 @@ class Modal {
 
                                           await _coffeeDb.updateCoffeeData(
                                               _coffeeModel,
-                                              coffeeData.imageFile);
+                                              coffeeData.imageFile,
+                                              coffeeData.imageType);
                                         } else {
                                           // 追加
                                           _coffeeModel.createdAt = now;
                                           await _coffeeDb.insertCoffeeData(
                                               _coffeeModel,
-                                              coffeeData.imageFile);
+                                              coffeeData.imageFile,
+                                              coffeeData.imageType);
                                         }
 
                                         _coffeeModel.coffeeAt =

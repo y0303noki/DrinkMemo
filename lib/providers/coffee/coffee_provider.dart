@@ -17,6 +17,13 @@ class CoffeeProvider extends ChangeNotifier {
     _coffeeModel = coffeeModel;
   }
 
+  // 画像タイプ（0:既存、1:カメラ、2:ギャラリー、3：マイアルバム)
+  int _imageType = 0;
+  int get imageType => _imageType;
+  set imageType(int _type) {
+    _imageType = _type;
+  }
+
   // 画像、カメラ関連
   File? imageFile;
   String imageId = '';
@@ -113,6 +120,7 @@ class CoffeeProvider extends ChangeNotifier {
   Future showImageCamera() async {
     final picker = ImagePicker();
     try {
+      _imageType = 1;
       final pickedFile = await picker.getImage(source: ImageSource.camera);
       if (pickedFile == null) {
         return;
@@ -130,6 +138,7 @@ class CoffeeProvider extends ChangeNotifier {
   Future showImageGallery() async {
     final picker = ImagePicker();
     try {
+      _imageType = 2;
       final pickedFile = await picker.getImage(source: ImageSource.gallery);
       if (pickedFile == null) {
         return;

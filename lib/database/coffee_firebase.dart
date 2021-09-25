@@ -49,7 +49,7 @@ class CoffeeFirebase {
   ];
 
   Future<void> insertCoffeeData(
-      CoffeeModel coffeeModel, File? imageFile) async {
+      CoffeeModel coffeeModel, File? imageFile, int imageType) async {
     // 名前のバリテーション
     // if (addCoffeeCard.name == null ||
     //     addCoffeeCard.name.isEmpty ||
@@ -81,28 +81,28 @@ class CoffeeFirebase {
     }
 
     // アルバムから画像を選択された場合はaddCoffeeCardにuserImageIdが設定されている
-    String _imageId;
-    if (coffeeModel.imageId != null && coffeeModel.imageId != '') {
-      // 既存画像
-      _imageId = coffeeModel.imageId!;
-    } else if (imageFile != null) {
-      // 新規画像
-      _imageId = const Uuid().v4();
-      // アップロード処理
-      try {
-        String _imageUrl = await uploadImageUrl(imageFile, _imageId);
-        CoffeeImageModel _coffeeImageModel = CoffeeImageModel(
-          id: _imageId,
-          imageUrl: _imageUrl,
-        );
-        await _coffeeImageFirebase.insertCoffeeImage(_coffeeImageModel);
-      } catch (e) {
-        print('upload error');
-        print(e);
-      }
-    } else {
-      // 画像選択なし
+    String _imageId = '';
+    if (imageType == 0) {
       _imageId = '';
+    } else if (imageType == 1 || imageType == 2 || imageType == 3) {
+      if (imageFile != null) {
+        // 新規画像
+        _imageId = const Uuid().v4();
+        // アップロード処理
+        try {
+          String _imageUrl = await uploadImageUrl(imageFile, _imageId);
+          CoffeeImageModel _coffeeImageModel = CoffeeImageModel(
+            id: _imageId,
+            imageUrl: _imageUrl,
+          );
+          await _coffeeImageFirebase.insertCoffeeImage(_coffeeImageModel);
+        } catch (e) {
+          print('upload error');
+          print(e);
+        }
+      } else if (coffeeModel.imageId != null && coffeeModel.imageId != '') {
+        _imageId = coffeeModel.imageId!;
+      }
     }
 
     addObject['userId'] = userId;
@@ -132,12 +132,11 @@ class CoffeeFirebase {
   }
 
   Future<String> setCoffeeImage(
-      CoffeeModel coffeeModel, File? imageFile) async {
+      CoffeeModel coffeeModel, File imageFile, int imageType) async {
     String _imageId;
-    if (coffeeModel.imageId!.isNotEmpty) {
-      // 既存画像
+    if (imageType == 3) {
       _imageId = coffeeModel.imageId!;
-    } else if (imageFile != null) {
+    } else if (imageType == 1 || imageType == 2) {
       // 新規画像
       _imageId = const Uuid().v4();
       // アップロード処理
@@ -153,7 +152,6 @@ class CoffeeFirebase {
         print(e);
       }
     } else {
-      // 画像選択なし
       _imageId = '';
     }
     return _imageId;
@@ -177,15 +175,24 @@ class CoffeeFirebase {
 
   // 更新
   Future<void> updateCoffeeData(
-      CoffeeModel coffeeModel, File? imageFile) async {
+      CoffeeModel coffeeModel, File? imageFile, int imageType) async {
     // 画像をアップロードしてimageIdを返す
     String _imageId = '';
-    if (imageFile != null) {
-      _imageId = await setCoffeeImage(coffeeModel, imageFile);
-    }
-
-    if (_imageId.isEmpty) {
-      _imageId = coffeeModel.imageId ?? '';
+    if (imageType == 0) {
+      _imageId = '';
+    } else if (imageType == 1 || imageType == 2 || imageType == 3) {
+      if (imageFile != null) {
+        // // 新規画像
+        // アップロード処理
+        try {
+          _imageId = await setCoffeeImage(coffeeModel, imageFile, imageType);
+        } catch (e) {
+          print('upload error');
+          print(e);
+        }
+      } else if (coffeeModel.imageId != null && coffeeModel.imageId != '') {
+        _imageId = coffeeModel.imageId!;
+      }
     }
 
     // ドキュメント更新
