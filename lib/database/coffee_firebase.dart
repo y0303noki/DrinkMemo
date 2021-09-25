@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
@@ -401,5 +402,41 @@ class CoffeeFirebase {
     } else {
       null;
     }
+  }
+
+  // アプリを始めて起動したときにチュートリアルもかねて追加する
+  Future<void> createSample() async {
+    DateTime now1 = DateTime.now();
+    CoffeeModel _model1 = CoffeeModel();
+    _model1.cafeType = CafeType.TYPE_HOME_CAFE;
+    _model1.name = '説明1';
+    _model1.brandName = '右下のプラスボタンからドリンクを追加できます';
+    _model1.coffeeAt = now1;
+    _model1.createdAt = now1;
+    _model1.updatedAt = now1;
+
+    await insertCoffeeData(_model1, null, 0);
+
+    DateTime now2 = DateTime.now();
+    CoffeeModel _model2 = CoffeeModel();
+    _model2.cafeType = CafeType.TYPE_SHOP_CAFE;
+    _model2.name = '説明2';
+    _model2.shopName = '追加したドリンクはタップすると更新・削除できます';
+    _model2.coffeeAt = now2;
+    _model2.createdAt = now2;
+    _model2.updatedAt = now2;
+
+    await insertCoffeeData(_model2, null, 0);
+
+    DateTime now3 = DateTime.now();
+    CoffeeModel _model3 = CoffeeModel();
+    _model3.cafeType = CafeType.TYPE_HOME_CAFE;
+    _model3.name = '説明3';
+    _model3.brandName = '写真を撮って画像も登録してみましょう';
+    _model3.coffeeAt = now3;
+    _model3.createdAt = now3;
+    _model3.updatedAt = now3;
+
+    await insertCoffeeData(_model3, null, 0);
   }
 }

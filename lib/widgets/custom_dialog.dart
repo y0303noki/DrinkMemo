@@ -73,10 +73,14 @@ class CustomDialog {
                           padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                           child: Text('銘柄'),
                         ),
-                        Text(
-                          myCoffeeModel.brandName,
-                          style: const TextStyle(
-                            fontSize: 20,
+                        Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: Text(
+                            myCoffeeModel.brandName,
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],

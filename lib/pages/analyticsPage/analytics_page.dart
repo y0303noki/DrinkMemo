@@ -112,6 +112,19 @@ class AnalyticsPage extends StatelessWidget {
         body: Consumer<AnalyticsProvider>(builder: (ctx, model, _) {
           return Column(
             children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+                width: double.infinity,
+                constraints: const BoxConstraints(
+                  minHeight: 50,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(child: Text('今までに投稿したドリンクを分析します。')),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

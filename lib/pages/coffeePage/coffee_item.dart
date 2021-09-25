@@ -134,15 +134,18 @@ class CoffeeItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text(
-                          coffee.cafeType == CafeType.TYPE_HOME_CAFE
-                              ? coffee.brandName
-                              : coffee.shopName,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xff333333),
+                        Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: Text(
+                            coffee.cafeType == CafeType.TYPE_HOME_CAFE
+                                ? coffee.brandName
+                                : coffee.shopName,
+                            overflow: TextOverflow.clip,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xff333333),
+                            ),
                           ),
                         ),
                       ],

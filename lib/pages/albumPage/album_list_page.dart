@@ -15,10 +15,11 @@ class AlbumListPage extends StatelessWidget {
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
+    albumsData.descriptionShowing = false;
     if (albumsData.albumModels.isEmpty) {
       albumsData.findAlbumDatas();
+      albumsData.descriptionShowing = true;
     }
-    albumsData.descriptionShowing = false;
 
     return FutureBuilder(
         // future属性で非同期処理を書く

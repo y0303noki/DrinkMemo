@@ -1317,6 +1317,7 @@ class Modal {
                                             coffeeData.imageId;
 
                                         var _coffeeDb = CoffeeFirebase();
+
                                         if (isUpdate) {
                                           // 更新
                                           _coffeeModel.id =
@@ -1345,6 +1346,7 @@ class Modal {
                                               coffeeData.imageType);
                                         } else {
                                           // 追加
+                                          print(myCoffee);
                                           _coffeeModel.createdAt = now;
                                           await _coffeeDb.insertCoffeeData(
                                               _coffeeModel,
