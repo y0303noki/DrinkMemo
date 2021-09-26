@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.star_border_outlined,
+              Icons.local_drink_outlined,
               color: Colors.yellow[800],
             ),
             onPressed: () {

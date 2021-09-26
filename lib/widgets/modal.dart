@@ -213,7 +213,7 @@ class Modal {
                                                 Navigator.pop(context);
                                               },
                                               icon: const Icon(
-                                                Icons.delete_outline,
+                                                Icons.delete,
                                                 color: Colors.red,
                                               ),
                                             )
@@ -1489,7 +1489,7 @@ class Modal {
             Navigator.pop(context);
           },
           icon: Icon(
-            Icons.star_border_outlined,
+            Icons.local_drink_outlined,
             color: Colors.yellow[800],
           ),
         ),
@@ -1504,7 +1504,7 @@ class Modal {
                 .simpleDefaultDialog(context, '', '${CafeType.BRAND}に登録済みです');
           },
           icon: Icon(
-            Icons.star,
+            Icons.local_drink_outlined,
             color: Colors.yellow[800],
           ),
         ),

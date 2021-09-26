@@ -24,19 +24,16 @@ class CoffeeItem extends StatelessWidget {
 
     final coffee = coffeeDatas.findById(coffeeId);
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: const BorderRadius.only(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           bottomLeft: Radius.circular(20),
         ),
-        // border: Border.all(color: Colors.black),
       ),
       child: Material(
-        // color: Colors.transparent,
+        color: Colors.white.withOpacity(0.9),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          // splashColor: const Color(0x96EBC254),
           onTap: () async {
             coffeeData.imageFile = null;
             coffeeData.imageUrl =

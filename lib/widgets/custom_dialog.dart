@@ -171,24 +171,18 @@ class CustomDialog {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: const Icon(
-                          Icons.favorite_outline_outlined,
-                          color: Colors.pink,
-                        ),
-                      ),
-                      const Text(
-                        'お気に入り',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
+                _iconDescriptionItem(
+                  'お気に入り',
+                  const Icon(
+                    Icons.favorite_outline_outlined,
+                    color: Colors.pink,
+                  ),
+                ),
+                _iconDescriptionItem(
+                  'マイドリンク',
+                  Icon(
+                    Icons.local_drink_outlined,
+                    color: Colors.yellow[800],
                   ),
                 ),
               ],
@@ -203,6 +197,26 @@ class CustomDialog {
           ],
         );
       },
+    );
+  }
+
+  Widget _iconDescriptionItem(
+    String title,
+    Icon icon,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      child: Row(
+        children: [
+          Container(margin: const EdgeInsets.fromLTRB(0, 0, 5, 0), child: icon),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -262,7 +276,7 @@ class CustomDialog {
                                         const BoxConstraints(maxWidth: 180),
                                     child: Text(
                                       brandName,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                       ),
                                       overflow: TextOverflow.ellipsis,
