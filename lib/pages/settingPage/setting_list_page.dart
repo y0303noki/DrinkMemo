@@ -71,6 +71,13 @@ class SettingListPage extends StatelessWidget {
               onLongPress: () async {
                 final data = ClipboardData(text: userData.userModel!.memebrId);
                 await Clipboard.setData(data);
+                SnackBar snackBar = const SnackBar(
+                  duration: Duration(seconds: 1),
+                  content: Text('クリップボードにコピーしました。'),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               },
               trailing: Text(userData.userModel!.memebrId),
             ),
