@@ -225,18 +225,28 @@ class CustomDialog {
                   child: Column(
                     mainAxisSize: MainAxisSize.min, // columnの高さを自動調整
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('登録中の${CafeType.MY_DRINK}'),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: const Text(
+                            '登録中の${CafeType.MY_DRINK}',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Text(
-                              name,
-                              style: const TextStyle(
-                                fontSize: 20,
+                            Container(
+                              constraints: const BoxConstraints(maxWidth: 180),
+                              child: Text(
+                                name,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -247,10 +257,15 @@ class CustomDialog {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Text(
-                                    brandName,
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Container(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 180),
+                                    child: Text(
+                                      brandName,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],
@@ -262,10 +277,15 @@ class CustomDialog {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Text(
-                                    shopName,
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Container(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 180),
+                                    child: Text(
+                                      shopName,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],

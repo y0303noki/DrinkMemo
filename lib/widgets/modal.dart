@@ -1302,7 +1302,20 @@ class Modal {
                                               CafeType.TYPE_HOME_CAFE;
                                           _coffeeModel.brandName =
                                               _brandTextEditingCntroller.text;
-                                        } else {}
+                                        } else {
+                                          // マイドリンク
+                                          _coffeeModel.cafeType =
+                                              myCoffee!.cafeType;
+                                          if (myCoffee.cafeType ==
+                                              CafeType.TYPE_SHOP_CAFE) {
+                                            _coffeeModel.shopName =
+                                                _shopTextEditingCntroller.text;
+                                          } else if (myCoffee.cafeType ==
+                                              CafeType.TYPE_HOME_CAFE) {
+                                            _coffeeModel.brandName =
+                                                _brandTextEditingCntroller.text;
+                                          }
+                                        }
 
                                         _coffeeModel.name =
                                             _nameTextEditingCntroller.text;
@@ -1346,14 +1359,13 @@ class Modal {
                                               coffeeData.imageType);
                                         } else {
                                           // 追加
-                                          // TODO:マイドリンクで画像追加ができてない
-                                          print(myCoffee);
                                           if (modalTabData.currentIndex ==
                                               CafeType.TYPE_MY_DRINK) {
                                             _coffeeModel.imageId =
                                                 myCoffee != null
                                                     ? myCoffee.imageId
                                                     : '';
+                                            coffeeData.imageType = -1;
                                           }
                                           _coffeeModel.createdAt = now;
 

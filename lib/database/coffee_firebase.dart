@@ -104,6 +104,8 @@ class CoffeeFirebase {
       } else if (coffeeModel.imageId != null && coffeeModel.imageId != '') {
         _imageId = coffeeModel.imageId!;
       }
+    } else {
+      _imageId = coffeeModel.imageId!;
     }
 
     addObject['userId'] = userId;
