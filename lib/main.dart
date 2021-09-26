@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'ドリンクメモ',
         // theme: ThemeData(
         //   primarySwatch: Common.lightPrimaryColor, // ここ
         // ),
