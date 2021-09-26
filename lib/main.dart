@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'ドリンクメモ',
+        debugShowCheckedModeBanner: false,
         // theme: ThemeData(
         //   primarySwatch: Common.lightPrimaryColor, // ここ
         // ),
