@@ -34,11 +34,15 @@ class CustomDialog {
                     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: Text('名前'),
                   ),
-                  Text(
-                    myCoffeeModel.name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 180),
+                    child: Text(
+                      myCoffeeModel.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
@@ -54,10 +58,14 @@ class CustomDialog {
                           padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                           child: Text('店名'),
                         ),
-                        Text(
-                          myCoffeeModel.shopName,
-                          style: const TextStyle(
-                            fontSize: 25,
+                        Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: Text(
+                            myCoffeeModel.shopName,
+                            style: const TextStyle(
+                              fontSize: 25,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -126,21 +134,31 @@ class CustomDialog {
       // barrierDismissible: false,
       builder: (_) {
         return AlertDialog(
-          title: const Text('アイコンの説明'),
+          title: const Text(
+            'アイコンの説明',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
+          ),
           content: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min, // columnの高さを自動調整
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                   child: Row(
                     children: [
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                        width: 3,
-                        height: 25,
-                        color: ColorUtility()
-                            .toColorByCofeType(CafeType.TYPE_HOME_CAFE),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: ColorUtility()
+                                  .toColorByCofeType(CafeType.TYPE_HOME_CAFE)),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                       ),
                       const Text(
                         CafeType.HOME_CAFE,
@@ -152,15 +170,20 @@ class CustomDialog {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                   child: Row(
                     children: [
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-                        width: 3,
-                        height: 25,
-                        color: ColorUtility()
-                            .toColorByCofeType(CafeType.TYPE_SHOP_CAFE),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: ColorUtility()
+                                .toColorByCofeType(CafeType.TYPE_SHOP_CAFE),
+                          ),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                       ),
                       const Text(
                         CafeType.SHOP_CAFE,

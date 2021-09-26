@@ -409,36 +409,48 @@ class CoffeeFirebase {
   // アプリを始めて起動したときにチュートリアルもかねて追加する
   Future<void> createSample() async {
     DateTime now1 = DateTime.now();
+    DateTime now2 = now1.add(const Duration(minutes: 5));
+    DateTime now3 = now2.add(const Duration(minutes: 5));
+    DateTime now4 = now3.add(const Duration(minutes: 5));
+
     CoffeeModel _model1 = CoffeeModel();
     _model1.cafeType = CafeType.TYPE_HOME_CAFE;
     _model1.name = '説明1';
     _model1.brandName = '右下のプラスボタンからドリンクを追加できます';
-    _model1.coffeeAt = now1;
-    _model1.createdAt = now1;
-    _model1.updatedAt = now1;
+    _model1.coffeeAt = now4;
+    _model1.createdAt = now4;
+    _model1.updatedAt = now4;
 
     await insertCoffeeData(_model1, null, 0);
 
-    DateTime now2 = DateTime.now();
     CoffeeModel _model2 = CoffeeModel();
     _model2.cafeType = CafeType.TYPE_SHOP_CAFE;
     _model2.name = '説明2';
     _model2.shopName = '追加したドリンクはタップすると更新・削除できます';
-    _model2.coffeeAt = now2;
-    _model2.createdAt = now2;
-    _model2.updatedAt = now2;
+    _model2.coffeeAt = now3;
+    _model2.createdAt = now3;
+    _model2.updatedAt = now3;
 
     await insertCoffeeData(_model2, null, 0);
 
-    DateTime now3 = DateTime.now();
     CoffeeModel _model3 = CoffeeModel();
     _model3.cafeType = CafeType.TYPE_HOME_CAFE;
     _model3.name = '説明3';
     _model3.brandName = '写真を撮って画像も登録してみましょう';
-    _model3.coffeeAt = now3;
-    _model3.createdAt = now3;
-    _model3.updatedAt = now3;
+    _model3.coffeeAt = now2;
+    _model3.createdAt = now2;
+    _model3.updatedAt = now2;
 
     await insertCoffeeData(_model3, null, 0);
+
+    CoffeeModel _model4 = CoffeeModel();
+    _model4.cafeType = CafeType.TYPE_SHOP_CAFE;
+    _model4.name = '説明4';
+    _model4.shopName = '同じ日に飲んだドリンクは杯数を増やすことができます';
+    _model4.countDrink = 3;
+    _model4.coffeeAt = now1;
+    _model4.createdAt = now1;
+    _model4.updatedAt = now1;
+    await insertCoffeeData(_model4, null, 0);
   }
 }

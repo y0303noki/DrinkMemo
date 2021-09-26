@@ -130,7 +130,8 @@ class CoffeeProvider extends ChangeNotifier {
     final picker = ImagePicker();
     try {
       _imageType = 1;
-      final pickedFile = await picker.getImage(source: ImageSource.camera);
+      final pickedFile =
+          await picker.getImage(source: ImageSource.camera, imageQuality: 10);
       if (pickedFile == null) {
         return;
       }
@@ -148,7 +149,8 @@ class CoffeeProvider extends ChangeNotifier {
     final picker = ImagePicker();
     try {
       _imageType = 2;
-      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await picker.getImage(source: ImageSource.gallery, imageQuality: 10);
       if (pickedFile == null) {
         return;
       }

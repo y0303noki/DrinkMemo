@@ -70,6 +70,7 @@ class UserProvider extends ChangeNotifier {
 
         // 初めての起動ときはチュートリアルを入れる
         await _coffeeDb.createSample();
+        await _coffeeDb.fetchCoffeeDatas();
       } else {
         _userModel = findUserData;
       }
