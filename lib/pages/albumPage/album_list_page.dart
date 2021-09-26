@@ -15,8 +15,10 @@ class AlbumListPage extends StatelessWidget {
     final bottomNavigationData =
         Provider.of<BottomNavigationProvider>(context, listen: false);
 
+    albumsData.descriptionShowing = false;
     if (albumsData.albumModels.isEmpty) {
       albumsData.findAlbumDatas();
+      albumsData.descriptionShowing = true;
     }
 
     return FutureBuilder(
@@ -36,18 +38,77 @@ class AlbumListPage extends StatelessWidget {
             child: Center(
               child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-                    width: double.infinity,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[100],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Text('画像を選択して投稿した画像が表示されます。'
-                        'マイアルバムから画像を選択したものは画像のアップロード上限数に引っかかりません。'),
-                  ),
+                  Consumer<AlbumListProvider>(builder: (ctx, model, _) {
+                    return Column(
+                      children: [
+                        TextButton(
+                          child: Text(
+                            model.descriptionShowing ? '説明を閉じる' : '説明を開く',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          onPressed: () {
+                            model.changeDescriptionShowing(
+                                !model.descriptionShowing);
+                          },
+                        ),
+                        model.descriptionShowing
+                            ? Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                margin:
+                                    const EdgeInsets.fromLTRB(10, 10, 10, 5),
+                                width: double.infinity,
+                                constraints: const BoxConstraints(
+                                  minHeight: 100,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue[100],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Text('投稿した画像が表示されます。'
+                                        'マイアルバムから画像を選択して投稿アップロード上限数に引っかかりません。'),
+                                    Row(
+                                      children: [
+                                        Container(
+                                          child: const Text(
+                                            'あと',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.fromLTRB(
+                                              10, 0, 10, 0),
+                                          child: Text(
+                                            model.limitCount.toString(),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          child: const Text(
+                                            '枚',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    );
+                  }),
                   Expanded(
                     child: Container(
                       margin: const EdgeInsets.fromLTRB(10, 5, 10, 10),

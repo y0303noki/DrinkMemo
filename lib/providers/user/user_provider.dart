@@ -1,3 +1,4 @@
+import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
 import 'package:coffee_project2/database/user_firebase.dart';
 import 'package:coffee_project2/model/album_model.dart';
@@ -9,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class UserProvider extends ChangeNotifier {
   final UserFirebase _userDb = UserFirebase();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final CoffeeFirebase _coffeeDb = CoffeeFirebase();
 
   UserModel? _userModel = null;
   UserModel? get userModel => _userModel;
@@ -64,7 +66,10 @@ class UserProvider extends ChangeNotifier {
           updatedAt: now,
         );
 
-        _userDb.insertUserData(_userModel!);
+        await _userDb.insertUserData(_userModel!);
+
+        // 初めての起動ときはチュートリアルを入れる
+        await _coffeeDb.createSample();
       } else {
         _userModel = findUserData;
       }

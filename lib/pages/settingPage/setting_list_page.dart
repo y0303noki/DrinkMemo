@@ -5,6 +5,7 @@ import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 class SettingListPage extends StatelessWidget {
   @override
@@ -40,9 +41,6 @@ class SettingListPage extends StatelessWidget {
                 '匿名ログイン中',
                 style: TextStyle(color: Colors.black, fontSize: 15.0),
               ),
-              onTap: () {
-                print("onTap called.");
-              }, // タップ
               onLongPress: () {
                 print("onLongPress called.");
               }, // 長押し
@@ -59,10 +57,21 @@ class SettingListPage extends StatelessWidget {
               ),
             ),
             child: ListTile(
-              title: const Text(
-                '会員ID',
-                style: TextStyle(color: Colors.black, fontSize: 15.0),
-              ),
+              title: Row(children: const [
+                Text(
+                  '会員ID',
+                  style: TextStyle(color: Colors.black, fontSize: 15.0),
+                ),
+                Text(
+                  '（長押しでコピー）',
+                  style: TextStyle(color: Colors.black, fontSize: 12.0),
+                ),
+              ]),
+              // タップ
+              onLongPress: () async {
+                final data = ClipboardData(text: userData.userModel!.memebrId);
+                await Clipboard.setData(data);
+              },
               trailing: Text(userData.userModel!.memebrId),
             ),
           ),
@@ -86,7 +95,8 @@ class SettingListPage extends StatelessWidget {
                 if (result != null && result == 'YES') {
                   UserProvider().signOut();
                 }
-              }, // タップ
+              },
+              trailing: const Icon(Icons.arrow_forward_ios),
             ),
           ),
           Container(
@@ -149,6 +159,7 @@ class SettingListPage extends StatelessWidget {
                 print("onTap called.");
                 await _launchURL();
               },
+              trailing: const Icon(Icons.arrow_forward_ios),
             ),
           ),
           // Container(

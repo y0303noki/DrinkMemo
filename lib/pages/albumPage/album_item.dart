@@ -1,4 +1,5 @@
 import 'package:coffee_project2/model/coffee_image_model.dart';
+import 'package:coffee_project2/pages/albumPage/album_detail_page.dart';
 import 'package:coffee_project2/providers/album/album_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
@@ -19,9 +20,23 @@ class AlbumItem extends StatelessWidget {
       child: Stack(
         children: [
           InkWell(
-            onTap: () {
+            onTap: () async {
               if (isHomeAlbum) {
                 // フッターのアルバムボタン
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AlbumDetailPage(album),
+                    fullscreenDialog: true,
+                  ),
+                ).then(
+                  (value) {
+                    // 削除されたら取得し直す
+                    if (value == 'DELETED') {
+                      albumsData.findAlbumDatas();
+                    }
+                  },
+                );
               } else {
                 // 選択したアルバムデータを返す
                 Navigator.pop(context, album);

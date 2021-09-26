@@ -112,6 +112,19 @@ class AnalyticsPage extends StatelessWidget {
         body: Consumer<AnalyticsProvider>(builder: (ctx, model, _) {
           return Column(
             children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+                width: double.infinity,
+                constraints: const BoxConstraints(
+                  minHeight: 50,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue[100],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(child: Text('今までに投稿したドリンクを分析します。')),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -202,7 +215,7 @@ class AnalyticsPage extends StatelessWidget {
                           child: CircleAvatar(
                             backgroundColor: Colors.white,
                             radius: 30,
-                            child: Icon(Icons.coffee_outlined),
+                            child: Icon(Icons.analytics),
                           ),
                         ),
                         Text(
@@ -236,6 +249,26 @@ class AnalyticsPage extends StatelessWidget {
                         thickness: 1.0,
                       ),
                     ),
+                    Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: const CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 30,
+                            child: Icon(Icons.local_drink),
+                          ),
+                        ),
+                        const Text(
+                          'ベストドリンク',
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+
                     _topCoffeeItem(model),
                     // _defaultItem('キリマンジャロ', '最も多いブランド'),
                     // _defaultItem('スタバ', '最も多いカフェ'),

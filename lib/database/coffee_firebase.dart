@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
@@ -49,7 +50,7 @@ class CoffeeFirebase {
   ];
 
   Future<void> insertCoffeeData(
-      CoffeeModel coffeeModel, File? imageFile) async {
+      CoffeeModel coffeeModel, File? imageFile, int imageType) async {
     // 名前のバリテーション
     // if (addCoffeeCard.name == null ||
     //     addCoffeeCard.name.isEmpty ||
@@ -81,28 +82,30 @@ class CoffeeFirebase {
     }
 
     // アルバムから画像を選択された場合はaddCoffeeCardにuserImageIdが設定されている
-    String _imageId;
-    if (coffeeModel.imageId != null) {
-      // 既存画像
-      _imageId = coffeeModel.imageId!;
-    } else if (imageFile != null) {
-      // 新規画像
-      _imageId = const Uuid().v4();
-      // アップロード処理
-      try {
-        String _imageUrl = await uploadImageUrl(imageFile, _imageId);
-        CoffeeImageModel _coffeeImageModel = CoffeeImageModel(
-          id: _imageId,
-          imageUrl: _imageUrl,
-        );
-        await _coffeeImageFirebase.insertCoffeeImage(_coffeeImageModel);
-      } catch (e) {
-        print('upload error');
-        print(e);
+    String _imageId = '';
+    if (imageType == 0) {
+      _imageId = '';
+    } else if (imageType == 1 || imageType == 2 || imageType == 3) {
+      if (imageFile != null) {
+        // 新規画像
+        _imageId = const Uuid().v4();
+        // アップロード処理
+        try {
+          String _imageUrl = await uploadImageUrl(imageFile, _imageId);
+          CoffeeImageModel _coffeeImageModel = CoffeeImageModel(
+            id: _imageId,
+            imageUrl: _imageUrl,
+          );
+          await _coffeeImageFirebase.insertCoffeeImage(_coffeeImageModel);
+        } catch (e) {
+          print('upload error');
+          print(e);
+        }
+      } else if (coffeeModel.imageId != null && coffeeModel.imageId != '') {
+        _imageId = coffeeModel.imageId!;
       }
     } else {
-      // 画像選択なし
-      _imageId = '';
+      _imageId = coffeeModel.imageId!;
     }
 
     addObject['userId'] = userId;
@@ -112,6 +115,7 @@ class CoffeeFirebase {
     addObject['shopName'] = coffeeModel.shopName;
     addObject['brandName'] = coffeeModel.brandName;
     addObject['isIce'] = coffeeModel.isIce;
+    addObject['countDrink'] = coffeeModel.countDrink;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -131,12 +135,11 @@ class CoffeeFirebase {
   }
 
   Future<String> setCoffeeImage(
-      CoffeeModel coffeeModel, File? imageFile) async {
+      CoffeeModel coffeeModel, File imageFile, int imageType) async {
     String _imageId;
-    if (coffeeModel.imageId!.isNotEmpty) {
-      // 既存画像
+    if (imageType == 3) {
       _imageId = coffeeModel.imageId!;
-    } else if (imageFile != null) {
+    } else if (imageType == 1 || imageType == 2) {
       // 新規画像
       _imageId = const Uuid().v4();
       // アップロード処理
@@ -152,7 +155,6 @@ class CoffeeFirebase {
         print(e);
       }
     } else {
-      // 画像選択なし
       _imageId = '';
     }
     return _imageId;
@@ -176,15 +178,26 @@ class CoffeeFirebase {
 
   // 更新
   Future<void> updateCoffeeData(
-      CoffeeModel coffeeModel, File? imageFile) async {
+      CoffeeModel coffeeModel, File? imageFile, int imageType) async {
     // 画像をアップロードしてimageIdを返す
     String _imageId = '';
-    if (imageFile != null) {
-      _imageId = await setCoffeeImage(coffeeModel, imageFile);
-    }
-
-    if (_imageId.isEmpty) {
-      _imageId = coffeeModel.imageId ?? '';
+    if (imageType == -1) {
+      _imageId = coffeeModel.imageId!;
+    } else if (imageType == 0) {
+      _imageId = '';
+    } else if (imageType == 1 || imageType == 2) {
+      if (imageFile != null) {
+        // // 新規画像
+        // アップロード処理
+        try {
+          _imageId = await setCoffeeImage(coffeeModel, imageFile, imageType);
+        } catch (e) {
+          print('upload error');
+          print(e);
+        }
+      }
+    } else if (imageType == 3) {
+      _imageId = coffeeModel.imageId!;
     }
 
     // ドキュメント更新
@@ -193,6 +206,7 @@ class CoffeeFirebase {
     // updateData['favorite'] = coffeeModel.favorite;
     updateData['cafeType'] = coffeeModel.cafeType;
     updateData['isIce'] = coffeeModel.isIce;
+    updateData['countDrink'] = coffeeModel.countDrink;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
@@ -231,7 +245,6 @@ class CoffeeFirebase {
     } else {
       print('userId取得失敗');
     }
-
     TaskSnapshot snapshot = await _fireStorage
         .ref()
         .child("coffee/user/$userId/$uuId")
@@ -270,6 +283,7 @@ class CoffeeFirebase {
             shopName: doc.data()['shopName'] ?? '',
             brandName: doc.data()['brandName'] ?? '',
             isIce: doc.data()['isIce'] ?? false,
+            countDrink: doc.data()['countDrink'] ?? 1,
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -314,6 +328,7 @@ class CoffeeFirebase {
               shopName: doc.data()['shopName'] ?? '',
               brandName: doc.data()['brandName'] ?? '',
               isIce: doc.data()['isIce'] ?? false,
+              countDrink: doc.data()['countDrink'] ?? 1,
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
@@ -376,6 +391,7 @@ class CoffeeFirebase {
             shopName: doc.data()['shopName'] ?? '',
             brandName: doc.data()['brandName'] ?? '',
             isIce: doc.data()['isIce'] ?? false,
+            countDrink: doc.data()['countDrink'] ?? 1,
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -388,5 +404,41 @@ class CoffeeFirebase {
     } else {
       null;
     }
+  }
+
+  // アプリを始めて起動したときにチュートリアルもかねて追加する
+  Future<void> createSample() async {
+    DateTime now1 = DateTime.now();
+    CoffeeModel _model1 = CoffeeModel();
+    _model1.cafeType = CafeType.TYPE_HOME_CAFE;
+    _model1.name = '説明1';
+    _model1.brandName = '右下のプラスボタンからドリンクを追加できます';
+    _model1.coffeeAt = now1;
+    _model1.createdAt = now1;
+    _model1.updatedAt = now1;
+
+    await insertCoffeeData(_model1, null, 0);
+
+    DateTime now2 = DateTime.now();
+    CoffeeModel _model2 = CoffeeModel();
+    _model2.cafeType = CafeType.TYPE_SHOP_CAFE;
+    _model2.name = '説明2';
+    _model2.shopName = '追加したドリンクはタップすると更新・削除できます';
+    _model2.coffeeAt = now2;
+    _model2.createdAt = now2;
+    _model2.updatedAt = now2;
+
+    await insertCoffeeData(_model2, null, 0);
+
+    DateTime now3 = DateTime.now();
+    CoffeeModel _model3 = CoffeeModel();
+    _model3.cafeType = CafeType.TYPE_HOME_CAFE;
+    _model3.name = '説明3';
+    _model3.brandName = '写真を撮って画像も登録してみましょう';
+    _model3.coffeeAt = now3;
+    _model3.createdAt = now3;
+    _model3.updatedAt = now3;
+
+    await insertCoffeeData(_model3, null, 0);
   }
 }

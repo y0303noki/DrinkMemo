@@ -55,8 +55,10 @@ class CoffeeImageFirebase {
           .collection(coffeeImages)
           .doc(coffeeImageModel.id)
           .set(addObject);
+      print('SUCCSESS');
       return;
     } catch (e) {
+      print('ERROR!${e.toString()}');
       return;
     }
   }
@@ -122,6 +124,10 @@ class CoffeeImageFirebase {
         .limit(20)
         .get();
 
+    if (snapshots.docs.isNotEmpty) {
+      print(snapshots.docs.first.id);
+    }
+
     final coffeeImageAllDatas = snapshots.docs
         .map(
           (doc) => CoffeeImageModel(
@@ -135,5 +141,39 @@ class CoffeeImageFirebase {
         )
         .toList();
     return coffeeImageAllDatas;
+  }
+
+  // アルバム、写真の数だけ返す
+  Future<int> fetchCoffeeImageCount() async {
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+
+    final QuerySnapshot snapshots = await _firestore
+        .collection(coffeeImages)
+        .where('userId', isEqualTo: userId)
+        .orderBy('updatedAt', descending: true)
+        .limit(200)
+        .get();
+
+    return snapshots.docs.length;
+  }
+
+  // 物理削除
+  Future<void> deleteCoffeeImageData(CoffeeImageModel coffeeImageModel) async {
+    try {
+      final result = await _firestore
+          .collection(coffeeImages)
+          .doc(coffeeImageModel.id)
+          .delete();
+    } catch (e) {
+      print(e);
+    }
   }
 }

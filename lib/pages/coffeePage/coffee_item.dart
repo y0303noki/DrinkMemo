@@ -24,25 +24,36 @@ class CoffeeItem extends StatelessWidget {
 
     final coffee = coffeeDatas.findById(coffeeId);
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: const BorderRadius.only(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           bottomLeft: Radius.circular(20),
         ),
-        // border: Border.all(color: Colors.black),
       ),
       child: Material(
-        color: Colors.transparent,
+        color: Colors.white.withOpacity(0.9),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          splashColor: const Color(0x96EBC254),
           onTap: () async {
             coffeeData.imageFile = null;
             coffeeData.imageUrl =
                 await coffeeData.findCoffeeImage(coffee.imageId);
             Modal().showCoffeeBottomSheet(
                 context, coffee, coffeeDatas, coffeeData, true);
+          },
+          onDoubleTap: () {
+            print('doubletap');
+          },
+          onLongPress: () {
+            print('longtap');
+
+            // SnackBar snackBar = SnackBar(
+            //   duration: const Duration(seconds: 1),
+            //   content: Text('インクリメントしました'),
+            //   shape: const RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.all(Radius.circular(10))),
+            // );
+            // ScaffoldMessenger.of(context).showSnackBar(snackBar);
           },
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -57,15 +68,47 @@ class CoffeeItem extends StatelessWidget {
                         topLeft: Radius.circular(10),
                         bottomLeft: Radius.circular(10),
                       ),
-                      child: _setCofeeImage(coffeeData, coffee),
+                      // child: _setCofeeImage(coffeeData, coffee),
+                      child: Stack(
+                        children: [
+                          _setCofeeImage(coffeeData, coffee),
+                          // カウントが2以上だったら表示する
+                          coffee.countDrink > 1
+                              ? Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(80, 80, 10, 5),
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.brown[100],
+                                  ),
+                                  child: Center(
+                                      child: Text(
+                                    coffee.countDrink.toString(),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                    ),
+                                  )),
+                                )
+                              : Container(
+                                  margin:
+                                      const EdgeInsets.fromLTRB(80, 80, 10, 5),
+                                  width: 30,
+                                  height: 30,
+                                ),
+                        ],
+                      ),
                     ),
                     const SizedBox(
-                      width: 10,
+                      width: 5,
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      children: [
                         Text(
                           DateUtility(coffee.coffeeAt).toDateFormatted(),
                           overflow: TextOverflow.ellipsis,
@@ -88,15 +131,18 @@ class CoffeeItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text(
-                          coffee.cafeType == CafeType.TYPE_HOME_CAFE
-                              ? coffee.brandName
-                              : coffee.shopName,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0xff333333),
+                        Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: Text(
+                            coffee.cafeType == CafeType.TYPE_HOME_CAFE
+                                ? coffee.brandName
+                                : coffee.shopName,
+                            overflow: TextOverflow.clip,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xff333333),
+                            ),
                           ),
                         ),
                       ],

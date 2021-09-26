@@ -73,10 +73,14 @@ class CustomDialog {
                           padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                           child: Text('銘柄'),
                         ),
-                        Text(
-                          myCoffeeModel.brandName,
-                          style: const TextStyle(
-                            fontSize: 20,
+                        Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: Text(
+                            myCoffeeModel.brandName,
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -167,24 +171,18 @@ class CustomDialog {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                        child: const Icon(
-                          Icons.favorite_outline_outlined,
-                          color: Colors.pink,
-                        ),
-                      ),
-                      const Text(
-                        'お気に入り',
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
+                _iconDescriptionItem(
+                  'お気に入り',
+                  const Icon(
+                    Icons.favorite_outline_outlined,
+                    color: Colors.pink,
+                  ),
+                ),
+                _iconDescriptionItem(
+                  'マイドリンク',
+                  Icon(
+                    Icons.local_drink_outlined,
+                    color: Colors.yellow[800],
                   ),
                 ),
               ],
@@ -199,6 +197,26 @@ class CustomDialog {
           ],
         );
       },
+    );
+  }
+
+  Widget _iconDescriptionItem(
+    String title,
+    Icon icon,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      child: Row(
+        children: [
+          Container(margin: const EdgeInsets.fromLTRB(0, 0, 5, 0), child: icon),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -221,18 +239,28 @@ class CustomDialog {
                   child: Column(
                     mainAxisSize: MainAxisSize.min, // columnの高さを自動調整
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text('登録中の${CafeType.MY_DRINK}'),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 180),
+                          child: const Text(
+                            '登録中の${CafeType.MY_DRINK}',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Text(
-                              name,
-                              style: const TextStyle(
-                                fontSize: 20,
+                            Container(
+                              constraints: const BoxConstraints(maxWidth: 180),
+                              child: Text(
+                                name,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
@@ -243,10 +271,15 @@ class CustomDialog {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Text(
-                                    brandName,
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Container(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 180),
+                                    child: Text(
+                                      brandName,
+                                      style: const TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],
@@ -258,10 +291,15 @@ class CustomDialog {
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [
-                                  Text(
-                                    shopName,
-                                    style: TextStyle(
-                                      fontSize: 15,
+                                  Container(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 180),
+                                    child: Text(
+                                      shopName,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ],

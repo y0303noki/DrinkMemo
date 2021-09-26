@@ -45,11 +45,17 @@ class AnalyticsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-// 全て
+  // 全て
   List<CoffeeModel> _coffeeModels = [];
   List<CoffeeModel> get coffeeModels => _coffeeModels;
 
   Future init(DateTime? searchAt) async {
+    _homeCount = 0;
+    _shopCount = 0;
+    _topCoffeeName = '';
+    _topShopName = '';
+    _topCoffeeCount = 0;
+
     DateTime now = DateTime.now();
     if (searchAt == null) {
       // 初期値は現在の月
@@ -65,7 +71,19 @@ class AnalyticsProvider extends ChangeNotifier {
     DateTime startAt = DateTime(_selectedYear, _selectedMonth, 1);
     DateTime endAt = DateTime(_selectedYear, _selectedMonth, 31);
     _coffeeModels = await _coffeeDb.fetchCoffeeDatasByAt(startAt, endAt);
-    List<String> _coffeeNameList = _coffeeModels.map((e) => e.name).toList();
+    List<String> _coffeeNameList = [];
+
+    // コーヒーランキングを計算
+    _coffeeModels.forEach((element) {
+      if (element.countDrink > 1) {
+        for (int i = 0; i < element.countDrink; i++) {
+          _coffeeNameList.add(element.name);
+        }
+      } else {
+        _coffeeNameList.add(element.name);
+      }
+    });
+
     final Map<String, int> result = _coffeeNameRanking(_coffeeNameList);
     // 集計が無効
     if (result.isEmpty) {
@@ -93,7 +111,11 @@ class AnalyticsProvider extends ChangeNotifier {
         .where((element) => element.cafeType == CafeType.TYPE_SHOP_CAFE)
         .toList();
 
-    _shopCount = _shopCoffees.length;
+    _shopCoffees.forEach(
+      (element) {
+        _shopCount += element.countDrink;
+      },
+    );
 
     // おうち
     List<CoffeeModel> _homeCoffees = _coffeeModels
@@ -102,7 +124,13 @@ class AnalyticsProvider extends ChangeNotifier {
         )
         .toList();
 
-    _homeCount = _homeCoffees.length;
+    _homeCoffees.forEach(
+      (element) {
+        _homeCount += element.countDrink;
+      },
+    );
+
+    // _homeCount = _homeCoffees.length;
     notifyListeners();
   }
 
