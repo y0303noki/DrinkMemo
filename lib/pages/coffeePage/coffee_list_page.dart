@@ -28,7 +28,7 @@ class CoffeeListPage extends StatelessWidget {
                 controller: _keywordTextEditingCntroller,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search, color: Colors.black),
+                  prefixIcon: const Icon(Icons.search, color: Colors.black),
                   hintText: "キーワード検索",
                   suffixIcon: IconButton(
                     onPressed: () {

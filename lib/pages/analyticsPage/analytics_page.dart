@@ -260,7 +260,7 @@ class AnalyticsPage extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          'たくさん飲んだ',
+                          'ベストドリンク',
                           style: TextStyle(
                             fontSize: 25,
                             color: Colors.black,
