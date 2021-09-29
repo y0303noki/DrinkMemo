@@ -3,6 +3,7 @@ import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/const/common_style.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/model/drink_tag_model.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/utils/color_utility.dart';
@@ -131,20 +132,21 @@ class CoffeeItem extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
-                          constraints: const BoxConstraints(maxWidth: 180),
-                          child: Text(
-                            coffee.cafeType == CafeType.TYPE_HOME_CAFE
-                                ? coffee.brandName
-                                : coffee.shopName,
-                            overflow: TextOverflow.clip,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              color: Color(0xff333333),
-                            ),
-                          ),
-                        ),
+                        // Container(
+                        //   constraints: const BoxConstraints(maxWidth: 180),
+                        //   child: Text(
+                        //     coffee.cafeType == CafeType.TYPE_HOME_CAFE
+                        //         ? coffee.brandName
+                        //         : coffee.shopName,
+                        //     overflow: TextOverflow.clip,
+                        //     style: const TextStyle(
+                        //       fontSize: 16,
+                        //       fontWeight: FontWeight.normal,
+                        //       color: Color(0xff333333),
+                        //     ),
+                        //   ),
+                        // ),
+                        _setTagList(coffeeData, coffee),
                       ],
                     ),
                   ],
@@ -192,6 +194,56 @@ class CoffeeItem extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _setTagList(CoffeeProvider coffeeData, CoffeeModel coffee) {
+    return FutureBuilder(
+      // future属性で非同期処理を書く
+      future: coffeeData.findTagList(coffee.tagId),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        // 取得完了するまで別のWidgetを表示する
+        if (!snapshot.hasData) {
+          return Container();
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          List<DrinkTagModel> drinkTagList = snapshot.data;
+          if (drinkTagList.isEmpty) {
+            // noimage画像
+            return Container();
+          } else {
+            List<Chip> chipList = [];
+            int _keyNumber = 0;
+            for (DrinkTagModel drinkTagModel in drinkTagList) {
+              var chipKey = Key('chip_key_$_keyNumber');
+              _keyNumber++;
+              Chip chip = Chip(
+                backgroundColor: Colors.purple[100],
+                key: chipKey,
+                label: Text(drinkTagModel.tagName),
+              );
+              chipList.add(chip);
+            }
+
+            return Container(
+              constraints: const BoxConstraints(maxWidth: 180),
+              child: Row(children: [
+                Expanded(
+                  child: Wrap(
+                    alignment: WrapAlignment.start,
+                    spacing: 2.0,
+                    runSpacing: 0.0,
+                    direction: Axis.horizontal,
+                    children: chipList,
+                  ),
+                ),
+              ]),
+            );
+          }
+        }
+        return Container();
+      },
     );
   }
 

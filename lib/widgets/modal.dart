@@ -33,6 +33,8 @@ class Modal {
         TextEditingController(text: '');
     TextEditingController _shopTextEditingCntroller =
         TextEditingController(text: '');
+    TextEditingController _tagTextEditingCntroller =
+        TextEditingController(text: '');
     String bottomTitle = '';
     CoffeeModel? modalCoffeeModel = coffeeModel;
     // String coffeeId = '';
@@ -79,6 +81,7 @@ class Modal {
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
       coffeeData.countDrink = 1;
       coffeeData.isIce = true;
+      coffeeData.resettagList();
       // マイドリンク
       var _coffeeDb = CoffeeFirebase();
 
@@ -548,73 +551,28 @@ class Modal {
                               builder: (ctx, model, _) {
                                 if (modalTabData.currentIndex ==
                                     CafeType.TYPE_HOME_CAFE) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                    child: TypeAheadField(
-                                      textFieldConfiguration:
-                                          TextFieldConfiguration(
-                                        controller: _brandTextEditingCntroller,
+                                  return Consumer<CoffeeProvider>(
+                                      builder: (ctx, coffeeModel, _) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                      child: TextField(
+                                        // focusNode: _textFieldFocusNode,
+                                        autofocus: false,
+                                        controller: _tagTextEditingCntroller,
                                         decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: CafeType.BRAND,
-                                          prefixIcon: const Icon(
-                                              Icons.where_to_vote_outlined),
-                                          suffixIcon: IconButton(
-                                            onPressed: () {
-                                              _brandTextEditingCntroller
-                                                  .clear();
-                                            },
-                                            icon: const Icon(Icons.clear),
-                                          ),
+                                          hintText: 'タグ',
+                                          errorText: coffeeModel.isTagError
+                                              ? coffeeModel.tagErrorText
+                                              : null,
                                         ),
-                                        onChanged: (text) {
-                                          if (modalCoffeeModel != null) {
-                                            // 更新の時の非活性処理
-                                            coffeeData.changeIsSabeavle(true);
-                                          } else {
-                                            // 登録の時の非活性処理
-                                            if (_nameTextEditingCntroller
-                                                    .text.isNotEmpty &&
-                                                text.isNotEmpty &&
-                                                text.length < 20) {
-                                              coffeeData.changeIsSabeavle(true);
-                                            } else {
-                                              coffeeData
-                                                  .changeIsSabeavle(false);
-                                            }
-                                          }
+                                        onSubmitted: (String text) {
+                                          _tagTextEditingCntroller.clear();
+                                          coffeeData.addChip(text);
                                         },
                                       ),
-                                      suggestionsCallback: (pattern) async {
-                                        if (pattern.isEmpty) {
-                                          return [];
-                                        }
-                                        // pattern:入力された文字
-                                        // return: サジェスト候補となる文字列を返す
-                                        List<String> _filter =
-                                            _suggestBrandNameList
-                                                .where((element) => (element
-                                                        .toLowerCase())
-                                                    .contains(
-                                                        pattern.toLowerCase()))
-                                                .take(5)
-                                                .toList();
-                                        return _filter;
-                                      },
-                                      itemBuilder: (context, suggestion) {
-                                        return ListTile(
-                                          title: Text(suggestion as String),
-                                        );
-                                      },
-                                      // サジェストの結果が0件の時のメッセージ
-                                      hideOnEmpty: true,
-                                      onSuggestionSelected: (suggestion) {
-                                        _brandTextEditingCntroller.text =
-                                            suggestion as String;
-                                      },
-                                    ),
-                                  );
+                                    );
+                                  });
                                 } else if (modalTabData.currentIndex ==
                                     CafeType.TYPE_MY_DRINK) {
                                   // マイドリンク
@@ -693,75 +651,31 @@ class Modal {
                                   } else {
                                     return Container();
                                   }
-                                } else if (modalTabData.currentIndex ==
-                                    CafeType.TYPE_SHOP_CAFE) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                    child: TypeAheadField(
-                                      textFieldConfiguration:
-                                          TextFieldConfiguration(
-                                        controller: _shopTextEditingCntroller,
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: '店名',
-                                          prefixIcon:
-                                              Icon(Icons.store_outlined),
-                                          suffixIcon: Icon(Icons.clear),
-                                        ),
-                                        onChanged: (text) {
-                                          if (modalCoffeeModel != null) {
-                                            // 更新の時の非活性処理
-                                            coffeeData.changeIsSabeavle(true);
-                                          } else {
-                                            // 登録の時の非活性処理
-                                            if (_nameTextEditingCntroller
-                                                    .text.isNotEmpty &&
-                                                text.isNotEmpty &&
-                                                text.length < 20) {
-                                              coffeeData.changeIsSabeavle(true);
-                                            } else {
-                                              coffeeData
-                                                  .changeIsSabeavle(false);
-                                            }
-                                          }
-                                        },
-                                      ),
-                                      suggestionsCallback: (pattern) async {
-                                        if (pattern.isEmpty) {
-                                          return [];
-                                        }
-                                        // pattern:入力された文字
-                                        // return: サジェスト候補となる文字列を返す
-                                        List<String> _filter =
-                                            _suggestShopNameList
-                                                .where((element) => (element
-                                                        .toLowerCase())
-                                                    .contains(
-                                                        pattern.toLowerCase()))
-                                                .take(5)
-                                                .toList();
-                                        return _filter;
-                                      },
-                                      itemBuilder: (context, suggestion) {
-                                        return ListTile(
-                                          title: Text(suggestion as String),
-                                        );
-                                      },
-                                      // サジェストの結果が0件の時のメッセージ
-                                      hideOnEmpty: true,
-                                      onSuggestionSelected: (suggestion) {
-                                        _shopTextEditingCntroller.text =
-                                            suggestion as String;
-                                      },
-                                    ),
-                                  );
                                 } else {
                                   return Container();
                                 }
                               },
                             ),
                             const SizedBox(height: 5),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 0, bottom: 0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Wrap(
+                                        alignment: WrapAlignment.start,
+                                        spacing: 8.0,
+                                        runSpacing: 0.0,
+                                        direction: Axis.horizontal,
+                                        children: coffeeData.tagList),
+                                  ),
+                                ],
+                              ),
+                            ),
+
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
@@ -1289,13 +1203,6 @@ class Modal {
                                             CoffeeModel();
                                         DateTime now = DateTime.now();
                                         if (modalTabData.currentIndex ==
-                                            CafeType.TYPE_SHOP_CAFE) {
-                                          // 喫茶店
-                                          _coffeeModel.cafeType =
-                                              CafeType.TYPE_SHOP_CAFE;
-                                          _coffeeModel.shopName =
-                                              _shopTextEditingCntroller.text;
-                                        } else if (modalTabData.currentIndex ==
                                             CafeType.TYPE_HOME_CAFE) {
                                           // おうちカフェ
                                           _coffeeModel.cafeType =
@@ -1328,7 +1235,6 @@ class Modal {
                                             coffeeData.coffeeAt;
                                         _coffeeModel.imageId =
                                             coffeeData.imageId;
-
                                         var _coffeeDb = CoffeeFirebase();
 
                                         if (isUpdate) {
@@ -1370,9 +1276,11 @@ class Modal {
                                           _coffeeModel.createdAt = now;
 
                                           await _coffeeDb.insertCoffeeData(
-                                              _coffeeModel,
-                                              coffeeData.imageFile,
-                                              coffeeData.imageType);
+                                            _coffeeModel,
+                                            coffeeData.imageFile,
+                                            coffeeData.imageType,
+                                            coffeeData.tagList,
+                                          );
                                         }
 
                                         _coffeeModel.coffeeAt =

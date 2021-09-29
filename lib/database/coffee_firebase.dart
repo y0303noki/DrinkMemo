@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
+import 'package:coffee_project2/database/drink_tag_firebase.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/model/drink_tag_model.dart';
 import 'package:coffee_project2/providers/user/user_provider.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -19,6 +21,7 @@ class CoffeeFirebase {
   final FirebaseStorage _fireStorage = FirebaseStorage.instance;
 
   final CoffeeImageFirebase _coffeeImageFirebase = CoffeeImageFirebase();
+  final DrinkTagFirebase _drinkTagFirebase = DrinkTagFirebase();
 
   final String coffeeCards = 'coffee_datas';
 
@@ -49,8 +52,8 @@ class CoffeeFirebase {
     ),
   ];
 
-  Future<void> insertCoffeeData(
-      CoffeeModel coffeeModel, File? imageFile, int imageType) async {
+  Future<void> insertCoffeeData(CoffeeModel coffeeModel, File? imageFile,
+      int imageType, List<Chip> tagList) async {
     // 名前のバリテーション
     // if (addCoffeeCard.name == null ||
     //     addCoffeeCard.name.isEmpty ||
@@ -108,6 +111,12 @@ class CoffeeFirebase {
       _imageId = coffeeModel.imageId!;
     }
 
+    String tagId = '';
+    if (tagList.isNotEmpty) {
+      // tagIdは1つドリンクに1つ
+      tagId = const Uuid().v4();
+    }
+
     addObject['userId'] = userId;
     addObject['name'] = coffeeModel.name;
     addObject['favorite'] = coffeeModel.favorite;
@@ -116,6 +125,7 @@ class CoffeeFirebase {
     addObject['brandName'] = coffeeModel.brandName;
     addObject['isIce'] = coffeeModel.isIce;
     addObject['countDrink'] = coffeeModel.countDrink;
+    addObject['tagId'] = tagId;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -128,9 +138,28 @@ class CoffeeFirebase {
       final data = await result.get();
       final String docId = data.id;
       _updateCardDocId(docId);
-      return;
-    } catch (e) {
-      return;
+    } catch (e) {}
+
+    // タグがつけられている場合はタグを登録
+    if (tagList.isNotEmpty) {
+      List<DrinkTagModel> drinkTagModels = [];
+
+      for (Chip tag in tagList) {
+        Text _text = tag.label as Text;
+
+        // idはタグごとに
+        String id = const Uuid().v4();
+        DrinkTagModel tagModel = DrinkTagModel(
+          id: id,
+          tagId: tagId,
+          tagName: _text.data!,
+          isDeleted: false,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        drinkTagModels.add(tagModel);
+      }
+      _drinkTagFirebase.insertDrinkTags(drinkTagModels);
     }
   }
 
@@ -207,6 +236,7 @@ class CoffeeFirebase {
     updateData['cafeType'] = coffeeModel.cafeType;
     updateData['isIce'] = coffeeModel.isIce;
     updateData['countDrink'] = coffeeModel.countDrink;
+    updateData['tagId'] = coffeeModel.tagId;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
@@ -284,6 +314,7 @@ class CoffeeFirebase {
             brandName: doc.data()['brandName'] ?? '',
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
+            tagId: doc.data()['tagId'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -291,6 +322,7 @@ class CoffeeFirebase {
           ),
         )
         .toList();
+
     return coffeeAllDatas;
   }
 
@@ -329,6 +361,7 @@ class CoffeeFirebase {
               brandName: doc.data()['brandName'] ?? '',
               isIce: doc.data()['isIce'] ?? false,
               countDrink: doc.data()['countDrink'] ?? 1,
+              tagId: doc.data()['tagId'] ?? '',
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
@@ -392,6 +425,7 @@ class CoffeeFirebase {
             brandName: doc.data()['brandName'] ?? '',
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
+            tagId: doc.data()['tagId'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -421,7 +455,7 @@ class CoffeeFirebase {
     _model1.createdAt = now4;
     _model1.updatedAt = now4;
 
-    await insertCoffeeData(_model1, null, 0);
+    await insertCoffeeData(_model1, null, 0, []);
 
     CoffeeModel _model2 = CoffeeModel();
     _model2.cafeType = CafeType.TYPE_SHOP_CAFE;
@@ -431,7 +465,7 @@ class CoffeeFirebase {
     _model2.createdAt = now3;
     _model2.updatedAt = now3;
 
-    await insertCoffeeData(_model2, null, 0);
+    await insertCoffeeData(_model2, null, 0, []);
 
     CoffeeModel _model3 = CoffeeModel();
     _model3.cafeType = CafeType.TYPE_HOME_CAFE;
@@ -441,7 +475,7 @@ class CoffeeFirebase {
     _model3.createdAt = now2;
     _model3.updatedAt = now2;
 
-    await insertCoffeeData(_model3, null, 0);
+    await insertCoffeeData(_model3, null, 0, []);
 
     CoffeeModel _model4 = CoffeeModel();
     _model4.cafeType = CafeType.TYPE_SHOP_CAFE;
@@ -451,6 +485,6 @@ class CoffeeFirebase {
     _model4.coffeeAt = now1;
     _model4.createdAt = now1;
     _model4.updatedAt = now1;
-    await insertCoffeeData(_model4, null, 0);
+    await insertCoffeeData(_model4, null, 0, []);
   }
 }
