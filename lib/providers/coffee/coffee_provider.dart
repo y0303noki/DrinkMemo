@@ -80,6 +80,9 @@ class CoffeeProvider extends ChangeNotifier {
   // タグリスト
   List<Chip> _tagList = [];
   List<Chip> get tagList => _tagList;
+  set tagList(List<Chip> tags) {
+    _tagList = tags;
+  }
 
   // タグエラー
   bool _isTagError = false;
@@ -144,6 +147,30 @@ class CoffeeProvider extends ChangeNotifier {
       ),
     );
     notifyListeners();
+  }
+
+  List<Chip> toChipForDrinkModel(List<DrinkTagModel> drinkModels) {
+    List<Chip> chipList = [];
+    int _keyNumber = 0;
+    for (DrinkTagModel drinkTagModel in drinkModels) {
+      var chipKey = Key('chip_key_$_keyNumber');
+      _keyNumber++;
+      Chip chip = Chip(
+        backgroundColor: Colors.purple[100],
+        key: chipKey,
+        onDeleted: () => deleteChip(chipKey),
+        label: Text(
+          drinkTagModel.tagName,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.black,
+          ),
+        ),
+      );
+      chipList.add(chip);
+    }
+
+    return chipList;
   }
 
   void deleteChip(Key chipKey) {

@@ -142,25 +142,31 @@ class CoffeeFirebase {
 
     // タグがつけられている場合はタグを登録
     if (tagList.isNotEmpty) {
-      List<DrinkTagModel> drinkTagModels = [];
-
-      for (Chip tag in tagList) {
-        Text _text = tag.label as Text;
-
-        // idはタグごとに
-        String id = const Uuid().v4();
-        DrinkTagModel tagModel = DrinkTagModel(
-          id: id,
-          tagId: tagId,
-          tagName: _text.data!,
-          isDeleted: false,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        );
-        drinkTagModels.add(tagModel);
-      }
-      _drinkTagFirebase.insertDrinkTags(drinkTagModels);
+      await _insertDrinkTags(tagId, tagList);
     }
+  }
+
+  Future _insertDrinkTags(String tagId, List<Chip> tagList) async {
+    List<DrinkTagModel> drinkTagModels = [];
+
+    for (Chip tag in tagList) {
+      Text _text = tag.label as Text;
+
+      // idはタグごとに
+      String id = const Uuid().v4();
+      DrinkTagModel tagModel = DrinkTagModel(
+        id: id,
+        tagId: tagId,
+        tagName: _text.data!,
+        isDeleted: false,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+      drinkTagModels.add(tagModel);
+    }
+    // 既存のtagIdを削除してから追加する
+    await _drinkTagFirebase.deleteDrinkTagDataByTagId(tagId);
+    await _drinkTagFirebase.insertDrinkTags(drinkTagModels);
   }
 
   Future<String> setCoffeeImage(
@@ -206,8 +212,8 @@ class CoffeeFirebase {
   }
 
   // 更新
-  Future<void> updateCoffeeData(
-      CoffeeModel coffeeModel, File? imageFile, int imageType) async {
+  Future<void> updateCoffeeData(CoffeeModel coffeeModel, File? imageFile,
+      int imageType, List<Chip> tagList) async {
     // 画像をアップロードしてimageIdを返す
     String _imageId = '';
     if (imageType == -1) {
@@ -229,6 +235,20 @@ class CoffeeFirebase {
       _imageId = coffeeModel.imageId!;
     }
 
+    String tagId = '';
+    if (tagList.isEmpty) {
+      // タグなし
+      tagId = '';
+    } else {
+      if (coffeeModel.tagId.isEmpty) {
+        // タグ新規追加
+        tagId = const Uuid().v4();
+      } else {
+        // タグidはそのままでタグ追加
+        tagId = coffeeModel.tagId;
+      }
+    }
+
     // ドキュメント更新
     Map<String, dynamic> updateData = {};
     updateData['name'] = coffeeModel.name;
@@ -236,7 +256,7 @@ class CoffeeFirebase {
     updateData['cafeType'] = coffeeModel.cafeType;
     updateData['isIce'] = coffeeModel.isIce;
     updateData['countDrink'] = coffeeModel.countDrink;
-    updateData['tagId'] = coffeeModel.tagId;
+    updateData['tagId'] = tagId;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
@@ -251,6 +271,10 @@ class CoffeeFirebase {
           .update(updateData);
     } catch (e) {
       print(e);
+    }
+
+    if (tagList.isNotEmpty) {
+      await _insertDrinkTags(tagId, tagList);
     }
   }
 

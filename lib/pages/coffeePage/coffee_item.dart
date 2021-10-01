@@ -118,7 +118,7 @@ class CoffeeItem extends StatelessWidget {
                             color: Color(0xff333333),
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        // const SizedBox(height: 10),
                         Container(
                           constraints: const BoxConstraints(maxWidth: 180),
                           child: Text(
@@ -197,6 +197,7 @@ class CoffeeItem extends StatelessWidget {
     );
   }
 
+  // タグを遅延読み込み
   Widget _setTagList(CoffeeProvider coffeeData, CoffeeModel coffee) {
     return FutureBuilder(
       // future属性で非同期処理を書く
@@ -204,14 +205,17 @@ class CoffeeItem extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         // 取得完了するまで別のWidgetを表示する
         if (!snapshot.hasData) {
-          return Container();
+          return Container(
+            constraints: const BoxConstraints(minHeight: 30),
+          );
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
           List<DrinkTagModel> drinkTagList = snapshot.data;
           if (drinkTagList.isEmpty) {
-            // noimage画像
-            return Container();
+            return Container(
+              constraints: const BoxConstraints(minHeight: 60),
+            );
           } else {
             List<Chip> chipList = [];
             int _keyNumber = 0;
@@ -221,7 +225,13 @@ class CoffeeItem extends StatelessWidget {
               Chip chip = Chip(
                 backgroundColor: Colors.purple[100],
                 key: chipKey,
-                label: Text(drinkTagModel.tagName),
+                label: Text(
+                  drinkTagModel.tagName,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Colors.black,
+                  ),
+                ),
               );
               chipList.add(chip);
             }
@@ -232,7 +242,7 @@ class CoffeeItem extends StatelessWidget {
                 Expanded(
                   child: Wrap(
                     alignment: WrapAlignment.start,
-                    spacing: 2.0,
+                    spacing: 0.0,
                     runSpacing: 0.0,
                     direction: Axis.horizontal,
                     children: chipList,
@@ -242,7 +252,9 @@ class CoffeeItem extends StatelessWidget {
             );
           }
         }
-        return Container();
+        return Container(
+          constraints: const BoxConstraints(minHeight: 60),
+        );
       },
     );
   }

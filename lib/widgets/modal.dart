@@ -5,6 +5,7 @@ import 'package:coffee_project2/const/common_constant.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/database/user_mycofee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/model/drink_tag_model.dart';
 import 'package:coffee_project2/model/user_mycoffee_model.dart';
 import 'package:coffee_project2/pages/albumPage/album_list_page.dart';
 import 'package:coffee_project2/pages/albumPage/album_list_scaffold_page.dart';
@@ -13,6 +14,7 @@ import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
 import 'package:coffee_project2/providers/user/user_mycoffee_provider.dart';
 import 'package:coffee_project2/utils/color_utility.dart';
+import 'package:coffee_project2/utils/convert_utility.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:coffee_project2/widgets/common_widget.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
@@ -50,6 +52,7 @@ class Modal {
     modalTabData.hasMyCoffee = false;
     CoffeeModel? myCoffee;
     bool myDrinkSelected = false;
+    coffeeData.resettagList();
 
     // 更新するとき
     if (isUpdate) {
@@ -71,6 +74,12 @@ class Modal {
         myDrinkSelected = coffeeModel.id == userMyCoffeeData.myCoffee!.id;
       }
 
+      if (coffeeModel.tagId.isNotEmpty) {
+        List<DrinkTagModel> drinkTags =
+            await coffeeData.findTagList(coffeeModel.tagId);
+        coffeeData.tagList = coffeeData.toChipForDrinkModel(drinkTags);
+      }
+
       int _index = coffeeModel.cafeType;
       modalTabData.setCurrentIndex(_index);
     } else {
@@ -81,7 +90,7 @@ class Modal {
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
       coffeeData.countDrink = 1;
       coffeeData.isIce = true;
-      coffeeData.resettagList();
+
       // マイドリンク
       var _coffeeDb = CoffeeFirebase();
 
@@ -490,10 +499,10 @@ class Modal {
                                         focusColor: Colors.black,
                                         fillColor: Colors.black,
                                         hoverColor: Colors.black,
-                                        border: OutlineInputBorder(),
+                                        // border: OutlineInputBorder(),
                                         labelText: '名前',
-                                        prefixIcon:
-                                            Icon(Icons.local_drink_outlined),
+                                        icon: const Icon(
+                                            Icons.local_drink_outlined),
                                         suffixIcon: IconButton(
                                           onPressed: () {
                                             _nameTextEditingCntroller.clear();
@@ -561,7 +570,9 @@ class Modal {
                                         autofocus: false,
                                         controller: _tagTextEditingCntroller,
                                         decoration: InputDecoration(
-                                          hintText: 'タグ',
+                                          icon: const Icon(Icons.tag),
+                                          hintText: '買った場所、種類など',
+                                          labelText: 'タグ',
                                           errorText: coffeeModel.isTagError
                                               ? coffeeModel.tagErrorText
                                               : null,
@@ -657,34 +668,39 @@ class Modal {
                               },
                             ),
                             const SizedBox(height: 5),
-                            Container(
-                              margin: const EdgeInsets.only(
-                                  left: 10, right: 10, top: 0, bottom: 0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Wrap(
-                                        alignment: WrapAlignment.start,
-                                        spacing: 8.0,
-                                        runSpacing: 0.0,
-                                        direction: Axis.horizontal,
-                                        children: coffeeData.tagList),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            setTagList(coffeeModel, coffeeData),
+                            // Container(
+                            //   margin: const EdgeInsets.only(
+                            //       left: 10, right: 10, top: 0, bottom: 0),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.start,
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Expanded(
+                            //         child: Wrap(
+                            //             alignment: WrapAlignment.start,
+                            //             spacing: 8.0,
+                            //             runSpacing: 0.0,
+                            //             direction: Axis.horizontal,
+                            //             children: coffeeData.tagList),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
 
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                                      const EdgeInsets.fromLTRB(4, 0, 0, 0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
+                                      coffeeData.isIce
+                                          ? Icon(Icons.icecream_outlined)
+                                          : Icon(Icons
+                                              .local_fire_department_outlined),
                                       coffeeData.isIce
                                           ? Container(
                                               child: Row(
@@ -1239,8 +1255,12 @@ class Modal {
 
                                         if (isUpdate) {
                                           // 更新
+
                                           _coffeeModel.id =
                                               modalCoffeeModel!.id;
+
+                                          _coffeeModel.tagId =
+                                              modalCoffeeModel.tagId;
                                           if (modalCoffeeModel.imageId != '') {
                                             coffeeData.imageType =
                                                 coffeeData.imageType == 0
@@ -1262,7 +1282,8 @@ class Modal {
                                           await _coffeeDb.updateCoffeeData(
                                               _coffeeModel,
                                               coffeeData.imageFile,
-                                              coffeeData.imageType);
+                                              coffeeData.imageType,
+                                              coffeeData.tagList);
                                         } else {
                                           // 追加
                                           if (modalTabData.currentIndex ==
@@ -1430,6 +1451,27 @@ class Modal {
     } else {
       return Container();
     }
+  }
+
+  // タグを表示
+  Widget setTagList(CoffeeModel? coffeeModel, CoffeeProvider coffeeData) {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Wrap(
+                alignment: WrapAlignment.start,
+                spacing: 8.0,
+                runSpacing: 0.0,
+                direction: Axis.horizontal,
+                children: coffeeData.tagList),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget setModalImage(CoffeeModel? coffeeModel, CoffeeProvider coffeeData) {

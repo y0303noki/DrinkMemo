@@ -80,14 +80,16 @@ class DrinkTagFirebase {
   }
 
   // 物理削除
-  // Future<void> deleteCoffeeImageData(CoffeeImageModel coffeeImageModel) async {
-  //   try {
-  //     final result = await _firestore
-  //         .collection(coffeeImages)
-  //         .doc(coffeeImageModel.id)
-  //         .delete();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  Future<void> deleteDrinkTagDataByTagId(String tagId) async {
+    try {
+      List<DrinkTagModel> dringTags = await fetchDrinkTagDatasByTagId(tagId);
+      List<String> deleteDocIds = dringTags.map((e) => e.id).toList();
+      for (String docId in deleteDocIds) {
+        final result =
+            await _firestore.collection(drinkTags).doc(docId).delete();
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 }
