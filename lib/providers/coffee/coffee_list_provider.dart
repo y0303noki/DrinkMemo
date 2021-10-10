@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:coffee_project2/const/cafe_type.dart';
+import 'package:coffee_project2/database/drink_tag_firebase.dart';
 import 'package:coffee_project2/database/shop_or_bean_firebase.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
+import 'package:coffee_project2/model/drink_tag_model.dart';
 import 'package:coffee_project2/model/shop_or_bean_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +73,7 @@ class CoffeeListProvider extends ChangeNotifier {
 
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
   ShopOrBeanFirebase _brandDb = ShopOrBeanFirebase();
+  DrinkTagFirebase _drinkTagDb = DrinkTagFirebase();
 
   void changeIsProgressive(bool afterState) {
     _isProgressive = afterState;
@@ -76,15 +81,35 @@ class CoffeeListProvider extends ChangeNotifier {
   }
 
   // キーワード検索
-  void changeSearchKeyword(String keyword) {
+  void changeSearchKeyword(String keyword) async {
     if (keyword.isEmpty) {
       _viewCoffeeModels = _coffeeModels;
     } else {
-      _searchKeyWord = keyword;
-      _viewCoffeeModels = _coffeeModels
-          .where(
-              (coffeeModel) => coffeeModel.name.toLowerCase().contains(keyword))
-          .toList();
+      // タグ検索　（#をつけたらタグ）
+      if (keyword.length >= 2 && keyword[0] == '#') {
+        _viewCoffeeModels = [];
+        String tagSearchName = keyword.substring(1).toLowerCase();
+        // tagNameをセット
+        await Future.forEach(_coffeeModels, (CoffeeModel coffee) async {
+          if (coffee.tagId.isNotEmpty) {
+            List<DrinkTagModel> tags =
+                await _drinkTagDb.fetchDrinkTagDatasByTagId(coffee.tagId);
+            List<String> tagNameList =
+                tags.map((e) => e.tagName.toLowerCase()).toList();
+
+            coffee.tagNameList = tagNameList;
+            if (tagNameList.isNotEmpty && tagNameList.contains(tagSearchName)) {
+              _viewCoffeeModels.add(coffee);
+            }
+          }
+        });
+      } else {
+        _searchKeyWord = keyword;
+        _viewCoffeeModels = _coffeeModels
+            .where((coffeeModel) =>
+                coffeeModel.name.toLowerCase().contains(keyword))
+            .toList();
+      }
     }
     notifyListeners();
   }

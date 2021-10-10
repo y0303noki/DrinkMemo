@@ -5,6 +5,7 @@ import 'package:coffee_project2/const/common_constant.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/database/user_mycofee_firebase.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/model/drink_tag_model.dart';
 import 'package:coffee_project2/model/user_mycoffee_model.dart';
 import 'package:coffee_project2/pages/albumPage/album_list_page.dart';
 import 'package:coffee_project2/pages/albumPage/album_list_scaffold_page.dart';
@@ -13,6 +14,7 @@ import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/providers/modal_tab/modal_tab_provider.dart';
 import 'package:coffee_project2/providers/user/user_mycoffee_provider.dart';
 import 'package:coffee_project2/utils/color_utility.dart';
+import 'package:coffee_project2/utils/convert_utility.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:coffee_project2/widgets/common_widget.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
@@ -33,6 +35,8 @@ class Modal {
         TextEditingController(text: '');
     TextEditingController _shopTextEditingCntroller =
         TextEditingController(text: '');
+    TextEditingController _tagTextEditingCntroller =
+        TextEditingController(text: '');
     String bottomTitle = '';
     CoffeeModel? modalCoffeeModel = coffeeModel;
     // String coffeeId = '';
@@ -48,6 +52,7 @@ class Modal {
     modalTabData.hasMyCoffee = false;
     CoffeeModel? myCoffee;
     bool myDrinkSelected = false;
+    coffeeData.resettagList();
 
     // 更新するとき
     if (isUpdate) {
@@ -69,6 +74,12 @@ class Modal {
         myDrinkSelected = coffeeModel.id == userMyCoffeeData.myCoffee!.id;
       }
 
+      if (coffeeModel.tagId.isNotEmpty) {
+        List<DrinkTagModel> drinkTags =
+            await coffeeData.findTagList(coffeeModel.tagId);
+        coffeeData.tagList = coffeeData.toChipForDrinkModel(drinkTags);
+      }
+
       int _index = coffeeModel.cafeType;
       modalTabData.setCurrentIndex(_index);
     } else {
@@ -79,6 +90,7 @@ class Modal {
       coffeeData.labelCoffeeAt = DateUtility(DateTime.now()).toDateFormatted();
       coffeeData.countDrink = 1;
       coffeeData.isIce = true;
+
       // マイドリンク
       var _coffeeDb = CoffeeFirebase();
 
@@ -224,243 +236,68 @@ class Modal {
                               ),
                             ),
 
-                            Consumer<ModalTabProvider>(
-                              builder: (ctx, model, _) {
-                                return Stack(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Material(
-                                            child: InkWell(
-                                              onTap: () {
-                                                modalTabData.setCurrentIndex(
-                                                    CafeType.TYPE_HOME_CAFE);
-                                              },
-                                              child: Container(
-                                                height: 30,
-                                                child: Container(
-                                                  width: 20,
-                                                  decoration: model
-                                                              .currentIndex ==
-                                                          CafeType
-                                                              .TYPE_HOME_CAFE
-                                                      ? BoxDecoration(
-                                                          border: Border(
-                                                            bottom: BorderSide(
-                                                              color: ColorUtility()
-                                                                  .toColorByCofeType(
-                                                                      CafeType
-                                                                          .TYPE_HOME_CAFE),
-                                                              width: 2,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : null,
-                                                  child: Center(
-                                                    child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: [
-                                                          const Icon(Icons
-                                                              .house_outlined),
-                                                          Text(
-                                                            CafeType.HOME_CAFE,
-                                                            style: model.currentIndex !=
-                                                                    CafeType
-                                                                        .TYPE_HOME_CAFE
-                                                                ? const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  )
-                                                                : const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                          ),
-                                                        ]),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Material(
-                                            child: InkWell(
-                                              onTap: () {
-                                                modalTabData.setCurrentIndex(
-                                                    CafeType.TYPE_SHOP_CAFE);
-                                              },
-                                              child: Container(
-                                                height: 30,
-                                                child: Container(
-                                                  decoration: model
-                                                              .currentIndex ==
-                                                          CafeType
-                                                              .TYPE_SHOP_CAFE
-                                                      ? BoxDecoration(
-                                                          border: Border(
-                                                            bottom: BorderSide(
-                                                              color: ColorUtility()
-                                                                  .toColorByCofeType(
-                                                                      CafeType
-                                                                          .TYPE_SHOP_CAFE),
-                                                              width: 2,
-                                                            ),
-                                                          ),
-                                                        )
-                                                      : null,
-                                                  child: Center(
-                                                    child: Text(
-                                                      CafeType.SHOP_CAFE,
-                                                      style: model.currentIndex !=
-                                                              CafeType
-                                                                  .TYPE_SHOP_CAFE
-                                                          ? const TextStyle(
-                                                              color:
-                                                                  Colors.grey,
-                                                            )
-                                                          : const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        modalTabData.hasMyCoffee
-                                            ? Expanded(
-                                                child: Material(
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      coffeeData
-                                                          .changeIsSabeavle(
-                                                              true);
-                                                      _nameTextEditingCntroller
-                                                              .text =
-                                                          myCoffee != null
-                                                              ? myCoffee.name
-                                                              : '';
-                                                      modalTabData
-                                                          .setCurrentIndex(
-                                                              CafeType
-                                                                  .TYPE_MY_DRINK);
-                                                    },
-                                                    child: Container(
-                                                      height: 30,
-                                                      child: Container(
-                                                        decoration: model
-                                                                    .currentIndex ==
-                                                                CafeType
-                                                                    .TYPE_MY_DRINK
-                                                            ? const BoxDecoration(
-                                                                border: Border(
-                                                                  bottom:
-                                                                      BorderSide(
-                                                                    color: Colors
-                                                                        .yellow,
-                                                                    width: 2,
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : null,
-                                                        child: Center(
-                                                          child: Text(
-                                                            CafeType.MY_DRINK,
-                                                            style: model.currentIndex !=
-                                                                    CafeType
-                                                                        .TYPE_MY_DRINK
-                                                                ? const TextStyle(
-                                                                    color: Colors
-                                                                        .grey,
-                                                                  )
-                                                                : const TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
-                                            : Container(),
-                                      ],
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                            // よくある名前ドロップダウン
+                            // 使うか分からないので一旦コメントアウト
+                            // Consumer<CoffeeProvider>(
+                            //   builder: (ctx, coffeeModel, _) {
+                            //     return Row(
+                            //       mainAxisAlignment:
+                            //           MainAxisAlignment.spaceAround,
+                            //       children: [
+                            //         Container(
+                            //           child: const Text(
+                            //             'よくある名前から選択',
+                            //             style: TextStyle(
+                            //               fontSize: 12,
+                            //               color: Colors.black,
+                            //             ),
+                            //           ),
+                            //         ),
+                            //         Container(
+                            //           child: DropdownButton<String>(
+                            //             value: coffeeModel.selectedCoffeeName,
+                            //             icon: const Icon(Icons.arrow_downward),
+                            //             iconSize: 24,
+                            //             elevation: 16,
+                            //             style: const TextStyle(
+                            //                 color: Colors.brown),
+                            //             underline: Container(
+                            //               height: 2,
+                            //               color: Colors.black,
+                            //             ),
+                            //             onChanged: (String? newValue) {
+                            //               if (newValue == null) {
+                            //                 return;
+                            //               }
+                            //               coffeeModel
+                            //                   .selectCoffeeName(newValue);
 
-                            const SizedBox(height: 20),
-                            Consumer<CoffeeProvider>(
-                              builder: (ctx, coffeeModel, _) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      child: const Text(
-                                        'よくある名前から選択',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      child: DropdownButton<String>(
-                                        value: coffeeModel.selectedCoffeeName,
-                                        icon: const Icon(Icons.arrow_downward),
-                                        iconSize: 24,
-                                        elevation: 16,
-                                        style: const TextStyle(
-                                            color: Colors.brown),
-                                        underline: Container(
-                                          height: 2,
-                                          color: Colors.black,
-                                        ),
-                                        onChanged: (String? newValue) {
-                                          if (newValue == null) {
-                                            return;
-                                          }
-                                          coffeeModel
-                                              .selectCoffeeName(newValue);
-
-                                          // 未選択以外ならテキストフィールドにセット
-                                          // 保存可能にする
-                                          if (newValue !=
-                                              CoffeeName.coffeeNameList[0]) {
-                                            _nameTextEditingCntroller.text =
-                                                newValue;
-                                            coffeeModel.changeIsSabeavle(true);
-                                          } else {
-                                            _nameTextEditingCntroller.clear();
-                                            coffeeModel.changeIsSabeavle(false);
-                                          }
-                                        },
-                                        items: CoffeeName.coffeeNameList
-                                            .map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                          return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(value),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
+                            //               // 未選択以外ならテキストフィールドにセット
+                            //               // 保存可能にする
+                            //               if (newValue !=
+                            //                   CoffeeName.coffeeNameList[0]) {
+                            //                 _nameTextEditingCntroller.text =
+                            //                     newValue;
+                            //                 coffeeModel.changeIsSabeavle(true);
+                            //               } else {
+                            //                 _nameTextEditingCntroller.clear();
+                            //                 coffeeModel.changeIsSabeavle(false);
+                            //               }
+                            //             },
+                            //             items: CoffeeName.coffeeNameList
+                            //                 .map<DropdownMenuItem<String>>(
+                            //                     (String value) {
+                            //               return DropdownMenuItem<String>(
+                            //                 value: value,
+                            //                 child: Text(value),
+                            //               );
+                            //             }).toList(),
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     );
+                            //   },
+                            // ),
                             // コーヒー名
                             Consumer<ModalTabProvider>(
                               builder: (ctx, model, _) {
@@ -487,10 +324,10 @@ class Modal {
                                         focusColor: Colors.black,
                                         fillColor: Colors.black,
                                         hoverColor: Colors.black,
-                                        border: OutlineInputBorder(),
+                                        // border: OutlineInputBorder(),
                                         labelText: '名前',
-                                        prefixIcon:
-                                            Icon(Icons.local_drink_outlined),
+                                        icon: const Icon(
+                                            Icons.local_drink_outlined),
                                         suffixIcon: IconButton(
                                           onPressed: () {
                                             _nameTextEditingCntroller.clear();
@@ -548,73 +385,30 @@ class Modal {
                               builder: (ctx, model, _) {
                                 if (modalTabData.currentIndex ==
                                     CafeType.TYPE_HOME_CAFE) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                    child: TypeAheadField(
-                                      textFieldConfiguration:
-                                          TextFieldConfiguration(
-                                        controller: _brandTextEditingCntroller,
+                                  return Consumer<CoffeeProvider>(
+                                      builder: (ctx, coffeeModel, _) {
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                      child: TextField(
+                                        // focusNode: _textFieldFocusNode,
+                                        autofocus: false,
+                                        controller: _tagTextEditingCntroller,
                                         decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: CafeType.BRAND,
-                                          prefixIcon: const Icon(
-                                              Icons.where_to_vote_outlined),
-                                          suffixIcon: IconButton(
-                                            onPressed: () {
-                                              _brandTextEditingCntroller
-                                                  .clear();
-                                            },
-                                            icon: const Icon(Icons.clear),
-                                          ),
+                                          icon: const Icon(Icons.tag),
+                                          hintText: '買った場所、種類など',
+                                          labelText: 'タグ',
+                                          errorText: coffeeModel.isTagError
+                                              ? coffeeModel.tagErrorText
+                                              : null,
                                         ),
-                                        onChanged: (text) {
-                                          if (modalCoffeeModel != null) {
-                                            // 更新の時の非活性処理
-                                            coffeeData.changeIsSabeavle(true);
-                                          } else {
-                                            // 登録の時の非活性処理
-                                            if (_nameTextEditingCntroller
-                                                    .text.isNotEmpty &&
-                                                text.isNotEmpty &&
-                                                text.length < 20) {
-                                              coffeeData.changeIsSabeavle(true);
-                                            } else {
-                                              coffeeData
-                                                  .changeIsSabeavle(false);
-                                            }
-                                          }
+                                        onSubmitted: (String text) {
+                                          _tagTextEditingCntroller.clear();
+                                          coffeeData.addChip(text);
                                         },
                                       ),
-                                      suggestionsCallback: (pattern) async {
-                                        if (pattern.isEmpty) {
-                                          return [];
-                                        }
-                                        // pattern:入力された文字
-                                        // return: サジェスト候補となる文字列を返す
-                                        List<String> _filter =
-                                            _suggestBrandNameList
-                                                .where((element) => (element
-                                                        .toLowerCase())
-                                                    .contains(
-                                                        pattern.toLowerCase()))
-                                                .take(5)
-                                                .toList();
-                                        return _filter;
-                                      },
-                                      itemBuilder: (context, suggestion) {
-                                        return ListTile(
-                                          title: Text(suggestion as String),
-                                        );
-                                      },
-                                      // サジェストの結果が0件の時のメッセージ
-                                      hideOnEmpty: true,
-                                      onSuggestionSelected: (suggestion) {
-                                        _brandTextEditingCntroller.text =
-                                            suggestion as String;
-                                      },
-                                    ),
-                                  );
+                                    );
+                                  });
                                 } else if (modalTabData.currentIndex ==
                                     CafeType.TYPE_MY_DRINK) {
                                   // マイドリンク
@@ -693,84 +487,45 @@ class Modal {
                                   } else {
                                     return Container();
                                   }
-                                } else if (modalTabData.currentIndex ==
-                                    CafeType.TYPE_SHOP_CAFE) {
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                                    child: TypeAheadField(
-                                      textFieldConfiguration:
-                                          TextFieldConfiguration(
-                                        controller: _shopTextEditingCntroller,
-                                        decoration: const InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          labelText: '店名',
-                                          prefixIcon:
-                                              Icon(Icons.store_outlined),
-                                          suffixIcon: Icon(Icons.clear),
-                                        ),
-                                        onChanged: (text) {
-                                          if (modalCoffeeModel != null) {
-                                            // 更新の時の非活性処理
-                                            coffeeData.changeIsSabeavle(true);
-                                          } else {
-                                            // 登録の時の非活性処理
-                                            if (_nameTextEditingCntroller
-                                                    .text.isNotEmpty &&
-                                                text.isNotEmpty &&
-                                                text.length < 20) {
-                                              coffeeData.changeIsSabeavle(true);
-                                            } else {
-                                              coffeeData
-                                                  .changeIsSabeavle(false);
-                                            }
-                                          }
-                                        },
-                                      ),
-                                      suggestionsCallback: (pattern) async {
-                                        if (pattern.isEmpty) {
-                                          return [];
-                                        }
-                                        // pattern:入力された文字
-                                        // return: サジェスト候補となる文字列を返す
-                                        List<String> _filter =
-                                            _suggestShopNameList
-                                                .where((element) => (element
-                                                        .toLowerCase())
-                                                    .contains(
-                                                        pattern.toLowerCase()))
-                                                .take(5)
-                                                .toList();
-                                        return _filter;
-                                      },
-                                      itemBuilder: (context, suggestion) {
-                                        return ListTile(
-                                          title: Text(suggestion as String),
-                                        );
-                                      },
-                                      // サジェストの結果が0件の時のメッセージ
-                                      hideOnEmpty: true,
-                                      onSuggestionSelected: (suggestion) {
-                                        _shopTextEditingCntroller.text =
-                                            suggestion as String;
-                                      },
-                                    ),
-                                  );
                                 } else {
                                   return Container();
                                 }
                               },
                             ),
                             const SizedBox(height: 5),
+                            setTagList(coffeeModel, coffeeData),
+                            // Container(
+                            //   margin: const EdgeInsets.only(
+                            //       left: 10, right: 10, top: 0, bottom: 0),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.start,
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Expanded(
+                            //         child: Wrap(
+                            //             alignment: WrapAlignment.start,
+                            //             spacing: 8.0,
+                            //             runSpacing: 0.0,
+                            //             direction: Axis.horizontal,
+                            //             children: coffeeData.tagList),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
+
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(12.0, 0, 0, 0),
+                                      const EdgeInsets.fromLTRB(4, 0, 0, 0),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
+                                      coffeeData.isIce
+                                          ? Icon(Icons.icecream_outlined)
+                                          : Icon(Icons
+                                              .local_fire_department_outlined),
                                       coffeeData.isIce
                                           ? Container(
                                               child: Row(
@@ -833,11 +588,15 @@ class Modal {
                                     const SizedBox(
                                       width: 5,
                                     ),
-                                    Text(
-                                      coffeeData.countDrink.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 30,
+                                    Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 5, right: 5, top: 0, bottom: 0),
+                                      child: Text(
+                                        coffeeData.countDrink.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 30,
+                                        ),
                                       ),
                                     ),
                                     const Text(
@@ -851,6 +610,11 @@ class Modal {
                                       width: 5,
                                     ),
                                     Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 0,
+                                          right: 10,
+                                          top: 0,
+                                          bottom: 0),
                                       decoration: BoxDecoration(
                                         color: Colors.grey.withOpacity(0.2),
                                         borderRadius: BorderRadius.circular(10),
@@ -1289,13 +1053,6 @@ class Modal {
                                             CoffeeModel();
                                         DateTime now = DateTime.now();
                                         if (modalTabData.currentIndex ==
-                                            CafeType.TYPE_SHOP_CAFE) {
-                                          // 喫茶店
-                                          _coffeeModel.cafeType =
-                                              CafeType.TYPE_SHOP_CAFE;
-                                          _coffeeModel.shopName =
-                                              _shopTextEditingCntroller.text;
-                                        } else if (modalTabData.currentIndex ==
                                             CafeType.TYPE_HOME_CAFE) {
                                           // おうちカフェ
                                           _coffeeModel.cafeType =
@@ -1328,13 +1085,16 @@ class Modal {
                                             coffeeData.coffeeAt;
                                         _coffeeModel.imageId =
                                             coffeeData.imageId;
-
                                         var _coffeeDb = CoffeeFirebase();
 
                                         if (isUpdate) {
                                           // 更新
+
                                           _coffeeModel.id =
                                               modalCoffeeModel!.id;
+
+                                          _coffeeModel.tagId =
+                                              modalCoffeeModel.tagId;
                                           if (modalCoffeeModel.imageId != '') {
                                             coffeeData.imageType =
                                                 coffeeData.imageType == 0
@@ -1356,7 +1116,8 @@ class Modal {
                                           await _coffeeDb.updateCoffeeData(
                                               _coffeeModel,
                                               coffeeData.imageFile,
-                                              coffeeData.imageType);
+                                              coffeeData.imageType,
+                                              coffeeData.tagList);
                                         } else {
                                           // 追加
                                           if (modalTabData.currentIndex ==
@@ -1370,9 +1131,11 @@ class Modal {
                                           _coffeeModel.createdAt = now;
 
                                           await _coffeeDb.insertCoffeeData(
-                                              _coffeeModel,
-                                              coffeeData.imageFile,
-                                              coffeeData.imageType);
+                                            _coffeeModel,
+                                            coffeeData.imageFile,
+                                            coffeeData.imageType,
+                                            coffeeData.tagList,
+                                          );
                                         }
 
                                         _coffeeModel.coffeeAt =
@@ -1522,6 +1285,27 @@ class Modal {
     } else {
       return Container();
     }
+  }
+
+  // タグを表示
+  Widget setTagList(CoffeeModel? coffeeModel, CoffeeProvider coffeeData) {
+    return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Wrap(
+                alignment: WrapAlignment.start,
+                spacing: 8.0,
+                runSpacing: 0.0,
+                direction: Axis.horizontal,
+                children: coffeeData.tagList),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget setModalImage(CoffeeModel? coffeeModel, CoffeeProvider coffeeData) {

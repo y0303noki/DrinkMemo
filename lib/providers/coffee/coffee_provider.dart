@@ -3,16 +3,19 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee_project2/const/coffee_name.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
+import 'package:coffee_project2/database/drink_tag_firebase.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/model/drink_tag_model.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CoffeeProvider extends ChangeNotifier {
   CoffeeImageFirebase _coffeeImageFirebase = CoffeeImageFirebase();
+  DrinkTagFirebase _drinkTagFirebase = DrinkTagFirebase();
 
-  late CoffeeModel _coffeeModel;
+  CoffeeModel _coffeeModel = CoffeeModel();
   CoffeeModel get coffeeModel => _coffeeModel;
   set coffeeModel(CoffeeModel coffeeModel) {
     _coffeeModel = coffeeModel;
@@ -65,6 +68,121 @@ class CoffeeProvider extends ChangeNotifier {
   int get countMyAlbum => _countMyAlbum;
   set countMyAlbum(int _count) {
     _countMyAlbum = _count;
+  }
+
+  // チップ
+  int _keyNumber = 0;
+  int get keyNumber => _keyNumber;
+  set keyNumber(int _key) {
+    _keyNumber = _key;
+  }
+
+  // タグリスト
+  List<Chip> _tagList = [];
+  List<Chip> get tagList => _tagList;
+  set tagList(List<Chip> tags) {
+    _tagList = tags;
+  }
+
+  // タグエラー
+  bool _isTagError = false;
+  bool get isTagError => _isTagError;
+  set isTagError(bool e) {
+    _isTagError = e;
+  }
+
+  String _tagErrorText = '';
+  String get tagErrorText => _tagErrorText;
+  set tagErrorText(String e) {
+    _tagErrorText = e;
+  }
+
+  void resettagList() {
+    _tagList = [];
+    _isTagError = false;
+    _tagErrorText = '';
+    notifyListeners();
+  }
+
+  void addChip(String text) {
+    // 空のタグは追加しない
+    if (text.isEmpty) {
+      _isTagError = true;
+      _tagErrorText = '1文字以上入力してください';
+      notifyListeners();
+      return;
+    }
+
+    if (text.length > 10) {
+      _isTagError = true;
+      _tagErrorText = '10文字まで';
+      notifyListeners();
+      return;
+    }
+
+    // タグは3個まで
+    if (_tagList.length >= 3) {
+      _isTagError = true;
+      _tagErrorText = 'タグは3個まで';
+      notifyListeners();
+      return;
+    }
+    _isTagError = false;
+    _tagErrorText = '';
+
+    // 追加済みのチップは追加しない
+    List<String> _list = _tagList.map((e) => (e.label as Text).data!).toList();
+    if (_list.contains(text)) {
+      return;
+    }
+    var chipKey = Key('chip_key_$_keyNumber');
+    _keyNumber++;
+
+    _tagList.add(
+      Chip(
+        backgroundColor: Colors.purple[100],
+        key: chipKey,
+        label: Text(text),
+        onDeleted: () => deleteChip(chipKey),
+      ),
+    );
+    notifyListeners();
+  }
+
+  List<Chip> toChipForDrinkModel(List<DrinkTagModel> drinkModels) {
+    List<Chip> chipList = [];
+    int _keyNumber = 0;
+    for (DrinkTagModel drinkTagModel in drinkModels) {
+      var chipKey = Key('chip_key_$_keyNumber');
+      _keyNumber++;
+      Chip chip = Chip(
+        backgroundColor: Colors.purple[100],
+        key: chipKey,
+        onDeleted: () => deleteChip(chipKey),
+        label: Text(
+          drinkTagModel.tagName,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.black,
+          ),
+        ),
+      );
+      chipList.add(chip);
+    }
+
+    return chipList;
+  }
+
+  void deleteChip(Key chipKey) {
+    _tagList.removeWhere((Widget w) => w.key == chipKey);
+    // タグは3個まで
+    if (_tagList.length < 3) {
+      _isTagError = false;
+      _tagErrorText = '';
+      notifyListeners();
+      return;
+    }
+    notifyListeners();
   }
 
   // コーヒー名リストから選択された値
@@ -176,5 +294,14 @@ class CoffeeProvider extends ChangeNotifier {
 
   Future<int> findMyAlbumCount() async {
     return await _coffeeImageFirebase.fetchCoffeeImageCount();
+  }
+
+  Future<List<DrinkTagModel>> findTagList(String? tagId) async {
+    if (tagId == null) {
+      return [];
+    }
+    List<DrinkTagModel> result =
+        await _drinkTagFirebase.fetchDrinkTagDatasByTagId(tagId);
+    return result;
   }
 }
