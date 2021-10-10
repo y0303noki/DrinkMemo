@@ -30,6 +30,7 @@ class CoffeeListPage extends StatelessWidget {
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search, color: Colors.black),
                   hintText: "キーワード検索",
+                  labelText: "キーワード検索",
                   suffixIcon: IconButton(
                     onPressed: () {
                       _keywordTextEditingCntroller.clear();
@@ -50,6 +51,7 @@ class CoffeeListPage extends StatelessWidget {
                 },
               ),
             ),
+            Text('先頭に#を付けるとタグ検索（例 #カフェ)'),
 
             // フィルター 動きが重いのでコメントアウト
             Row(

@@ -1,5 +1,6 @@
 class DrinkTagModel {
   String id;
+  String userId;
   String tagId;
   String tagName;
   bool isDeleted;
@@ -7,6 +8,7 @@ class DrinkTagModel {
   DateTime? updatedAt;
   DrinkTagModel(
       {this.id = '',
+      this.userId = '',
       this.tagId = '',
       this.tagName = '',
       this.isDeleted = false,

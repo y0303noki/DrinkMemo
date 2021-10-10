@@ -15,7 +15,7 @@ class CoffeeProvider extends ChangeNotifier {
   CoffeeImageFirebase _coffeeImageFirebase = CoffeeImageFirebase();
   DrinkTagFirebase _drinkTagFirebase = DrinkTagFirebase();
 
-  late CoffeeModel _coffeeModel;
+  CoffeeModel _coffeeModel = CoffeeModel();
   CoffeeModel get coffeeModel => _coffeeModel;
   set coffeeModel(CoffeeModel coffeeModel) {
     _coffeeModel = coffeeModel;

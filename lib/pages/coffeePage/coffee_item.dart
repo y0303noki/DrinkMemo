@@ -114,7 +114,7 @@ class CoffeeItem extends StatelessWidget {
                           DateUtility(coffee.coffeeAt).toDateFormatted(),
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 15,
+                            fontSize: 12,
                             color: Color(0xff333333),
                           ),
                         ),
@@ -126,8 +126,7 @@ class CoffeeItem extends StatelessWidget {
                             textAlign: TextAlign.right,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
                               color: Color(0xff333333),
                             ),
                           ),

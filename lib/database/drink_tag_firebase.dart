@@ -12,10 +12,19 @@ class DrinkTagFirebase {
   final String drinkTags = 'drink_tags';
 
   Future insertDrinkTags(List<DrinkTagModel> drinkTagModels) async {
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+
     for (DrinkTagModel tagModel in drinkTagModels) {
       // ドキュメント作成
       Map<String, dynamic> addObject = new Map<String, dynamic>();
-      // addObject['id'] = tagModel.id;
+      addObject['userId'] = userId;
       addObject['tagId'] = tagModel.tagId;
       addObject['tagName'] = tagModel.tagName;
       addObject['isDeleted'] = false;
@@ -52,10 +61,19 @@ class DrinkTagFirebase {
 
   Future<List<DrinkTagModel>> fetchDrinkTagDatasByTagId(String tagId) async {
     DateTime now = DateTime.now();
+    // ユーザーID
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
 
     final QuerySnapshot snapshots = await _firestore
         .collection(drinkTags)
         .where('tagId', isEqualTo: tagId)
+        .where('userId', isEqualTo: userId)
         .orderBy('updatedAt', descending: true)
         .limit(20)
         .get();
@@ -68,6 +86,47 @@ class DrinkTagFirebase {
         .map(
           (doc) => DrinkTagModel(
             id: doc.data()['id'] ?? '',
+            userId: doc.data()['userId'] ?? '',
+            tagId: doc.data()['tagId'] ?? '',
+            tagName: doc.data()['tagName'] ?? '',
+            isDeleted: doc.data()['isDeleted'] ?? false,
+            createdAt: doc.data()['createdAt'].toDate(),
+            updatedAt: doc.data()['updatedAt'].toDate(),
+          ),
+        )
+        .toList();
+    return coffeeImageAllDatas;
+  }
+
+  Future<List<DrinkTagModel>> fetchDrinkTagDatasByTagName(
+      String tagName) async {
+    DateTime now = DateTime.now();
+    // ユーザーID
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+
+    final QuerySnapshot snapshots = await _firestore
+        .collection(drinkTags)
+        .where('tagName', isEqualTo: tagName)
+        .where('userId', isEqualTo: userId)
+        .orderBy('updatedAt', descending: true)
+        .limit(20)
+        .get();
+
+    if (snapshots.docs.isNotEmpty) {
+      print(snapshots.docs.first.id);
+    }
+
+    final coffeeImageAllDatas = snapshots.docs
+        .map(
+          (doc) => DrinkTagModel(
+            id: doc.data()['id'] ?? '',
+            userId: doc.data()['userId'] ?? '',
             tagId: doc.data()['tagId'] ?? '',
             tagName: doc.data()['tagName'] ?? '',
             isDeleted: doc.data()['isDeleted'] ?? false,

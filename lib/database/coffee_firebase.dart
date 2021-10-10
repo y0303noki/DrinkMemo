@@ -464,6 +464,48 @@ class CoffeeFirebase {
     }
   }
 
+  // tagIdから検索
+  Future<List<CoffeeModel>> fetchCoffeeDataByTagId(List<String> tagIds) async {
+    // ユーザーID
+    DateTime now = DateTime.now();
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+
+    final QuerySnapshot snapshots = await _firestore
+        .collection(coffeeCards)
+        .where('userId', isEqualTo: userId)
+        .where('tagId', whereIn: tagIds)
+        .orderBy('updatedAt', descending: true)
+        .limit(20)
+        .get();
+
+    final coffeeAllDatas = snapshots.docs
+        .map(
+          (doc) => CoffeeModel(
+            id: doc.data()['id'] ?? '',
+            name: doc.data()['name'] ?? '',
+            favorite: doc.data()['favorite'] ?? false,
+            cafeType: doc.data()['cafeType'] ?? 0,
+            shopName: doc.data()['shopName'] ?? '',
+            brandName: doc.data()['brandName'] ?? '',
+            isIce: doc.data()['isIce'] ?? false,
+            countDrink: doc.data()['countDrink'] ?? 1,
+            tagId: doc.data()['tagId'] ?? '',
+            imageId: doc.data()['imageId'] ?? '',
+            coffeeAt: doc.data()['coffeeAt'].toDate(),
+            createdAt: doc.data()['createdAt'].toDate(),
+            updatedAt: doc.data()['updatedAt'].toDate(),
+          ),
+        )
+        .toList();
+    return coffeeAllDatas;
+  }
+
   // アプリを始めて起動したときにチュートリアルもかねて追加する
   Future<void> createSample() async {
     DateTime now1 = DateTime.now();
@@ -472,9 +514,7 @@ class CoffeeFirebase {
     DateTime now4 = now3.add(const Duration(minutes: 5));
 
     CoffeeModel _model1 = CoffeeModel();
-    _model1.cafeType = CafeType.TYPE_HOME_CAFE;
-    _model1.name = '説明1';
-    _model1.brandName = '右下のプラスボタンからドリンクを追加できます';
+    _model1.name = '+ボタンで登録';
     _model1.coffeeAt = now4;
     _model1.createdAt = now4;
     _model1.updatedAt = now4;
@@ -482,29 +522,23 @@ class CoffeeFirebase {
     await insertCoffeeData(_model1, null, 0, []);
 
     CoffeeModel _model2 = CoffeeModel();
-    _model2.cafeType = CafeType.TYPE_SHOP_CAFE;
-    _model2.name = '説明2';
-    _model2.shopName = '追加したドリンクはタップすると更新・削除できます';
+    _model2.name = 'タップで更新';
     _model2.coffeeAt = now3;
     _model2.createdAt = now3;
     _model2.updatedAt = now3;
 
     await insertCoffeeData(_model2, null, 0, []);
 
-    CoffeeModel _model3 = CoffeeModel();
-    _model3.cafeType = CafeType.TYPE_HOME_CAFE;
-    _model3.name = '説明3';
-    _model3.brandName = '写真を撮って画像も登録してみましょう';
-    _model3.coffeeAt = now2;
-    _model3.createdAt = now2;
-    _model3.updatedAt = now2;
+    // CoffeeModel _model3 = CoffeeModel();
+    // _model3.name = 'タグ';
+    // _model3.coffeeAt = now2;
+    // _model3.createdAt = now2;
+    // _model3.updatedAt = now2;
 
-    await insertCoffeeData(_model3, null, 0, []);
+    // await insertCoffeeData(_model3, null, 0, []);
 
     CoffeeModel _model4 = CoffeeModel();
-    _model4.cafeType = CafeType.TYPE_SHOP_CAFE;
-    _model4.name = '説明4';
-    _model4.shopName = '同じ日に飲んだドリンクは杯数を増やすことができます';
+    _model4.name = '同じドリンクの杯数';
     _model4.countDrink = 3;
     _model4.coffeeAt = now1;
     _model4.createdAt = now1;
