@@ -145,55 +145,56 @@ class CustomDialog {
             child: Column(
               mainAxisSize: MainAxisSize.min, // columnの高さを自動調整
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: ColorUtility()
-                                  .toColorByCofeType(CafeType.TYPE_HOME_CAFE)),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      const Text(
-                        CafeType.HOME_CAFE,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: ColorUtility()
-                                .toColorByCofeType(CafeType.TYPE_SHOP_CAFE),
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                      const Text(
-                        CafeType.SHOP_CAFE,
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                //         width: 20,
+                //         height: 20,
+                //         decoration: BoxDecoration(
+                //           border: Border.all(
+                //               color: ColorUtility()
+                //                   .toColorByCofeType(CafeType.TYPE_HOME_CAFE)),
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //       ),
+                //       const Text(
+                //         CafeType.HOME_CAFE,
+                //         style: TextStyle(
+                //           fontSize: 20,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                //   child: Row(
+                //     children: [
+                //       Container(
+                //         margin: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                //         width: 20,
+                //         height: 20,
+                //         decoration: BoxDecoration(
+                //           border: Border.all(
+                //             color: ColorUtility()
+                //                 .toColorByCofeType(CafeType.TYPE_SHOP_CAFE),
+                //           ),
+                //           borderRadius: BorderRadius.circular(5),
+                //         ),
+                //       ),
+                //       const Text(
+                //         CafeType.SHOP_CAFE,
+                //         style: TextStyle(
+                //           fontSize: 20,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+
                 _iconDescriptionItem(
                   'お気に入り',
                   const Icon(
@@ -201,13 +202,16 @@ class CustomDialog {
                     color: Colors.pink,
                   ),
                 ),
-                _iconDescriptionItem(
-                  'マイドリンク',
-                  Icon(
-                    Icons.local_drink_outlined,
-                    color: Colors.yellow[800],
-                  ),
-                ),
+
+                // TODO:マイドリンク機能
+
+                // _iconDescriptionItem(
+                //   'マイドリンク',
+                //   Icon(
+                //     Icons.local_drink_outlined,
+                //     color: Colors.yellow[800],
+                //   ),
+                // ),
               ],
             ),
           ),

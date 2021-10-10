@@ -146,6 +146,8 @@ class CoffeeItem extends StatelessWidget {
                         //   ),
                         // ),
                         _setTagList(coffeeData, coffee),
+
+                        _setMemo(coffee),
                       ],
                     ),
                   ],
@@ -225,7 +227,7 @@ class CoffeeItem extends StatelessWidget {
                 backgroundColor: Colors.purple[100],
                 key: chipKey,
                 label: Text(
-                  drinkTagModel.tagName,
+                  '# ${drinkTagModel.tagName}',
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.black,
@@ -258,6 +260,17 @@ class CoffeeItem extends StatelessWidget {
     );
   }
 
+  Widget _setMemo(CoffeeModel coffee) {
+    return Column(
+      children: [
+        Text('Memo'),
+        Container(
+          child: Text(coffee.memo),
+        ),
+      ],
+    );
+  }
+
   // 遅延で画像を読み込む
   Widget _setCofeeImage(CoffeeProvider coffeeData, CoffeeModel coffee) {
     return FutureBuilder(
@@ -286,7 +299,7 @@ class CoffeeItem extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: ColorUtility().toColorByCofeType(coffee.cafeType),
+                  color: Colors.black,
                   width: 3,
                 ),
                 borderRadius: BorderRadius.circular(10),
@@ -298,7 +311,7 @@ class CoffeeItem extends StatelessWidget {
               height: 100.0,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: ColorUtility().toColorByCofeType(coffee.cafeType),
+                  color: Colors.black,
                   width: 3,
                 ),
                 borderRadius: BorderRadius.circular(10),

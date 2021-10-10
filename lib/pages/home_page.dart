@@ -49,17 +49,19 @@ class HomePage extends StatelessWidget {
             color: Colors.black,
           ),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.local_drink_outlined,
-              color: Colors.yellow[800],
-            ),
-            onPressed: () {
-              CustomDialog().opneMyCoffee(context, userMyCoffeeData.myCoffee,
-                  userMyCoffeeData.imageUrl);
-            },
-          ),
+        actions: [
+          // TODO:マイドリンク機能
+
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.local_drink_outlined,
+          //     color: Colors.yellow[800],
+          //   ),
+          //   onPressed: () {
+          //     CustomDialog().opneMyCoffee(context, userMyCoffeeData.myCoffee,
+          //         userMyCoffeeData.imageUrl);
+          //   },
+          // ),
           IconButton(
             icon: const Icon(
               Icons.help_outline_outlined,

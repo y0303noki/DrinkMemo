@@ -169,6 +169,30 @@ class SettingListPage extends StatelessWidget {
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
           ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            child: ListTile(
+              title: const Text(
+                'アプリの使い方',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15.0,
+                ),
+              ),
+              onTap: () async {
+                await _launchAboutAppURL();
+              },
+              trailing: const Icon(Icons.arrow_forward_ios),
+            ),
+          ),
           // Container(
           //   decoration: const BoxDecoration(
           //     color: Colors.white,
@@ -225,9 +249,21 @@ class SettingListPage extends StatelessWidget {
     );
   }
 
+  // お問い合わせ
   _launchURL() async {
     const url =
         "https://docs.google.com/forms/d/e/1FAIpQLScCE2yV4JuW8LExcBbn9dtVdvQKoEboLk1BjkqTBgaSyFHNRg/viewform";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not Launch $url';
+    }
+  }
+
+  // アプリの使い方
+  _launchAboutAppURL() async {
+    const url =
+        "https://platinum-airplane-90a.notion.site/DrinkMemo-189b4f1fd3c64fe79fbfdbf20538c051";
     if (await canLaunch(url)) {
       await launch(url);
     } else {

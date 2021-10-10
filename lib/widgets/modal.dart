@@ -18,9 +18,11 @@ import 'package:coffee_project2/utils/convert_utility.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
 import 'package:coffee_project2/widgets/common_widget.dart';
 import 'package:coffee_project2/widgets/custom_dialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:provider/provider.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class Modal {
   void showCoffeeBottomSheet(
@@ -37,6 +39,11 @@ class Modal {
         TextEditingController(text: '');
     TextEditingController _tagTextEditingCntroller =
         TextEditingController(text: '');
+    // メモ
+    FocusNode _focusNode = FocusNode(); //追加
+    TextEditingController _memoTextEditingCntroller =
+        TextEditingController(text: '');
+
     String bottomTitle = '';
     CoffeeModel? modalCoffeeModel = coffeeModel;
     // String coffeeId = '';
@@ -53,6 +60,10 @@ class Modal {
     CoffeeModel? myCoffee;
     bool myDrinkSelected = false;
     coffeeData.resettagList();
+    // メモにフォーカスされているかどうか
+    _focusNode.addListener(() {
+      coffeeData.changeIsFocusMemo(_focusNode.hasFocus);
+    });
 
     // 更新するとき
     if (isUpdate) {
@@ -130,6 +141,8 @@ class Modal {
     List<String> _suggestBrandNameList =
         coffeeDatas.brandModels.map((e) => e.name).toSet().toList();
 
+    void _onFocusChange() {}
+
     var value = await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -147,7 +160,7 @@ class Modal {
               child: Padding(
                 padding: EdgeInsets.only(bottom: 0),
                 child: Container(
-                  height: size.height * 0.8,
+                  height: size.height * 0.9,
                   decoration: BoxDecoration(
                     border: Border.all(
                       width: 3.0,
@@ -182,8 +195,10 @@ class Modal {
                                   ),
                                   Row(
                                     children: [
-                                      myDrinkStarWidget(context,
-                                          modalCoffeeModel, userMyCoffeeData),
+                                      // TODO:マイドリンク機能
+
+                                      // myDrinkStarWidget(context,
+                                      //     modalCoffeeModel, userMyCoffeeData),
                                       modalCoffeeModel != null
                                           ? IconButton(
                                               onPressed: () async {
@@ -315,6 +330,7 @@ class Modal {
                                       style: const TextStyle(
                                         color: Colors.black,
                                       ),
+                                      // autofocus: true,
                                       enabled: modalTabData.currentIndex ==
                                               CafeType.TYPE_HOME_CAFE ||
                                           modalTabData.currentIndex ==
@@ -512,6 +528,45 @@ class Modal {
                             //     ],
                             //   ),
                             // ),
+                            const SizedBox(height: 5),
+                            Consumer<CoffeeProvider>(
+                                builder: (ctx, coffeeModel, _) {
+                              return Column(
+                                children: [
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                    child: TextField(
+                                      // focusNode: _textFieldFocusNode,
+                                      focusNode: _focusNode,
+                                      autofocus: false,
+                                      controller: _memoTextEditingCntroller,
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                        icon: const Icon(Icons.note),
+                                        hintText: 'メモ',
+                                        labelText: 'メモ',
+
+                                        // errorText: coffeeModel.isTagError
+                                        //     ? coffeeModel.tagErrorText
+                                        //     : null,
+                                      ),
+                                    ),
+                                  ),
+                                  coffeeModel.isFocusMemo
+                                      ? Container(
+                                          child: TextButton(
+                                            child: Text('メモ入力完了'),
+                                            onPressed: () {
+                                              _focusNode.unfocus();
+                                            },
+                                          ),
+                                        )
+                                      : Container(),
+                                ],
+                              );
+                            }),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1076,6 +1131,8 @@ class Modal {
 
                                         _coffeeModel.name =
                                             _nameTextEditingCntroller.text;
+                                        _coffeeModel.memo =
+                                            _memoTextEditingCntroller.text;
                                         _coffeeModel.favorite = false;
                                         _coffeeModel.isIce = coffeeData.isIce;
                                         _coffeeModel.countDrink =
@@ -1397,4 +1454,15 @@ class Modal {
           );
         });
   }
+
+  // get _keyboardActionConfig {
+  //   return KeyboardActionsConfig(
+  //     keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+  //     keyboardSeparatorColor: Colors.black,
+  //     nextFocus: true,
+  //     actions: [
+  //       KeyboardActionsItem(focusNode: _focusNode, toolbarButtons: []),
+  //     ],
+  //   );
+  // }
 }

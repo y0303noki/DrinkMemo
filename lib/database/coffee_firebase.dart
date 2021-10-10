@@ -126,6 +126,7 @@ class CoffeeFirebase {
     addObject['isIce'] = coffeeModel.isIce;
     addObject['countDrink'] = coffeeModel.countDrink;
     addObject['tagId'] = tagId;
+    addObject['memo'] = coffeeModel.memo;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -257,6 +258,7 @@ class CoffeeFirebase {
     updateData['isIce'] = coffeeModel.isIce;
     updateData['countDrink'] = coffeeModel.countDrink;
     updateData['tagId'] = tagId;
+    updateData['memo'] = coffeeModel.memo;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
@@ -339,6 +341,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -386,6 +389,7 @@ class CoffeeFirebase {
               isIce: doc.data()['isIce'] ?? false,
               countDrink: doc.data()['countDrink'] ?? 1,
               tagId: doc.data()['tagId'] ?? '',
+              memo: doc.data()['memo'] ?? '',
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
@@ -450,6 +454,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -496,6 +501,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
