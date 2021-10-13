@@ -9,6 +9,7 @@ class CoffeeModel {
   int countDrink = 1;
   String tagId;
   List<String>? tagNameList;
+  String memo;
   String? imageId;
   String imageUrl;
   DateTime? coffeeAt;
@@ -25,6 +26,7 @@ class CoffeeModel {
       this.countDrink = 1,
       this.tagId = '',
       this.tagNameList,
+      this.memo = '',
       this.imageId,
       this.imageUrl = '',
       this.coffeeAt,

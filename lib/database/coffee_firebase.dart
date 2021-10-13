@@ -126,6 +126,7 @@ class CoffeeFirebase {
     addObject['isIce'] = coffeeModel.isIce;
     addObject['countDrink'] = coffeeModel.countDrink;
     addObject['tagId'] = tagId;
+    addObject['memo'] = coffeeModel.memo;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
     addObject['coffeeAt'] = coffeeModel.coffeeAt;
@@ -151,13 +152,15 @@ class CoffeeFirebase {
 
     for (Chip tag in tagList) {
       Text _text = tag.label as Text;
+      String tagData = _text.data!;
+      tagData = tagData.replaceFirst('#', '').trim();
 
       // idはタグごとに
       String id = const Uuid().v4();
       DrinkTagModel tagModel = DrinkTagModel(
         id: id,
         tagId: tagId,
-        tagName: _text.data!,
+        tagName: tagData,
         isDeleted: false,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -257,6 +260,7 @@ class CoffeeFirebase {
     updateData['isIce'] = coffeeModel.isIce;
     updateData['countDrink'] = coffeeModel.countDrink;
     updateData['tagId'] = tagId;
+    updateData['memo'] = coffeeModel.memo;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
     updateData['imageId'] = _imageId;
@@ -339,6 +343,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -386,6 +391,7 @@ class CoffeeFirebase {
               isIce: doc.data()['isIce'] ?? false,
               countDrink: doc.data()['countDrink'] ?? 1,
               tagId: doc.data()['tagId'] ?? '',
+              memo: doc.data()['memo'] ?? '',
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
               createdAt: doc.data()['createdAt'].toDate(),
@@ -450,6 +456,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -496,6 +503,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
             createdAt: doc.data()['createdAt'].toDate(),
@@ -515,34 +523,71 @@ class CoffeeFirebase {
 
     CoffeeModel _model1 = CoffeeModel();
     _model1.name = '+ボタンで登録';
+    _model1.memo = '右下の+ボタンを押してドリンクを登録できます';
     _model1.coffeeAt = now4;
     _model1.createdAt = now4;
     _model1.updatedAt = now4;
 
-    await insertCoffeeData(_model1, null, 0, []);
+    List<Chip> _tagList1 = _createTagSample(['サンプル']);
+
+    await insertCoffeeData(_model1, null, 0, _tagList1);
 
     CoffeeModel _model2 = CoffeeModel();
     _model2.name = 'タップで更新';
+    _model2.memo = '登録したドリンクはタップすると編集できます';
     _model2.coffeeAt = now3;
     _model2.createdAt = now3;
     _model2.updatedAt = now3;
 
-    await insertCoffeeData(_model2, null, 0, []);
+    List<Chip> _tagList2 = _createTagSample(['サンプル']);
 
-    // CoffeeModel _model3 = CoffeeModel();
-    // _model3.name = 'タグ';
-    // _model3.coffeeAt = now2;
-    // _model3.createdAt = now2;
-    // _model3.updatedAt = now2;
+    await insertCoffeeData(_model2, null, 0, _tagList2);
 
-    // await insertCoffeeData(_model3, null, 0, []);
+    CoffeeModel _model3 = CoffeeModel();
+    _model3.name = 'タグ';
+    _model3.memo = 'タグを追加して整理することができます';
+    _model3.coffeeAt = now2;
+    _model3.createdAt = now2;
+    _model3.updatedAt = now2;
+
+    List<Chip> _tagList3 = _createTagSample(['サンプル', 'タグ', 'ドリンク']);
+
+    await insertCoffeeData(_model3, null, 0, _tagList3);
 
     CoffeeModel _model4 = CoffeeModel();
     _model4.name = '同じドリンクの杯数';
+    _model4.memo = '同じドリンクは杯数を変更することもできます';
     _model4.countDrink = 3;
     _model4.coffeeAt = now1;
     _model4.createdAt = now1;
     _model4.updatedAt = now1;
-    await insertCoffeeData(_model4, null, 0, []);
+    List<Chip> _tagList4 = _createTagSample(['サンプル']);
+    await insertCoffeeData(_model4, null, 0, _tagList4);
+  }
+
+  List<Chip> _createTagSample(List<String> textList) {
+    List<Chip> _tagList = [];
+
+    // 追加済みのチップは追加しない
+    for (String text in textList) {
+      List<String> _list =
+          _tagList.map((e) => (e.label as Text).data!).toList();
+      if (_list.contains(text)) {
+        return [];
+      }
+
+      int _keyNumber = 0;
+      var chipKey = Key('chip_key_$_keyNumber');
+      _keyNumber++;
+
+      _tagList.add(
+        Chip(
+          backgroundColor: Colors.purple[100],
+          key: chipKey,
+          label: Text('# ${text}'),
+        ),
+      );
+    }
+    return _tagList;
   }
 }

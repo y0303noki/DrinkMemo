@@ -26,9 +26,11 @@ class CoffeeItem extends StatelessWidget {
     final coffee = coffeeDatas.findById(coffeeId);
     return Container(
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          bottomLeft: Radius.circular(20),
+        border: Border(
+          top: BorderSide(
+            color: Colors.grey,
+            width: 1,
+          ),
         ),
       ),
       child: Material(
@@ -146,6 +148,8 @@ class CoffeeItem extends StatelessWidget {
                         //   ),
                         // ),
                         _setTagList(coffeeData, coffee),
+
+                        _setMemo(coffee),
                       ],
                     ),
                   ],
@@ -225,7 +229,7 @@ class CoffeeItem extends StatelessWidget {
                 backgroundColor: Colors.purple[100],
                 key: chipKey,
                 label: Text(
-                  drinkTagModel.tagName,
+                  '# ${drinkTagModel.tagName}',
                   style: const TextStyle(
                     fontSize: 12,
                     color: Colors.black,
@@ -258,6 +262,21 @@ class CoffeeItem extends StatelessWidget {
     );
   }
 
+  Widget _setMemo(CoffeeModel coffee) {
+    return Column(
+      children: [
+        Container(
+          constraints: const BoxConstraints(maxWidth: 180),
+          child: Text(
+            coffee.memo,
+            textAlign: TextAlign.left,
+            overflow: TextOverflow.clip,
+          ),
+        ),
+      ],
+    );
+  }
+
   // 遅延で画像を読み込む
   Widget _setCofeeImage(CoffeeProvider coffeeData, CoffeeModel coffee) {
     return FutureBuilder(
@@ -286,7 +305,7 @@ class CoffeeItem extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: ColorUtility().toColorByCofeType(coffee.cafeType),
+                  color: Colors.black,
                   width: 3,
                 ),
                 borderRadius: BorderRadius.circular(10),
@@ -298,7 +317,7 @@ class CoffeeItem extends StatelessWidget {
               height: 100.0,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: ColorUtility().toColorByCofeType(coffee.cafeType),
+                  color: Colors.black,
                   width: 3,
                 ),
                 borderRadius: BorderRadius.circular(10),

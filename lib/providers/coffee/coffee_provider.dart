@@ -56,6 +56,14 @@ class CoffeeProvider extends ChangeNotifier {
     _isIce = _e;
   }
 
+  // メモテキストフィールドにフォーカスが当たっているか
+  bool _isFocusMemo = false;
+  bool get isFocusMemo => _isFocusMemo;
+  void changeIsFocusMemo(bool e) {
+    _isFocusMemo = e;
+    notifyListeners();
+  }
+
   // 同じコーヒー何杯
   int _countDrink = 1;
   int get countDrink => _countDrink;
@@ -142,7 +150,7 @@ class CoffeeProvider extends ChangeNotifier {
       Chip(
         backgroundColor: Colors.purple[100],
         key: chipKey,
-        label: Text(text),
+        label: Text('# ${text}'),
         onDeleted: () => deleteChip(chipKey),
       ),
     );
@@ -160,7 +168,7 @@ class CoffeeProvider extends ChangeNotifier {
         key: chipKey,
         onDeleted: () => deleteChip(chipKey),
         label: Text(
-          drinkTagModel.tagName,
+          '# ${drinkTagModel.tagName}',
           style: const TextStyle(
             fontSize: 12,
             color: Colors.black,
