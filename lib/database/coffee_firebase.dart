@@ -152,13 +152,15 @@ class CoffeeFirebase {
 
     for (Chip tag in tagList) {
       Text _text = tag.label as Text;
+      String tagData = _text.data!;
+      tagData = tagData.replaceFirst('#', '').trim();
 
       // idはタグごとに
       String id = const Uuid().v4();
       DrinkTagModel tagModel = DrinkTagModel(
         id: id,
         tagId: tagId,
-        tagName: _text.data!,
+        tagName: tagData,
         isDeleted: false,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),

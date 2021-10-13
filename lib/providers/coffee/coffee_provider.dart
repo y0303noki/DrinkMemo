@@ -168,7 +168,7 @@ class CoffeeProvider extends ChangeNotifier {
         key: chipKey,
         onDeleted: () => deleteChip(chipKey),
         label: Text(
-          drinkTagModel.tagName,
+          '# ${drinkTagModel.tagName}',
           style: const TextStyle(
             fontSize: 12,
             color: Colors.black,
