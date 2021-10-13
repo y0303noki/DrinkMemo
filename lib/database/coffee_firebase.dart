@@ -523,34 +523,71 @@ class CoffeeFirebase {
 
     CoffeeModel _model1 = CoffeeModel();
     _model1.name = '+ボタンで登録';
+    _model1.memo = '右下の+ボタンを押してドリンクを登録できます';
     _model1.coffeeAt = now4;
     _model1.createdAt = now4;
     _model1.updatedAt = now4;
 
-    await insertCoffeeData(_model1, null, 0, []);
+    List<Chip> _tagList1 = _createTagSample(['サンプル']);
+
+    await insertCoffeeData(_model1, null, 0, _tagList1);
 
     CoffeeModel _model2 = CoffeeModel();
     _model2.name = 'タップで更新';
+    _model2.memo = '登録したドリンクはタップすると編集できます';
     _model2.coffeeAt = now3;
     _model2.createdAt = now3;
     _model2.updatedAt = now3;
 
-    await insertCoffeeData(_model2, null, 0, []);
+    List<Chip> _tagList2 = _createTagSample(['サンプル']);
 
-    // CoffeeModel _model3 = CoffeeModel();
-    // _model3.name = 'タグ';
-    // _model3.coffeeAt = now2;
-    // _model3.createdAt = now2;
-    // _model3.updatedAt = now2;
+    await insertCoffeeData(_model2, null, 0, _tagList2);
 
-    // await insertCoffeeData(_model3, null, 0, []);
+    CoffeeModel _model3 = CoffeeModel();
+    _model3.name = 'タグ';
+    _model3.memo = 'タグを追加して整理することができます';
+    _model3.coffeeAt = now2;
+    _model3.createdAt = now2;
+    _model3.updatedAt = now2;
+
+    List<Chip> _tagList3 = _createTagSample(['サンプル', 'タグ', 'ドリンク']);
+
+    await insertCoffeeData(_model3, null, 0, _tagList3);
 
     CoffeeModel _model4 = CoffeeModel();
     _model4.name = '同じドリンクの杯数';
+    _model4.memo = '同じドリンクは杯数を変更することもできます';
     _model4.countDrink = 3;
     _model4.coffeeAt = now1;
     _model4.createdAt = now1;
     _model4.updatedAt = now1;
-    await insertCoffeeData(_model4, null, 0, []);
+    List<Chip> _tagList4 = _createTagSample(['サンプル']);
+    await insertCoffeeData(_model4, null, 0, _tagList4);
+  }
+
+  List<Chip> _createTagSample(List<String> textList) {
+    List<Chip> _tagList = [];
+
+    // 追加済みのチップは追加しない
+    for (String text in textList) {
+      List<String> _list =
+          _tagList.map((e) => (e.label as Text).data!).toList();
+      if (_list.contains(text)) {
+        return [];
+      }
+
+      int _keyNumber = 0;
+      var chipKey = Key('chip_key_$_keyNumber');
+      _keyNumber++;
+
+      _tagList.add(
+        Chip(
+          backgroundColor: Colors.purple[100],
+          key: chipKey,
+          label: Text('# ${text}'),
+        ),
+      );
+    }
+    return _tagList;
   }
 }

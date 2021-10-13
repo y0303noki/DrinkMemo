@@ -32,10 +32,6 @@ class CoffeeItem extends StatelessWidget {
             width: 1,
           ),
         ),
-        // borderRadius: BorderRadius.only(
-        //   topLeft: Radius.circular(20),
-        //   bottomLeft: Radius.circular(20),
-        // ),
       ),
       child: Material(
         color: Colors.white.withOpacity(0.9),
@@ -270,7 +266,12 @@ class CoffeeItem extends StatelessWidget {
     return Column(
       children: [
         Container(
-          child: Text(coffee.memo),
+          constraints: const BoxConstraints(maxWidth: 180),
+          child: Text(
+            coffee.memo,
+            textAlign: TextAlign.left,
+            overflow: TextOverflow.clip,
+          ),
         ),
       ],
     );
