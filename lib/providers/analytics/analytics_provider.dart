@@ -26,6 +26,10 @@ class AnalyticsProvider extends ChangeNotifier {
   int _homeCount = 0;
   get homeCount => _homeCount;
 
+  // 今月のドリンク数
+  int _drinkCountThisMonth = 0;
+  get drinkCountThisMonth => _drinkCountThisMonth;
+
   String _topCoffeeName = '';
   get topCoffeeName => _topCoffeeName;
 
@@ -87,7 +91,7 @@ class AnalyticsProvider extends ChangeNotifier {
     final Map<String, int> result = _coffeeNameRanking(_coffeeNameList);
     // 集計が無効
     if (result.isEmpty) {
-      print('2件以上同じコーヒーがないので無効');
+      debugPrint('2件以上同じコーヒーがないので無効');
       _topCoffeeName = '';
     }
 
@@ -105,6 +109,9 @@ class AnalyticsProvider extends ChangeNotifier {
       _topCoffeeName = _list.first;
       _topCoffeeCount = result[_topCoffeeName] as int;
     }
+
+    // 今月のドリンク総数
+    _drinkCountThisMonth = _coffeeModels.length;
 
     // ショップリスト
     List<CoffeeModel> _shopCoffees = _coffeeModels

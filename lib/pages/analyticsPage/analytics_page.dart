@@ -83,7 +83,8 @@ class AnalyticsPage extends StatelessWidget {
       } else {
         // 条件に合うデータがない場合
         return Container(
-          child: Text('データが揃えば表示されます'),
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Text('もう少しドリンクを記録してみましょう！'),
         );
       }
     }
@@ -238,8 +239,8 @@ class AnalyticsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         // _item(100, '合計'),
-                        _item(model.homeCount, 'おうち'),
-                        _item(model.shopCount, 'おみせ'),
+                        _item(model.drinkCountThisMonth, '総数'),
+                        // _item(model.shopCount, 'おみせ'),
                       ],
                     ),
                     Container(
