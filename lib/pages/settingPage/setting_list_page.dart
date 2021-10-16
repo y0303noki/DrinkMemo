@@ -164,7 +164,7 @@ class SettingListPage extends StatelessWidget {
               ),
               onTap: () async {
                 print("onTap called.");
-                await _launchURL();
+                await _launchURL(userData.userModel!.memebrId);
               },
               trailing: const Icon(Icons.arrow_forward_ios),
             ),
@@ -250,9 +250,10 @@ class SettingListPage extends StatelessWidget {
   }
 
   // お問い合わせ
-  _launchURL() async {
-    const url =
-        "https://docs.google.com/forms/d/e/1FAIpQLScCE2yV4JuW8LExcBbn9dtVdvQKoEboLk1BjkqTBgaSyFHNRg/viewform";
+  _launchURL(String memberId) async {
+    String url =
+        'https://docs.google.com/forms/d/e/1FAIpQLScCE2yV4JuW8LExcBbn9dtVdvQKoEboLk1BjkqTBgaSyFHNRg/viewform?usp=pp_url&entry.1218942056=$memberId';
+
     if (await canLaunch(url)) {
       await launch(url);
     } else {
