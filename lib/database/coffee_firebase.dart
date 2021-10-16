@@ -406,6 +406,60 @@ class CoffeeFirebase {
     }
   }
 
+  Future<List<CoffeeModel>> fetchCoffeeDatas30Days() async {
+    // ユーザーID
+    DateTime now = DateTime.now();
+    DateTime before30Days = now.add(
+      const Duration(days: -30),
+    );
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+    try {
+      final QuerySnapshot snapshots = await _firestore
+          .collection(coffeeCards)
+          .where('userId', isEqualTo: userId)
+          .where(
+            'coffeeAt',
+            isLessThanOrEqualTo: DateTime(now.year, now.month, now.day),
+            isGreaterThanOrEqualTo: DateTime(
+                before30Days.year, before30Days.month, before30Days.day),
+          )
+          // .orderBy('updatedAt', descending: true)
+          .limit(50)
+          .get();
+
+      final coffeeAllDatas = snapshots.docs
+          .map(
+            (doc) => CoffeeModel(
+              id: doc.data()['id'] ?? '',
+              name: doc.data()['name'] ?? '',
+              favorite: doc.data()['favorite'] ?? false,
+              cafeType: doc.data()['cafeType'] ?? 0,
+              shopName: doc.data()['shopName'] ?? '',
+              brandName: doc.data()['brandName'] ?? '',
+              isIce: doc.data()['isIce'] ?? false,
+              countDrink: doc.data()['countDrink'] ?? 1,
+              tagId: doc.data()['tagId'] ?? '',
+              memo: doc.data()['memo'] ?? '',
+              imageId: doc.data()['imageId'] ?? '',
+              coffeeAt: doc.data()['coffeeAt'].toDate(),
+              createdAt: doc.data()['createdAt'].toDate(),
+              updatedAt: doc.data()['updatedAt'].toDate(),
+            ),
+          )
+          .toList();
+      return coffeeAllDatas;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
   // お気に入りを変更
   Future<void> updateFavorite(String docId, bool isFavorite) async {
     // ドキュメント更新

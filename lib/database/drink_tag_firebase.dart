@@ -98,6 +98,50 @@ class DrinkTagFirebase {
     return coffeeImageAllDatas;
   }
 
+  // 複数のtagIdで取得
+  Future<List<DrinkTagModel>> fetchDrinkTagDatasByTagIdList(
+      List<String> tagIdList) async {
+    if (tagIdList.isEmpty) {
+      return [];
+    }
+    DateTime now = DateTime.now();
+    // ユーザーID
+    String userId = 'debugUserId_${now.toUtc()}';
+    final UserProvider _userProvider = UserProvider();
+    if (_userProvider.user != null && _userProvider.user!.uid != '') {
+      userId = _userProvider.user!.uid;
+    } else {
+      print('userId取得失敗');
+    }
+
+    final QuerySnapshot snapshots = await _firestore
+        .collection(drinkTags)
+        .where('tagId', whereIn: tagIdList)
+        .where('userId', isEqualTo: userId)
+        .orderBy('updatedAt', descending: true)
+        .limit(50)
+        .get();
+
+    if (snapshots.docs.isNotEmpty) {
+      print(snapshots.docs.first.id);
+    }
+
+    final coffeeImageAllDatas = snapshots.docs
+        .map(
+          (doc) => DrinkTagModel(
+            id: doc.data()['id'] ?? '',
+            userId: doc.data()['userId'] ?? '',
+            tagId: doc.data()['tagId'] ?? '',
+            tagName: doc.data()['tagName'] ?? '',
+            isDeleted: doc.data()['isDeleted'] ?? false,
+            createdAt: doc.data()['createdAt'].toDate(),
+            updatedAt: doc.data()['updatedAt'].toDate(),
+          ),
+        )
+        .toList();
+    return coffeeImageAllDatas;
+  }
+
   Future<List<DrinkTagModel>> fetchDrinkTagDatasByTagName(
       String tagName) async {
     DateTime now = DateTime.now();

@@ -3,28 +3,22 @@ import 'dart:collection';
 import 'package:coffee_project2/const/cafe_type.dart';
 import 'package:coffee_project2/database/coffee_firebase.dart';
 import 'package:coffee_project2/database/coffee_image_firebase.dart';
+import 'package:coffee_project2/database/drink_tag_firebase.dart';
 import 'package:coffee_project2/database/shop_or_bean_firebase.dart';
 import 'package:coffee_project2/model/album_model.dart';
 import 'package:coffee_project2/model/coffee_image_model.dart';
 import 'package:coffee_project2/model/coffee_model.dart';
+import 'package:coffee_project2/model/drink_tag_model.dart';
 import 'package:coffee_project2/model/shop_or_bean_model.dart';
 import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsProvider extends ChangeNotifier {
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
+  DrinkTagFirebase _drinkTagDb = DrinkTagFirebase();
 
-  int _selectedYear = -1;
-  get selectedYear => _selectedYear;
-
-  int _selectedMonth = -1;
-  get selectedMonth => _selectedMonth;
-
-  int _shopCount = 0;
-  get shopCount => _shopCount;
-
-  int _homeCount = 0;
-  get homeCount => _homeCount;
+  List<Map<String, Object>> _tagRank = [];
+  List<Map<String, Object>> get tagRank => _tagRank;
 
   // 今月のドリンク数
   int _drinkCountThisMonth = 0;
@@ -36,46 +30,20 @@ class AnalyticsProvider extends ChangeNotifier {
   int _topCoffeeCount = 0;
   get topCoffeeCount => _topCoffeeCount;
 
-  String _topShopName = '';
-  get topShopName => _topShopName;
-
-  void setSelectedMonth(int _month) {
-    _selectedMonth = _month;
-    notifyListeners();
-  }
-
-  void setSelectedYear(int _year) {
-    _selectedYear = _year;
-    notifyListeners();
-  }
-
   // 全て
   List<CoffeeModel> _coffeeModels = [];
   List<CoffeeModel> get coffeeModels => _coffeeModels;
 
   Future init(DateTime? searchAt) async {
-    _homeCount = 0;
-    _shopCount = 0;
     _topCoffeeName = '';
-    _topShopName = '';
     _topCoffeeCount = 0;
 
     DateTime now = DateTime.now();
-    if (searchAt == null) {
-      // 初期値は現在の月
-      _selectedMonth = now.month;
-      _selectedYear = now.year;
-    } else {
-      _selectedMonth = searchAt.month;
-      _selectedYear = searchAt.year;
-    }
+    // ドリンクの合計
 
-    // コーヒーの合計
-
-    DateTime startAt = DateTime(_selectedYear, _selectedMonth, 1);
-    DateTime endAt = DateTime(_selectedYear, _selectedMonth, 31);
-    _coffeeModels = await _coffeeDb.fetchCoffeeDatasByAt(startAt, endAt);
+    _coffeeModels = await _coffeeDb.fetchCoffeeDatas30Days();
     List<String> _coffeeNameList = [];
+    List<String> _tagIdList = [];
 
     // コーヒーランキングを計算
     _coffeeModels.forEach((element) {
@@ -86,56 +54,42 @@ class AnalyticsProvider extends ChangeNotifier {
       } else {
         _coffeeNameList.add(element.name);
       }
+
+      if (element.tagId.isNotEmpty) {
+        _tagIdList.add(element.tagId);
+      }
     });
 
+    List<DrinkTagModel> _tagDatas =
+        await _drinkTagDb.fetchDrinkTagDatasByTagIdList(_tagIdList);
+    List<String> _tagNames = _tagDatas.map((e) => e.tagName).toList();
+
     final Map<String, int> result = _coffeeNameRanking(_coffeeNameList);
+    final Map<String, int> tagResult = _tagNameRanking(_tagNames);
     // 集計が無効
     if (result.isEmpty) {
       debugPrint('2件以上同じコーヒーがないので無効');
       _topCoffeeName = '';
     }
 
-    // 集計処理
-    List<MapEntry<String, int>> mapEntries = result.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
+    if (tagResult.isEmpty) {
+      debugPrint('2件以上同じタグがないので無効');
+    }
 
-    result
-      ..clear()
-      ..addEntries(mapEntries);
-    // objectをlistにして先頭を取得する
     List<String> _list = result.keys.toList();
 
-    if (_list.isNotEmpty) {
-      _topCoffeeName = _list.first;
-      _topCoffeeCount = result[_topCoffeeName] as int;
+    List<Map<String, Object>> drinkRankingData = _createRank(result);
+    if (drinkRankingData.isNotEmpty) {
+      Map<String, Object> topDrink = drinkRankingData.first;
+      _topCoffeeName = topDrink['name'] as String;
+      _topCoffeeCount = topDrink['count'] as int;
     }
+
+    List<Map<String, Object>> tagRankingData = _createRank(tagResult);
+    _tagRank = tagRankingData;
 
     // 今月のドリンク総数
     _drinkCountThisMonth = _coffeeModels.length;
-
-    // ショップリスト
-    List<CoffeeModel> _shopCoffees = _coffeeModels
-        .where((element) => element.cafeType == CafeType.TYPE_SHOP_CAFE)
-        .toList();
-
-    _shopCoffees.forEach(
-      (element) {
-        _shopCount += element.countDrink;
-      },
-    );
-
-    // おうち
-    List<CoffeeModel> _homeCoffees = _coffeeModels
-        .where(
-          (element) => element.cafeType == CafeType.TYPE_HOME_CAFE,
-        )
-        .toList();
-
-    _homeCoffees.forEach(
-      (element) {
-        _homeCount += element.countDrink;
-      },
-    );
 
     // _homeCount = _homeCoffees.length;
     notifyListeners();
@@ -160,5 +114,47 @@ class AnalyticsProvider extends ChangeNotifier {
     } else {
       return Map<String, int>();
     }
+  }
+
+  Map<String, int> _tagNameRanking(List<String> _tagNames) {
+    bool isValid = false;
+    Map<String, int> _result = Map<String, int>();
+
+    for (String name in _tagNames) {
+      String lowerName = name.toLowerCase();
+      if (!_result.containsKey(lowerName)) {
+        _result[lowerName] = 1;
+      } else {
+        isValid = true;
+        _result[lowerName] = _result[lowerName]! + 1;
+      }
+    }
+    if (isValid) {
+      return _result;
+    } else {
+      return Map<String, int>();
+    }
+  }
+
+  // [名前、個数]のマップで上位からリストにする
+  List<Map<String, Object>> _createRank(Map<String, int> data) {
+    // 集計処理
+    List<MapEntry<String, int>> mapEntries = data.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    data
+      ..clear()
+      ..addEntries(mapEntries);
+    // objectをlistにして先頭を取得する
+    List<String> _keyList = data.keys.toList();
+    List<int> _valueList = data.values.toList();
+
+    List<Map<String, Object>> result = [];
+    for (int i = 0; i < _keyList.length; i++) {
+      var temp = {'name': _keyList[i], 'count': _valueList[i]};
+      result.add(temp);
+    }
+
+    return result;
   }
 }
