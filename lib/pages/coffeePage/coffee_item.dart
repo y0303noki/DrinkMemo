@@ -8,6 +8,7 @@ import 'package:coffee_project2/providers/coffee/coffee_list_provider.dart';
 import 'package:coffee_project2/providers/coffee/coffee_provider.dart';
 import 'package:coffee_project2/utils/color_utility.dart';
 import 'package:coffee_project2/utils/date_utility.dart';
+import 'package:coffee_project2/widgets/common_widget.dart';
 import 'package:coffee_project2/widgets/modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -279,67 +280,86 @@ class CoffeeItem extends StatelessWidget {
 
   // 遅延で画像を読み込む
   Widget _setCofeeImage(CoffeeProvider coffeeData, CoffeeModel coffee) {
-    return FutureBuilder(
-      // future属性で非同期処理を書く
-      future: coffeeData.findCoffeeImage(coffee.imageId),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        // 取得完了するまで別のWidgetを表示する
-        if (!snapshot.hasData) {
+    // 読み込みが不要なイメージ画像はすぐ表示する
+    if (coffee.imageId!.isEmpty) {
+      Widget imageSample =
+          CommonWidget().imageSample1Widget(100, 100, -1, true);
+      switch (coffee.imageSampleType) {
+        case 1:
+          imageSample = CommonWidget().imageSample1Widget(100, 100, -1, false);
+          break;
+        case 2:
+          imageSample = CommonWidget().imageSample2Widget(100, 100, -1, false);
+          break;
+
+        default:
+          imageSample = CommonWidget().imageSample1Widget(100, 100, -1, false);
+          break;
+      }
+      return imageSample;
+    } else {
+      return FutureBuilder(
+        // future属性で非同期処理を書く
+        future: coffeeData.findCoffeeImage(coffee.imageId),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          // 取得完了するまで別のWidgetを表示する
+          if (!snapshot.hasData) {
+            return Container(
+              color: Colors.grey,
+              width: 100,
+              height: 100,
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            String url = snapshot.data;
+            if (url.isEmpty) {
+              // noimage画像
+              return Container(
+                width: 100,
+                height: 100,
+                child: Image.asset(
+                  'asset/images/noimage.png',
+                  fit: BoxFit.cover,
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 3,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              );
+            } else {
+              return Container(
+                width: 100.0,
+                height: 100.0,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 3,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(7),
+                  child: Image.network(
+                    url,
+                    width: 100.0,
+                    height: 100.0,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            }
+          }
           return Container(
             color: Colors.grey,
             width: 100,
             height: 100,
           );
-        }
-
-        if (snapshot.connectionState == ConnectionState.done) {
-          String url = snapshot.data;
-          if (url.isEmpty) {
-            // noimage画像
-            return Container(
-              width: 100,
-              height: 100,
-              child: Image.asset(
-                'asset/images/noimage.png',
-                fit: BoxFit.cover,
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 3,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            );
-          } else {
-            return Container(
-              width: 100.0,
-              height: 100.0,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
-                  width: 3,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(7),
-                child: Image.network(
-                  url,
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          }
-        }
-        return Container(
-          color: Colors.grey,
-          width: 100,
-          height: 100,
-        );
-      },
-    );
+        },
+      );
+    }
   }
 }

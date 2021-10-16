@@ -9,6 +9,7 @@ class CoffeeModel {
   int countDrink = 1;
   String tagId;
   List<String>? tagNameList;
+  int imageSampleType = 0; // サンプル画像を指定した場合 0:なし
   String memo;
   String? imageId;
   String imageUrl;
@@ -26,6 +27,7 @@ class CoffeeModel {
       this.countDrink = 1,
       this.tagId = '',
       this.tagNameList,
+      this.imageSampleType = 0,
       this.memo = '',
       this.imageId,
       this.imageUrl = '',

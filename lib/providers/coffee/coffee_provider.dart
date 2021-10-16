@@ -36,6 +36,19 @@ class CoffeeProvider extends ChangeNotifier {
   // True:画像が変更 False:画像が変更してない
   bool isImageChanged = false;
 
+  // イメージ画像：サンプル
+  // 0,1,2,3
+  int _imageSampleType = 0;
+  int get imageSampleType => _imageSampleType;
+  set imageSampleType(int type) {
+    _imageSampleType = type;
+  }
+
+  void setImageSampleType(int type) {
+    _imageSampleType = type;
+    notifyListeners();
+  }
+
   // コーヒー日付
   String labelCoffeeAt = '';
 
@@ -219,6 +232,25 @@ class CoffeeProvider extends ChangeNotifier {
     imageFile = null;
     imageId = '';
     imageType = 0;
+    notifyListeners();
+  }
+
+  // サンプル画像、カメラorギャラリー画像を消す
+  // マイアルバムから画像を選択したときに使う
+  void resetFileAndSample() {
+    imageFile = null;
+    imageType = 0;
+    imageSampleType = 0;
+    notifyListeners();
+  }
+
+  // サンプル画像、マイアルバム画像を消す
+  // カメラかギャラリーから画像を選択した時に使う
+  void resetImageIdAndSample() {
+    imageType = 0;
+    imageId = '';
+    imageUrl = '';
+    imageSampleType = 0;
     notifyListeners();
   }
 
