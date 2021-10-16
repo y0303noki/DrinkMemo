@@ -78,10 +78,6 @@ class DrinkTagFirebase {
         .limit(20)
         .get();
 
-    if (snapshots.docs.isNotEmpty) {
-      print(snapshots.docs.first.id);
-    }
-
     final coffeeImageAllDatas = snapshots.docs
         .map(
           (doc) => DrinkTagModel(
@@ -122,10 +118,6 @@ class DrinkTagFirebase {
         .limit(50)
         .get();
 
-    if (snapshots.docs.isNotEmpty) {
-      print(snapshots.docs.first.id);
-    }
-
     final coffeeImageAllDatas = snapshots.docs
         .map(
           (doc) => DrinkTagModel(
@@ -161,10 +153,6 @@ class DrinkTagFirebase {
         .orderBy('updatedAt', descending: true)
         .limit(20)
         .get();
-
-    if (snapshots.docs.isNotEmpty) {
-      print(snapshots.docs.first.id);
-    }
 
     final coffeeImageAllDatas = snapshots.docs
         .map(

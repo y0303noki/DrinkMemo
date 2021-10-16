@@ -31,9 +31,7 @@ class ShopOrBeanFirebase {
           ),
         )
         .toList();
-    if (brandAllDatas.isNotEmpty) {
-      print(brandAllDatas.length);
-    }
+
     return brandAllDatas;
   }
 
@@ -62,9 +60,7 @@ class ShopOrBeanFirebase {
           ),
         )
         .toList();
-    if (brandAllDatas.isNotEmpty) {
-      print(brandAllDatas.length);
-    }
+
     return brandAllDatas;
   }
 
