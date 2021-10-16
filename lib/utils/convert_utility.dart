@@ -29,7 +29,6 @@ class ConvertUtility {
   }
 
   void _deleteChip(Key chipKey, List<Chip> chipList) {
-    print(chipList);
     chipList.removeWhere((Widget w) => w.key == chipKey);
     // タグは3個まで
     if (chipList.length < 3) {

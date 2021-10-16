@@ -1,3 +1,4 @@
+import 'package:coffee_project2/const/common_style.dart';
 import 'package:coffee_project2/pages/settingPage/developer_page.dart';
 import 'package:coffee_project2/providers/analytics/analytics_provider.dart';
 import 'package:coffee_project2/providers/bottom_navigation/bottom_navigation_provider.dart';
@@ -8,31 +9,12 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class AnalyticsPage extends StatelessWidget {
-  List<String> _yearList = [];
-  List<String> _monthList = [];
-
-  init() {
-    print('init');
-    DateTime now = DateTime.now();
-    int year = now.year;
-    for (int index = 0; index < 2; index++) {
-      int temp = year - index;
-      _yearList.add(temp.toString());
-    }
-
-    int month = now.month;
-    for (int index = 1; index <= 12; index++) {
-      _monthList.add(index.toString());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final AnalyticsProvider analyticsDatas =
         Provider.of<AnalyticsProvider>(context, listen: false);
     final Size size = MediaQuery.of(context).size;
 
-    init();
     analyticsDatas.init(null);
 
     // 各項目
@@ -62,7 +44,7 @@ class AnalyticsPage extends StatelessWidget {
     Widget _topCoffeeItem(AnalyticsProvider model) {
       if (model.topCoffeeName != '' && model.topCoffeeCount > 0) {
         String description =
-            '${model.selectedMonth.toString()}月は${model.topCoffeeName}を${model.topCoffeeCount}杯飲みました';
+            '最近は${model.topCoffeeName}を${model.topCoffeeCount}杯飲みました';
         return Container(
           child: Column(
             children: [
@@ -83,7 +65,129 @@ class AnalyticsPage extends StatelessWidget {
       } else {
         // 条件に合うデータがない場合
         return Container(
-          child: Text('データが揃えば表示されます'),
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Text('もう少しドリンクを記録してみましょう！'),
+        );
+      }
+    }
+
+    Widget _topTagName(AnalyticsProvider model) {
+      List<Map<String, Object>> _tagRank = model.tagRank;
+      if (_tagRank.isNotEmpty) {
+        final String firstTagName = _tagRank.first['name'] as String;
+        final int firstTagCount = _tagRank.first['count'] as int;
+
+        final String secondTagName =
+            _tagRank.length > 1 ? _tagRank[1]['name'] as String : '';
+        final int secondTagCount =
+            _tagRank.length > 1 ? _tagRank[1]['count'] as int : -1;
+
+        final String thirdTagName =
+            _tagRank.length > 2 ? _tagRank[2]['name'] as String : '';
+        final int thirdTagCount =
+            _tagRank.length > 2 ? _tagRank[2]['count'] as int : -1;
+
+        return Container(
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    decoration: BoxDecoration(
+                      color: CommonStyle.TAG_COLOR,
+                      border: Border.all(
+                        color: CommonStyle.TAG_COLOR,
+                      ),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Text(
+                      '#$firstTagName',
+                      style: const TextStyle(
+                        fontSize: 25,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                    child: Text('${firstTagCount.toString()}回'),
+                  ),
+                ],
+              ),
+              secondTagName.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(30, 5, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          decoration: BoxDecoration(
+                            color: CommonStyle.TAG_COLOR,
+                            border: Border.all(
+                              color: CommonStyle.TAG_COLOR,
+                            ),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            '#$secondTagName',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                          child: Text('${secondTagCount.toString()}回'),
+                        ),
+                      ],
+                    )
+                  : Container(),
+              thirdTagName.isNotEmpty
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(30, 5, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                          decoration: BoxDecoration(
+                            color: CommonStyle.TAG_COLOR,
+                            border: Border.all(
+                              color: CommonStyle.TAG_COLOR,
+                            ),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Text(
+                            '#$thirdTagName',
+                            style: const TextStyle(
+                              fontSize: 18,
+                              // fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 5, 30, 0),
+                          child: Text('${thirdTagCount.toString()}回'),
+                        ),
+                      ],
+                    )
+                  : Container(),
+              // Text(description),
+            ],
+          ),
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+        );
+      } else {
+        // 条件に合うデータがない場合
+        return Container(
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: Text('もう少しドリンクを記録してみましょう！'),
         );
       }
     }
@@ -110,172 +214,141 @@ class AnalyticsPage extends StatelessWidget {
           backgroundColor: Colors.white,
         ),
         body: Consumer<AnalyticsProvider>(builder: (ctx, model, _) {
-          return Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
-                width: double.infinity,
-                constraints: const BoxConstraints(
-                  minHeight: 50,
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+                  width: double.infinity,
+                  constraints: const BoxConstraints(
+                    minHeight: 50,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[100],
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(child: Text('今までに投稿したドリンクを分析します。')),
                 ),
-                decoration: BoxDecoration(
-                  color: Colors.blue[100],
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(child: Text('今までに投稿したドリンクを分析します。')),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        child: DropdownButton<String>(
-                          value: model.selectedYear.toString(),
-                          onChanged: (String? selectYear) {
-                            if (selectYear == null) {
-                              return;
-                            }
-                            model.setSelectedYear(int.parse(selectYear));
-                            DateTime now = DateTime.now();
-                            model.init(
-                                DateTime(int.parse(selectYear), now.month, 1));
-                          },
-                          items: _yearList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                Container(
+                  // height: 400,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.lime[200],
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        offset: Offset(10, 10),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        blurRadius: 20,
                       ),
-                      Container(
-                        child: Text('年'),
-                      )
+                      BoxShadow(
+                        offset: Offset(-10, -10),
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        blurRadius: 20,
+                      ),
                     ],
                   ),
-                  Row(
+                  margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                  child: Column(
                     children: [
-                      Container(
-                        child: DropdownButton<String>(
-                          value: model.selectedMonth.toString(),
-                          onChanged: (String? selectedMonth) {
-                            if (selectedMonth == null) {
-                              return;
-                            }
-                            model.setSelectedMonth(int.parse(selectedMonth));
-                            DateTime now = DateTime.now();
-                            model.init(DateTime(
-                                now.year, int.parse(selectedMonth), 1));
-                          },
-                          items: _monthList
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 30,
+                              child: Icon(Icons.analytics),
+                            ),
+                          ),
+                          const Text(
+                            '30',
+                            style: TextStyle(
+                              fontSize: 30,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const Text(
+                            '日間の統計',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          // _item(100, '合計'),
+                          _item(model.drinkCountThisMonth, 'ドリンク総数'),
+                          _item(model.tagRank.length, 'タグの種類'),
+                          // _item(model.shopCount, 'おみせ'),
+                        ],
                       ),
                       Container(
-                        child: Text('月'),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                // height: 400,
-                width: size.width,
-                decoration: BoxDecoration(
-                  color: Colors.lime[200],
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      offset: Offset(10, 10),
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      blurRadius: 20,
-                    ),
-                    BoxShadow(
-                      offset: Offset(-10, -10),
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      blurRadius: 20,
-                    ),
-                  ],
-                ),
-                margin: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 30,
-                            child: Icon(Icons.analytics),
-                          ),
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: const Divider(
+                          color: Colors.black,
+                          thickness: 1.0,
                         ),
-                        Text(
-                          model.selectedMonth.toString(),
-                          style: const TextStyle(
-                            fontSize: 40,
-                            color: Colors.black,
-                          ),
-                        ),
-                        const Text(
-                          '月の統計',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        // _item(100, '合計'),
-                        _item(model.homeCount, 'おうち'),
-                        _item(model.shopCount, 'おみせ'),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: const Divider(
-                        color: Colors.black,
-                        thickness: 1.0,
                       ),
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                          child: const CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 30,
-                            child: Icon(Icons.local_drink),
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 30,
+                              child: Icon(Icons.local_drink),
+                            ),
                           ),
-                        ),
-                        const Text(
-                          'ベストドリンク',
-                          style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.black,
+                          const Text(
+                            'ベストドリンク',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    _topCoffeeItem(model),
-                    // _defaultItem('キリマンジャロ', '最も多いブランド'),
-                    // _defaultItem('スタバ', '最も多いカフェ'),
-                  ],
+                      _topCoffeeItem(model),
+                      // _defaultItem('キリマンジャロ', '最も多いブランド'),
+                      // _defaultItem('スタバ', '最も多いカフェ'),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: const Divider(
+                          color: Colors.black,
+                          thickness: 1.0,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            child: const CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 30,
+                              child: Icon(Icons.tag),
+                            ),
+                          ),
+                          const Text(
+                            'タグ',
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                      _topTagName(model),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         }),
       ),

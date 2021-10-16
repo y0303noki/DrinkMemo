@@ -11,9 +11,7 @@ class AlbumList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final albumsData = Provider.of<AlbumListProvider>(context, listen: false);
     return Consumer<AlbumListProvider>(builder: (ctx, model, _) {
-      print(model.albumModels.length);
       return RefreshIndicator(
         // 下に引っ張って更新
         onRefresh: () async {
