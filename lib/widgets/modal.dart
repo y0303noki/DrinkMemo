@@ -1154,7 +1154,7 @@ class Modal {
                                                                 ),
                                                                 onPressed: () {
                                                                   showModalBottomSheet<
-                                                                      void>(
+                                                                      String?>(
                                                                     shape:
                                                                         const RoundedRectangleBorder(
                                                                       borderRadius:
@@ -1170,91 +1170,112 @@ class Modal {
                                                                             minHeight:
                                                                                 100,
                                                                             maxHeight:
-                                                                                600),
+                                                                                300),
                                                                         child:
-                                                                            Row(
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
                                                                           children: [
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                coffeeData.setImageSampleType(1);
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Container(
-                                                                                    width: 100,
-                                                                                    height: 100,
-                                                                                    child: Image.asset(
-                                                                                      'asset/images/noimage.png',
-                                                                                      fit: BoxFit.cover,
-                                                                                    ),
-                                                                                  ),
-                                                                                  Container(
-                                                                                    child: Text('サンプル1'),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                coffeeData.setImageSampleType(2);
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Container(
-                                                                                    width: 100,
-                                                                                    height: 100,
-                                                                                    child: Container(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: Image.asset(
-                                                                                        'asset/images/coffeeSample.png',
-                                                                                        fit: BoxFit.cover,
+                                                                            Text('利用するイラストを選択してください。'),
+                                                                            Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                              children: [
+                                                                                GestureDetector(
+                                                                                  onTap: () {
+                                                                                    coffeeData.setImageSampleType(1);
+                                                                                    Navigator.of(context).pop('SELECTED');
+                                                                                  },
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        width: 100,
+                                                                                        height: 100,
+                                                                                        child: Image.asset(
+                                                                                          'asset/images/noimage.png',
+                                                                                          fit: BoxFit.cover,
+                                                                                        ),
                                                                                       ),
-                                                                                    ),
+                                                                                      Container(
+                                                                                        child: Text('サンプル1'),
+                                                                                      )
+                                                                                    ],
                                                                                   ),
-                                                                                  Container(
-                                                                                    child: Text('サンプル2'),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                coffeeData.setImageSampleType(3);
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              child: Column(
-                                                                                children: [
-                                                                                  Container(
-                                                                                    width: 100,
-                                                                                    height: 100,
-                                                                                    child: Container(
-                                                                                      padding: const EdgeInsets.all(8.0),
-                                                                                      child: Image.asset(
-                                                                                        'asset/images/takeoutSample.png',
-                                                                                        fit: BoxFit.cover,
+                                                                                ),
+                                                                                GestureDetector(
+                                                                                  onTap: () {
+                                                                                    coffeeData.setImageSampleType(2);
+                                                                                    Navigator.of(context).pop('SELECTED');
+                                                                                  },
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        width: 100,
+                                                                                        height: 100,
+                                                                                        child: Container(
+                                                                                          padding: const EdgeInsets.all(8.0),
+                                                                                          child: Image.asset(
+                                                                                            'asset/images/coffeeSample.png',
+                                                                                            fit: BoxFit.cover,
+                                                                                          ),
+                                                                                        ),
                                                                                       ),
-                                                                                    ),
+                                                                                      Container(
+                                                                                        child: Text('サンプル2'),
+                                                                                      )
+                                                                                    ],
                                                                                   ),
-                                                                                  Container(
-                                                                                    child: Text('サンプル3'),
-                                                                                  )
-                                                                                ],
-                                                                              ),
+                                                                                ),
+                                                                                GestureDetector(
+                                                                                  onTap: () {
+                                                                                    coffeeData.setImageSampleType(3);
+                                                                                    Navigator.of(context).pop('SELECTED');
+                                                                                  },
+                                                                                  child: Column(
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        width: 100,
+                                                                                        height: 100,
+                                                                                        child: Container(
+                                                                                          padding: const EdgeInsets.all(8.0),
+                                                                                          child: Image.asset(
+                                                                                            'asset/images/takeoutSample.png',
+                                                                                            fit: BoxFit.cover,
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                      Container(
+                                                                                        child: Text('サンプル3'),
+                                                                                      )
+                                                                                    ],
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                            Container(
+                                                                              child: TextButton(
+                                                                                  onPressed: () {
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  child: Text('キャンセル')),
                                                                             ),
                                                                           ],
                                                                         ),
                                                                       );
                                                                     },
                                                                   ).then(
-                                                                      (value) {
-                                                                    coffeeData
-                                                                        .resetImageUrlAndFile();
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop();
-                                                                  });
+                                                                    (value) {
+                                                                      // イラストを選択しなかったときは1つ前に戻るだけ
+                                                                      if (value !=
+                                                                              null &&
+                                                                          value ==
+                                                                              'SELECTED') {
+                                                                        coffeeData
+                                                                            .resetImageUrlAndFile();
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      }
+                                                                    },
+                                                                  );
                                                                 },
                                                               ),
                                                             ),
