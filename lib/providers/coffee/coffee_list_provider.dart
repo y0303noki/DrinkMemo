@@ -68,7 +68,7 @@ class CoffeeListProvider extends ChangeNotifier {
   }
 
   void removeFilterList(String filter) {
-    _filterList.remove(filter);
+    _filterList = _filterList.where((element) => element != filter).toList();
   }
 
   CoffeeFirebase _coffeeDb = CoffeeFirebase();
@@ -111,6 +111,15 @@ class CoffeeListProvider extends ChangeNotifier {
             .toList();
       }
     }
+
+    for (String filter in _filterList) {
+      if (filter == 'FAVORITE') {
+        _viewCoffeeModels = _viewCoffeeModels
+            .where((coffeeModel) => coffeeModel.favorite)
+            .toList();
+      }
+    }
+
     notifyListeners();
   }
 
@@ -158,20 +167,6 @@ class CoffeeListProvider extends ChangeNotifier {
             .where((coffeeModel) => coffeeModel.favorite)
             .toList();
       }
-
-      if (filter == 'SHOP') {
-        _tempCoffeeModels = _tempCoffeeModels
-            .where((coffeeModel) =>
-                coffeeModel.cafeType == CafeType.TYPE_SHOP_CAFE)
-            .toList();
-      }
-
-      if (filter == 'BEAN') {
-        _tempCoffeeModels = _tempCoffeeModels
-            .where((coffeeModel) =>
-                coffeeModel.cafeType == CafeType.TYPE_HOME_CAFE)
-            .toList();
-      }
     }
     _viewCoffeeModels = _tempCoffeeModels;
     notifyListeners();
@@ -209,6 +204,7 @@ class CoffeeListProvider extends ChangeNotifier {
   }
 
   Future findCoffeeDatas() async {
+    _isFavoriteFilter = false;
     _coffeeModels = await _coffeeDb.fetchCoffeeDatas();
     _viewCoffeeModels = _coffeeModels;
     notifyListeners();

@@ -46,7 +46,7 @@ class CoffeeListPage extends StatelessWidget {
                       coffeesData.coffeeModels.isNotEmpty) {
                     coffeesData.changeSearchKeyword(_termTrimed);
                   } else {
-                    coffeesData.refreshviewCoffeeModels();
+                    coffeesData.refreshFilterCoffeeModels();
                   }
                 },
               ),
