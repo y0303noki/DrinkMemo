@@ -291,6 +291,9 @@ class CoffeeItem extends StatelessWidget {
         case 2:
           imageSample = CommonWidget().imageSample2Widget(100, 100, -1, false);
           break;
+        case 3:
+          imageSample = CommonWidget().imageSample3Widget(100, 100, -1, false);
+          break;
 
         default:
           imageSample = CommonWidget().imageSample1Widget(100, 100, -1, false);

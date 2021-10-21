@@ -1355,7 +1355,7 @@ class Modal {
                                             coffeeData.resetImageUrlAndFile();
                                           },
                                           child: const Text(
-                                            '画像を解除する',
+                                            '画像を削除する',
                                             style: TextStyle(
                                               color: Colors.red,
                                             ),
@@ -1558,27 +1558,32 @@ class Modal {
     );
   }
 
+  // イラストで画像を選択した時
+  Widget setIllustImage(int imageSampleType) {
+    Widget imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
+    switch (imageSampleType) {
+      case 1:
+        imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
+        break;
+      case 2:
+        imageSample = CommonWidget().imageSample2Widget(100, 100, -1);
+        break;
+      case 3:
+        imageSample = CommonWidget().imageSample3Widget(100, 100, -1);
+        break;
+
+      default:
+        imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
+    }
+    return imageSample;
+  }
+
   Widget setModalImage(CoffeeModel? coffeeModel, CoffeeProvider coffeeData) {
     if (coffeeModel != null) {
       // 更新
       // 画像未設定
       if (coffeeData.imageUrl == '' && coffeeData.imageFile == null) {
-        Widget imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
-        switch (coffeeData.imageSampleType) {
-          case 1:
-            imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
-            break;
-          case 2:
-            imageSample = CommonWidget().imageSample2Widget(100, 100, -1);
-            break;
-          case 3:
-            imageSample = CommonWidget().imageSample3Widget(100, 100, -1);
-            break;
-
-          default:
-            imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
-        }
-        return imageSample;
+        return setIllustImage(coffeeData.imageSampleType);
       }
       if (coffeeData.imageFile != null) {
         // 画像変更
@@ -1607,19 +1612,7 @@ class Modal {
       if (coffeeData.imageUrl == '' &&
           coffeeData.imageFile == null &&
           coffeeData.imageSampleType > 0) {
-        Widget imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
-        switch (coffeeData.imageSampleType) {
-          case 1:
-            imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
-            break;
-          case 2:
-            imageSample = CommonWidget().imageSample2Widget(100, 100, -1);
-            break;
-
-          default:
-            imageSample = CommonWidget().imageSample1Widget(100, 100, -1);
-        }
-        return imageSample;
+        return setIllustImage(coffeeData.imageSampleType);
       }
       // 画像から
       if (coffeeData.imageUrl != '') {
