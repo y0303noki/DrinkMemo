@@ -89,11 +89,10 @@ class CoffeeItem extends StatelessWidget {
                                   ),
                                   child: Center(
                                       child: Text(
-                                    coffee.countDrink.toString(),
+                                    '✖︎${coffee.countDrink.toString()}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
-                                      color: Colors.black,
                                     ),
                                   )),
                                 )
