@@ -126,6 +126,7 @@ class CoffeeFirebase {
     addObject['isIce'] = coffeeModel.isIce;
     addObject['countDrink'] = coffeeModel.countDrink;
     addObject['tagId'] = tagId;
+    addObject['imageSampleType'] = coffeeModel.imageSampleType;
     addObject['memo'] = coffeeModel.memo;
     addObject['imageId'] = _imageId;
     addObject['isDeleted'] = false;
@@ -260,6 +261,7 @@ class CoffeeFirebase {
     updateData['isIce'] = coffeeModel.isIce;
     updateData['countDrink'] = coffeeModel.countDrink;
     updateData['tagId'] = tagId;
+    updateData['imageSampleType'] = coffeeModel.imageSampleType;
     updateData['memo'] = coffeeModel.memo;
     updateData['shopName'] = coffeeModel.shopName;
     updateData['brandName'] = coffeeModel.brandName;
@@ -343,6 +345,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            imageSampleType: doc.data()['imageSampleType'] ?? 0,
             memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
@@ -391,6 +394,7 @@ class CoffeeFirebase {
               isIce: doc.data()['isIce'] ?? false,
               countDrink: doc.data()['countDrink'] ?? 1,
               tagId: doc.data()['tagId'] ?? '',
+              imageSampleType: doc.data()['imageSampleType'] ?? 0,
               memo: doc.data()['memo'] ?? '',
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
@@ -445,6 +449,7 @@ class CoffeeFirebase {
               isIce: doc.data()['isIce'] ?? false,
               countDrink: doc.data()['countDrink'] ?? 1,
               tagId: doc.data()['tagId'] ?? '',
+              imageSampleType: doc.data()['imageSampleType'] ?? 0,
               memo: doc.data()['memo'] ?? '',
               imageId: doc.data()['imageId'] ?? '',
               coffeeAt: doc.data()['coffeeAt'].toDate(),
@@ -510,6 +515,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            imageSampleType: doc.data()['imageSampleType'] ?? 0,
             memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
@@ -557,6 +563,7 @@ class CoffeeFirebase {
             isIce: doc.data()['isIce'] ?? false,
             countDrink: doc.data()['countDrink'] ?? 1,
             tagId: doc.data()['tagId'] ?? '',
+            imageSampleType: doc.data()['imageSampleType'] ?? 0,
             memo: doc.data()['memo'] ?? '',
             imageId: doc.data()['imageId'] ?? '',
             coffeeAt: doc.data()['coffeeAt'].toDate(),
@@ -570,7 +577,8 @@ class CoffeeFirebase {
 
   // アプリを始めて起動したときにチュートリアルもかねて追加する
   Future<void> createSample() async {
-    DateTime now1 = DateTime.now();
+    DateTime now = DateTime.now();
+    DateTime now1 = now.add(const Duration(minutes: -60));
     DateTime now2 = now1.add(const Duration(minutes: 5));
     DateTime now3 = now2.add(const Duration(minutes: 5));
     DateTime now4 = now3.add(const Duration(minutes: 5));
@@ -578,6 +586,7 @@ class CoffeeFirebase {
     CoffeeModel _model1 = CoffeeModel();
     _model1.name = '+ボタンで登録';
     _model1.memo = '右下の+ボタンを押してドリンクを登録できます';
+    _model1.imageSampleType = 1;
     _model1.coffeeAt = now4;
     _model1.createdAt = now4;
     _model1.updatedAt = now4;
@@ -589,6 +598,7 @@ class CoffeeFirebase {
     CoffeeModel _model2 = CoffeeModel();
     _model2.name = 'タップで更新';
     _model2.memo = '登録したドリンクはタップすると編集できます';
+    _model2.imageSampleType = 2;
     _model2.coffeeAt = now3;
     _model2.createdAt = now3;
     _model2.updatedAt = now3;
@@ -600,6 +610,7 @@ class CoffeeFirebase {
     CoffeeModel _model3 = CoffeeModel();
     _model3.name = 'タグ';
     _model3.memo = 'タグを追加して整理することができます';
+    _model3.imageSampleType = 3;
     _model3.coffeeAt = now2;
     _model3.createdAt = now2;
     _model3.updatedAt = now2;
@@ -611,6 +622,7 @@ class CoffeeFirebase {
     CoffeeModel _model4 = CoffeeModel();
     _model4.name = '同じドリンクの杯数';
     _model4.memo = '同じドリンクは杯数を変更することもできます';
+    _model4.imageSampleType = 1;
     _model4.countDrink = 3;
     _model4.coffeeAt = now1;
     _model4.createdAt = now1;
