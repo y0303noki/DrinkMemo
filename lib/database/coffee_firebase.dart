@@ -355,6 +355,9 @@ class CoffeeFirebase {
         )
         .toList();
 
+    // クライアント側でcoffeeAtの降順に並び替え
+    coffeeAllDatas.sort((a, b) => b.coffeeAt!.compareTo(a.coffeeAt!));
+
     return coffeeAllDatas;
   }
 
