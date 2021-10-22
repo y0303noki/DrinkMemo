@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class CoffeeFirebase {
   // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -316,6 +317,19 @@ class CoffeeFirebase {
 
   Future<List<CoffeeModel>> fetchCoffeeDatas() async {
     print('fetch coffee');
+
+    // テスト用
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    String appName = packageInfo.appName;
+    String packageName = packageInfo.packageName;
+    String version = packageInfo.version;
+    String buildNumber = packageInfo.buildNumber;
+    print(appName);
+    print(packageName);
+    print(version);
+    print(buildNumber);
+
     // ユーザーID
     DateTime now = DateTime.now();
     String userId = 'debugUserId_${now.toUtc()}';

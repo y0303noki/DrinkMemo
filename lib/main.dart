@@ -15,6 +15,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 // void main() {
 //   runApp(const MyApp());
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
     // ビルドしている環境を表示
     const flavor = String.fromEnvironment('FLAVOR');
     print(flavor);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
