@@ -33,6 +33,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // ビルドしている環境を表示
+    const flavor = String.fromEnvironment('FLAVOR');
+    print(flavor);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
