@@ -45,3 +45,4 @@ app.*.map.json
 
 ExportOptions.plist
 ios/Runner.xcodeproj/project.pbxproj
+**/ios/Flutter/DartDefines.xcconfig
