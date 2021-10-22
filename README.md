@@ -38,3 +38,8 @@ flutter build ios --dart-define=FLAVOR=stg
 # 本番環境(production)
 
 flutter build ios --dart-define=FLAVOR=prod
+
+### アプリのアイコンを変更するときに必要な作業
+
+asset/appIcons のファイルを変更する
+flutter pub run flutter_launcher_icons:main
