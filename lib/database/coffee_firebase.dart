@@ -315,7 +315,11 @@ class CoffeeFirebase {
   }
 
   Future<List<CoffeeModel>> fetchCoffeeDatas() async {
+    // 環境を出力
+    const flavor = String.fromEnvironment('FLAVOR');
+    print(flavor);
     print('fetch coffee');
+
     // ユーザーID
     DateTime now = DateTime.now();
     String userId = 'debugUserId_${now.toUtc()}';
@@ -416,6 +420,8 @@ class CoffeeFirebase {
   Future<List<CoffeeModel>> fetchCoffeeDatas30Days() async {
     // ユーザーID
     DateTime now = DateTime.now();
+    // 当日のデータも集計したいので範囲を翌日までにする
+    DateTime nowAdd1Day = now.add(const Duration(days: 1));
     DateTime before30Days = now.add(
       const Duration(days: -30),
     );
@@ -432,7 +438,8 @@ class CoffeeFirebase {
           .where('userId', isEqualTo: userId)
           .where(
             'coffeeAt',
-            isLessThanOrEqualTo: DateTime(now.year, now.month, now.day),
+            isLessThanOrEqualTo:
+                DateTime(nowAdd1Day.year, nowAdd1Day.month, nowAdd1Day.day),
             isGreaterThanOrEqualTo: DateTime(
                 before30Days.year, before30Days.month, before30Days.day),
           )
