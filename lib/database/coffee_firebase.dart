@@ -315,7 +315,11 @@ class CoffeeFirebase {
   }
 
   Future<List<CoffeeModel>> fetchCoffeeDatas() async {
+    // 環境を出力
+    const flavor = String.fromEnvironment('FLAVOR');
+    print(flavor);
     print('fetch coffee');
+
     // ユーザーID
     DateTime now = DateTime.now();
     String userId = 'debugUserId_${now.toUtc()}';
