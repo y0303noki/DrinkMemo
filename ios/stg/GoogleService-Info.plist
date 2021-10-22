@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>911394718792-jb1o986j7puha7fmmvrbb5cfhccktvu8.apps.googleusercontent.com</string>
+	<string>1035756982849-1kciu4r881luv66109htsn4g10tjs9kl.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.911394718792-jb1o986j7puha7fmmvrbb5cfhccktvu8</string>
+	<string>com.googleusercontent.apps.1035756982849-1kciu4r881luv66109htsn4g10tjs9kl</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCQ8x8cz2HJ7K2ghyfaoSFS47bG1eb8oSY</string>
+	<string>AIzaSyC1XR_a9bToxsX_f0vizTLqNsWtTt4UwFI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>911394718792</string>
+	<string>1035756982849</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.drinkMemo</string>
 	<key>PROJECT_ID</key>
-	<string>drinkmemo-production</string>
+	<string>drinkmemo-d609b</string>
 	<key>STORAGE_BUCKET</key>
-	<string>drinkmemo-production.appspot.com</string>
+	<string>drinkmemo-d609b.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:911394718792:ios:f949fce6830ad8253c047d</string>
+	<string>1:1035756982849:ios:8f303ef37bffaaac2f6cc0</string>
 </dict>
 </plist>
