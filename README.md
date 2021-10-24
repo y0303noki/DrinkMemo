@@ -31,6 +31,8 @@ flutter run --dart-define=FLAVOR=prod
 
 ## ipa でビルド
 
+! Google Servece info が stg と prod で自動で変わらないので手動で変えること
+
 # 検証環境(staging)
 
 flutter build ios --dart-define=FLAVOR=stg
