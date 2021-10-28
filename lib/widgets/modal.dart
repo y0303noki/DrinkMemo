@@ -855,484 +855,505 @@ class Modal {
                                                 ),
                                                 const Divider(thickness: 1),
                                                 Expanded(
-                                                  child: Column(
-                                                    children: [
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
-                                                            left: 0,
-                                                            right: 30,
-                                                            top: 2,
-                                                            bottom: 2),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: albumCount >=
-                                                                  CommonConstant
-                                                                      .NORMAL_MEMBER_ALBUM_LIMIT
-                                                              ? Colors.grey[400]
-                                                              : null,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        width: double.infinity,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              margin:
-                                                                  const EdgeInsets
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
                                                                       .only(
-                                                                left: 10,
-                                                                right: 0,
-                                                              ),
-                                                              child:
-                                                                  CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors.yellow[
-                                                                        200],
-                                                                radius: 30,
-                                                                child: const Icon(
-                                                                    Icons
-                                                                        .camera_alt_outlined),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: TextButton(
-                                                                child:
-                                                                    const Text(
-                                                                  'カメラ起動',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
+                                                                  left: 0,
+                                                                  right: 30,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: albumCount >=
+                                                                    CommonConstant
+                                                                        .NORMAL_MEMBER_ALBUM_LIMIT
+                                                                ? Colors
+                                                                    .grey[400]
+                                                                : null,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          width:
+                                                              double.infinity,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 10,
+                                                                  right: 0,
                                                                 ),
-                                                                onPressed:
-                                                                    () async {
-                                                                  // 上限を超えてたらカメラ起動不可
-                                                                  if (albumCount >=
-                                                                      CommonConstant
-                                                                          .NORMAL_MEMBER_ALBUM_LIMIT) {
-                                                                    await CustomDialog().simpleDefaultDialog(
-                                                                        context,
-                                                                        '画像を追加できません',
-                                                                        '新しく画像をアップロードできません。マイアルバムの画像は利用できます。');
-                                                                  } else {
-                                                                    await coffeeData
-                                                                        .showImageCamera();
-                                                                    if (coffeeData
-                                                                        .isImageChanged) {
-                                                                      coffeeData
-                                                                          .setImageSampleType(
-                                                                              0);
-                                                                    }
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  }
-                                                                },
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
-                                                            left: 0,
-                                                            right: 30,
-                                                            top: 2,
-                                                            bottom: 2),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: albumCount >=
-                                                                  CommonConstant
-                                                                      .NORMAL_MEMBER_ALBUM_LIMIT
-                                                              ? Colors.grey[400]
-                                                              : null,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        width: double.infinity,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 10,
-                                                                right: 0,
-                                                              ),
-                                                              child:
-                                                                  CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors.yellow[
-                                                                        200],
-                                                                radius: 30,
                                                                 child:
-                                                                    const Icon(
-                                                                  Icons
-                                                                      .image_outlined,
+                                                                    CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors.yellow[
+                                                                          200],
+                                                                  radius: 30,
+                                                                  child: const Icon(
+                                                                      Icons
+                                                                          .camera_alt_outlined),
                                                                 ),
                                                               ),
-                                                            ),
-                                                            Expanded(
-                                                              child: TextButton(
+                                                              Expanded(
                                                                 child:
-                                                                    const Text(
-                                                                  'ギャラリー',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                ),
-                                                                onPressed:
-                                                                    () async {
-                                                                  if (albumCount >=
-                                                                      CommonConstant
-                                                                          .NORMAL_MEMBER_ALBUM_LIMIT) {
-                                                                    await CustomDialog().simpleDefaultDialog(
-                                                                        context,
-                                                                        '画像を追加できません',
-                                                                        '新しく画像をアップロードできません。マイアルバムの画像は利用できます。');
-                                                                  } else {
-                                                                    await coffeeData
-                                                                        .showImageGallery();
-                                                                    if (coffeeData
-                                                                        .isImageChanged) {
-                                                                      coffeeData
-                                                                          .setImageSampleType(
-                                                                              0);
-                                                                    }
-
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  }
-                                                                },
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
-                                                            left: 0,
-                                                            right: 30,
-                                                            top: 2,
-                                                            bottom: 2),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        width: double.infinity,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 10,
-                                                                right: 0,
-                                                              ),
-                                                              child:
-                                                                  CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors.yellow[
-                                                                        200],
-                                                                radius: 30,
-                                                                child: const Icon(
-                                                                    Icons
-                                                                        .photo_album_outlined),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: TextButton(
-                                                                child:
-                                                                    const Text(
-                                                                  'マイアルバム',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black,
-                                                                  ),
-                                                                ),
-                                                                onPressed: () {
-                                                                  Navigator
-                                                                      .push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              AlbumListScaffoldPage(),
-                                                                      fullscreenDialog:
-                                                                          true,
+                                                                    TextButton(
+                                                                  child:
+                                                                      const Text(
+                                                                    'カメラ起動',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
                                                                     ),
-                                                                  ).then(
-                                                                    (value) {
-                                                                      if (value !=
-                                                                          null) {
-                                                                        coffeeData
-                                                                            .imageType = 3;
-                                                                        coffeeData.imageId =
-                                                                            value.id;
-                                                                        coffeeData
-                                                                            .changeImageUrl(value.imageUrl);
-
+                                                                  ),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    // 上限を超えてたらカメラ起動不可
+                                                                    if (albumCount >=
+                                                                        CommonConstant
+                                                                            .NORMAL_MEMBER_ALBUM_LIMIT) {
+                                                                      await CustomDialog().simpleDefaultDialog(
+                                                                          context,
+                                                                          '画像を追加できません',
+                                                                          '新しく画像をアップロードできません。マイアルバムの画像は利用できます。');
+                                                                    } else {
+                                                                      await coffeeData
+                                                                          .showImageCamera();
+                                                                      if (coffeeData
+                                                                          .isImageChanged) {
                                                                         coffeeData
                                                                             .setImageSampleType(0);
                                                                       }
                                                                       Navigator.pop(
                                                                           context);
-                                                                    },
-                                                                  );
-                                                                },
+                                                                    }
+                                                                  },
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
-                                                            left: 0,
-                                                            right: 30,
-                                                            top: 2,
-                                                            bottom: 2),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        width: double.infinity,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              margin:
-                                                                  const EdgeInsets
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
                                                                       .only(
-                                                                left: 10,
-                                                                right: 0,
-                                                              ),
-                                                              child:
-                                                                  CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors.yellow[
-                                                                        200],
-                                                                radius: 30,
-                                                                child: const Icon(
+                                                                  left: 0,
+                                                                  right: 30,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: albumCount >=
+                                                                    CommonConstant
+                                                                        .NORMAL_MEMBER_ALBUM_LIMIT
+                                                                ? Colors
+                                                                    .grey[400]
+                                                                : null,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          width:
+                                                              double.infinity,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 10,
+                                                                  right: 0,
+                                                                ),
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors.yellow[
+                                                                          200],
+                                                                  radius: 30,
+                                                                  child:
+                                                                      const Icon(
                                                                     Icons
-                                                                        .picture_in_picture),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: TextButton(
-                                                                child:
-                                                                    const Text(
-                                                                  'イラスト',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black,
+                                                                        .image_outlined,
                                                                   ),
                                                                 ),
-                                                                onPressed: () {
-                                                                  showModalBottomSheet<
-                                                                      String?>(
-                                                                    shape:
-                                                                        const RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.vertical(
-                                                                              top: Radius.circular(15)),
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    TextButton(
+                                                                  child:
+                                                                      const Text(
+                                                                    'ギャラリー',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
                                                                     ),
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (context) {
-                                                                      return Container(
-                                                                        constraints: const BoxConstraints(
-                                                                            minHeight:
-                                                                                100,
-                                                                            maxHeight:
-                                                                                300),
-                                                                        child:
-                                                                            Column(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.spaceAround,
-                                                                          children: [
-                                                                            Text('利用するイラストを選択してください。'),
-                                                                            Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                              children: [
-                                                                                GestureDetector(
-                                                                                  onTap: () {
-                                                                                    coffeeData.setImageSampleType(1);
-                                                                                    Navigator.of(context).pop('SELECTED');
-                                                                                  },
-                                                                                  child: Column(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        width: 100,
-                                                                                        height: 100,
-                                                                                        child: Image.asset(
-                                                                                          'asset/images/noimage.png',
-                                                                                          fit: BoxFit.cover,
-                                                                                        ),
-                                                                                      ),
-                                                                                      Container(
-                                                                                        child: Text('サンプル1'),
-                                                                                      )
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                GestureDetector(
-                                                                                  onTap: () {
-                                                                                    coffeeData.setImageSampleType(2);
-                                                                                    Navigator.of(context).pop('SELECTED');
-                                                                                  },
-                                                                                  child: Column(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        width: 100,
-                                                                                        height: 100,
-                                                                                        child: Container(
-                                                                                          padding: const EdgeInsets.all(8.0),
-                                                                                          child: Image.asset(
-                                                                                            'asset/images/coffeeSample.png',
-                                                                                            fit: BoxFit.cover,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Container(
-                                                                                        child: Text('サンプル2'),
-                                                                                      )
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                                GestureDetector(
-                                                                                  onTap: () {
-                                                                                    coffeeData.setImageSampleType(3);
-                                                                                    Navigator.of(context).pop('SELECTED');
-                                                                                  },
-                                                                                  child: Column(
-                                                                                    children: [
-                                                                                      Container(
-                                                                                        width: 100,
-                                                                                        height: 100,
-                                                                                        child: Container(
-                                                                                          padding: const EdgeInsets.all(8.0),
-                                                                                          child: Image.asset(
-                                                                                            'asset/images/takeoutSample.png',
-                                                                                            fit: BoxFit.cover,
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                      Container(
-                                                                                        child: Text('サンプル3'),
-                                                                                      )
-                                                                                    ],
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                            Container(
-                                                                              child: TextButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.of(context).pop();
-                                                                                  },
-                                                                                  child: Text('キャンセル')),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      );
-                                                                    },
-                                                                  ).then(
-                                                                    (value) {
-                                                                      // イラストを選択しなかったときは1つ前に戻るだけ
-                                                                      if (value !=
-                                                                              null &&
-                                                                          value ==
-                                                                              'SELECTED') {
-                                                                        coffeeData
-                                                                            .resetImageUrlAndFile();
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      }
-                                                                    },
-                                                                  );
-                                                                },
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
-                                                            left: 0,
-                                                            right: 30,
-                                                            top: 2,
-                                                            bottom: 2),
-                                                        width: double.infinity,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Container(
-                                                              margin:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                left: 10,
-                                                                right: 0,
-                                                              ),
-                                                              child:
-                                                                  const CircleAvatar(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                radius: 30,
-                                                                child: Icon(Icons
-                                                                    .close_outlined),
-                                                              ),
-                                                            ),
-                                                            Expanded(
-                                                              child: TextButton(
-                                                                child:
-                                                                    const Text(
-                                                                  'キャンセル',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: Colors
-                                                                        .black,
                                                                   ),
+                                                                  onPressed:
+                                                                      () async {
+                                                                    if (albumCount >=
+                                                                        CommonConstant
+                                                                            .NORMAL_MEMBER_ALBUM_LIMIT) {
+                                                                      await CustomDialog().simpleDefaultDialog(
+                                                                          context,
+                                                                          '画像を追加できません',
+                                                                          '新しく画像をアップロードできません。マイアルバムの画像は利用できます。');
+                                                                    } else {
+                                                                      await coffeeData
+                                                                          .showImageGallery();
+                                                                      if (coffeeData
+                                                                          .isImageChanged) {
+                                                                        coffeeData
+                                                                            .setImageSampleType(0);
+                                                                      }
+
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    }
+                                                                  },
                                                                 ),
-                                                                onPressed: () {
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 0,
+                                                                  right: 30,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          width:
+                                                              double.infinity,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 10,
+                                                                  right: 0,
+                                                                ),
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors.yellow[
+                                                                          200],
+                                                                  radius: 30,
+                                                                  child: const Icon(
+                                                                      Icons
+                                                                          .photo_album_outlined),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    TextButton(
+                                                                  child:
+                                                                      const Text(
+                                                                    'マイアルバム',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                AlbumListScaffoldPage(),
+                                                                        fullscreenDialog:
+                                                                            true,
+                                                                      ),
+                                                                    ).then(
+                                                                      (value) {
+                                                                        if (value !=
+                                                                            null) {
+                                                                          coffeeData.imageType =
+                                                                              3;
+                                                                          coffeeData.imageId =
+                                                                              value.id;
+                                                                          coffeeData
+                                                                              .changeImageUrl(value.imageUrl);
+
+                                                                          coffeeData
+                                                                              .setImageSampleType(0);
+                                                                        }
+                                                                        Navigator.pop(
+                                                                            context);
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 0,
+                                                                  right: 30,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          width:
+                                                              double.infinity,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 10,
+                                                                  right: 0,
+                                                                ),
+                                                                child:
+                                                                    CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors.yellow[
+                                                                          200],
+                                                                  radius: 30,
+                                                                  child: const Icon(
+                                                                      Icons
+                                                                          .picture_in_picture),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    TextButton(
+                                                                  child:
+                                                                      const Text(
+                                                                    'イラスト',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    showModalBottomSheet<
+                                                                        String?>(
+                                                                      shape:
+                                                                          const RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.vertical(top: Radius.circular(15)),
+                                                                      ),
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (context) {
+                                                                        return Container(
+                                                                          constraints: const BoxConstraints(
+                                                                              minHeight: 100,
+                                                                              maxHeight: 300),
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceAround,
+                                                                            children: [
+                                                                              Text('利用するイラストを選択してください。'),
+                                                                              Row(
+                                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                children: [
+                                                                                  GestureDetector(
+                                                                                    onTap: () {
+                                                                                      coffeeData.setImageSampleType(1);
+                                                                                      Navigator.of(context).pop('SELECTED');
+                                                                                    },
+                                                                                    child: Column(
+                                                                                      children: [
+                                                                                        Container(
+                                                                                          width: 100,
+                                                                                          height: 100,
+                                                                                          child: Image.asset(
+                                                                                            'asset/images/noimage.png',
+                                                                                            fit: BoxFit.cover,
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          child: Text('サンプル1'),
+                                                                                        )
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  GestureDetector(
+                                                                                    onTap: () {
+                                                                                      coffeeData.setImageSampleType(2);
+                                                                                      Navigator.of(context).pop('SELECTED');
+                                                                                    },
+                                                                                    child: Column(
+                                                                                      children: [
+                                                                                        Container(
+                                                                                          width: 100,
+                                                                                          height: 100,
+                                                                                          child: Container(
+                                                                                            padding: const EdgeInsets.all(8.0),
+                                                                                            child: Image.asset(
+                                                                                              'asset/images/coffeeSample.png',
+                                                                                              fit: BoxFit.cover,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          child: Text('サンプル2'),
+                                                                                        )
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                  GestureDetector(
+                                                                                    onTap: () {
+                                                                                      coffeeData.setImageSampleType(3);
+                                                                                      Navigator.of(context).pop('SELECTED');
+                                                                                    },
+                                                                                    child: Column(
+                                                                                      children: [
+                                                                                        Container(
+                                                                                          width: 100,
+                                                                                          height: 100,
+                                                                                          child: Container(
+                                                                                            padding: const EdgeInsets.all(8.0),
+                                                                                            child: Image.asset(
+                                                                                              'asset/images/takeoutSample.png',
+                                                                                              fit: BoxFit.cover,
+                                                                                            ),
+                                                                                          ),
+                                                                                        ),
+                                                                                        Container(
+                                                                                          child: Text('サンプル3'),
+                                                                                        )
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
+                                                                              Container(
+                                                                                child: TextButton(
+                                                                                    onPressed: () {
+                                                                                      Navigator.of(context).pop();
+                                                                                    },
+                                                                                    child: Text('キャンセル')),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        );
+                                                                      },
+                                                                    ).then(
+                                                                      (value) {
+                                                                        // イラストを選択しなかったときは1つ前に戻るだけ
+                                                                        if (value !=
+                                                                                null &&
+                                                                            value ==
+                                                                                'SELECTED') {
+                                                                          coffeeData
+                                                                              .resetImageUrlAndFile();
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        }
+                                                                      },
+                                                                    );
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Container(
+                                                          margin:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 0,
+                                                                  right: 30,
+                                                                  top: 2,
+                                                                  bottom: 2),
+                                                          width:
+                                                              double.infinity,
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Container(
+                                                                margin:
+                                                                    const EdgeInsets
+                                                                        .only(
+                                                                  left: 10,
+                                                                  right: 0,
+                                                                ),
+                                                                child:
+                                                                    const CircleAvatar(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  radius: 30,
+                                                                  child: Icon(Icons
+                                                                      .close_outlined),
+                                                                ),
+                                                              ),
+                                                              Expanded(
+                                                                child:
+                                                                    TextButton(
+                                                                  child:
+                                                                      const Text(
+                                                                    'キャンセル',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
                                               ],
